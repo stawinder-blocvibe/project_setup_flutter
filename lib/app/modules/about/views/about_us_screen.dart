@@ -1,15 +1,4 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
 
-// import 'crash_screen.dart';
-
-// import 'package:flutter_share/flutter_share.dart';
 import 'package:in_app_review/in_app_review.dart';
 
 import '../../../export.dart';

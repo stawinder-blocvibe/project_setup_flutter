@@ -6,7 +6,6 @@
  * the property of ToXSL Technologies Pvt. Ltd. and its partners.
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';

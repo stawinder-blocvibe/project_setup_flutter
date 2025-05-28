@@ -1,11 +1,4 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
+
 const String appId = "1:553696308303:ios:55dcf487802d059cf88e3a";
 const String apiKeyFirebase = "AIzaSyAgG7PKCvhfsThInQhzCd9Y0edRS0gkLRU";
 
