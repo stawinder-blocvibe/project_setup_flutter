@@ -1,0 +1,123 @@
+name: base_project
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.0
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  pinput: ^2.2.31
+  logger: ^1.0.0
+  dio: 5.2.1+1
+  intl: ^0.18.1
+  get_storage:
+  file_picker:
+  flutter_easyloading: ^3.0.5
+  device_info_plus:
+  package_info_plus: ^4.1.0
+  image_picker: ^0.8.7+4
+#  image_cropper:
+  flutter_screenutil: 5.9.3
+  navigation_history_observer:
+  colorful_safe_area: ^1.0.0
+  firebase_messaging: ^14.6.2
+  auto_height_grid_view:
+  dotted_line: ^3.2.3
+#  flutter_share: ^2.0.0
+  duration_picker:
+#  flutter_local_notifications: ^17.1.2
+  flutter_animate: ^4.1.1+1
+  smooth_page_indicator: ^1.1.0
+  lottie: ^2.3.2
+  fancy_shimmer_image:
+  google_maps_flutter: ^2.4.0
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
+  otp_text_field: ^1.1.3
+  coupon_uikit: ^0.2.0
+  grouped_list: ^5.1.2
+  carousel_slider: 5.0.0
+  flutter_rating_bar: ^4.0.1
+  dotted_border: ^2.0.0+3
+  flutter_dash: ^1.0.0
+  another_xlider:
+  visibility_detector: ^0.4.0+2
+  ticket_widget: ^0.0.1
+  fdottedline_nullsafety: ^2.0.1
+  intl_phone_field: 3.1.0
+  mime: ^1.0.4
+  photo_view: ^0.14.0
+  video_thumbnail: ^0.5.3
+  url_launcher: ^6.1.12
+  media_kit:
+  media_kit_video: ^1.2.1
+  media_kit_libs_video: ^1.0.3
+  permission_handler: ^11.0.1
+  connectivity_plus: ^5.0.1
+  cached_network_image:
+  shimmer: ^3.0.0
+  win32: ^5.10.1
+  flutter_html:
+#  open_file_plus:
+  easy_pdf_viewer:
+  flutter_video_info: ^1.3.1
+  place_picker: 0.10.0
+
+  flutter_polyline_points: ^1.0.0
+  location: ^5.0.3
+  firebase_core:
+  scrollable_positioned_list: ^0.3.8
+  in_app_review:
+  firebase_auth:
+  google_sign_in:
+  flutter_tabler_icons: ^1.43.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/icons/
+    - assets/fonts/
+    - assets/lottieFiles/
+    - assets/fonts/Literata_24pt-Regular.ttf
+
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
+
+    - family: Literata
+      fonts:
+        - asset: assets/fonts/Literata_24pt-Regular.ttf
+          weight: 400
+
+
