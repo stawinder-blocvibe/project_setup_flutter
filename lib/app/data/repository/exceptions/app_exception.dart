@@ -7,8 +7,8 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
 
-import 'package:base_project/app/data/repository/exceptions/base_exception.dart';
 
+import 'base_exception.dart';
 class AppException extends BaseException {
   AppException({
     String message = "",

@@ -1,9 +1,18 @@
+/*
+ * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
+ * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
+ * All Rights Reserved.
+ * Proprietary and confidential :  All information contained herein is, and remains
+ * the property of ToXSL Technologies Pvt. Ltd. and its partners.
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ */
 
-
-import 'package:flutter/material.dart';
-// import 'package:base_project/app/core/widget/stepper/horizontal_stepper_item.dart';
 import 'package:base_project/app/core/widget/stepper/stepper_model.dart';
 import 'package:base_project/app/core/widget/stepper/vertical_stepper_item.dart';
+import 'package:flutter/material.dart';
+
+import 'horizontal_stepper_item.dart';
+
 
 class AnotherStepper extends StatelessWidget {
   /// Another stepper is a package, which helps build
@@ -96,10 +105,7 @@ class AnotherStepper extends StatelessWidget {
 
   Widget _getPreferredStepper(BuildContext context, {required int index}) {
     if (stepperDirection == Axis.horizontal) {
-      return SizedBox();
-
-      // ??
-         /* HorizontalStepperItem(
+      return HorizontalStepperItem(
         index: index,
         item: stepperList[index],
         totalLength: stepperList.length,
@@ -110,7 +116,7 @@ class AnotherStepper extends StatelessWidget {
         barHeight: barThickness,
         iconHeight: iconHeight,
         iconWidth: iconWidth,
-      );*/
+      );
     } else {
       return VerticalStepperItem(
         index: index,

@@ -1,6 +1,9 @@
 
 
-import 'package:base_project/app/export.dart';
+import '../../../../main.dart';
+import '../../../../presentation/modules/authentication/models/data_model/user_data_model.dart';
+import '../../../../presentation/modules/authentication/models/request_data_model/RememberMeModel.dart';
+import '../../../export.dart';
 
 class PreferenceManger {
   static const String isFirstLaunch = "isFirstLaunch";

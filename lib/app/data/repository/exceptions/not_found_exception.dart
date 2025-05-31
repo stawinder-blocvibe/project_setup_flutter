@@ -9,7 +9,8 @@
 
 import 'dart:io';
 
-import 'package:base_project/app/data/repository/exceptions/api_exception.dart';
+
+import 'api_exception.dart';
 
 class NotFoundException extends ApiException {
   NotFoundException(String message, String status)

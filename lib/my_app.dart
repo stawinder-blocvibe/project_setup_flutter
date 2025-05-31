@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         builder: (context, widget) => GetMaterialApp(
           theme: ThemeConfig.lightTheme,
           initialRoute: AppPages.INITIAL,
+
           navigatorObservers: [NavigationHistoryObserver()],
           initialBinding: InitialBinding(),
           getPages: AppPages.routes,
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           logWriterCallback: LoggerX.write,
           builder: EasyLoading.init(),
           defaultTransition: Transition.cupertino,
-          translations: TranslationService(),
+          // translations: TranslationService(),
           locale: Get.deviceLocale,
           fallbackLocale: Locale(localKey),
         ),

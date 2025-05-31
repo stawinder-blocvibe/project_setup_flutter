@@ -1,5 +1,8 @@
-import 'package:base_project/app/export.dart';
+
+
 import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../../export.dart';
 
 class ThumbnailImage extends StatefulWidget {
   final String? videoUrl;

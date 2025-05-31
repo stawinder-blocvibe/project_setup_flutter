@@ -1,7 +1,15 @@
+/*
+ * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
+ * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
+ * All Rights Reserved.
+ * Proprietary and confidential :  All information contained herein is, and remains
+ * the property of ToXSL Technologies Pvt. Ltd. and its partners.
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ */
 
+ import 'package:shimmer/shimmer.dart';
 
-import 'package:base_project/app/export.dart';
-import 'package:shimmer/shimmer.dart';
+import '../../export.dart';
 
 class NetworkImageWidget extends StatelessWidget {
   final String imageUrl;
@@ -46,7 +54,7 @@ class NetworkImageWidget extends StatelessWidget {
           width: imageWidth,
           fit: imageFitType,
           errorBuilder: (context, error, stackTrace) => AssetImageWidget(
-                placeHolder ?? iconsIcPlaceholder,
+                placeHolder ?? "iconsIcPlaceholder",
                 radiusAll: radiusAll,
                 imageHeight: imageHeight,
                 imageWidth: imageWidth,

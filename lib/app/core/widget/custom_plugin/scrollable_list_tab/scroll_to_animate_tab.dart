@@ -1,4 +1,5 @@
-
+/// A Flutter widget that is customizable
+/// and syncs the ScrollView with the tabs.
 library scroll_to_animate_tab;
 
 export 'model/list_tab.dart';

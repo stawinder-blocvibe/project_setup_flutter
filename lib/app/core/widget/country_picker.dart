@@ -78,7 +78,7 @@ class CountryPickerr extends StatelessWidget {
           focusNode: focusNode,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           style: textStyleTitleSmall()
-              .copyWith(color: Colors.black, fontSize: font_15),
+              .copyWith(color: Colors.white, fontSize: font_15),
           decoration: InputDecoration(
             isCollapsed: true,
             isDense: true,

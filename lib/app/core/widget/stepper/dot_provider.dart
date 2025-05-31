@@ -1,7 +1,9 @@
 
-import 'package:flutter/material.dart';
+
 import 'package:base_project/app/core/widget/stepper/stepper_dot.dart';
 import 'package:base_project/app/core/widget/stepper/stepper_model.dart';
+import 'package:flutter/material.dart';
+
 
 class DotProvider extends StatelessWidget {
   const DotProvider(

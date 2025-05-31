@@ -1,6 +1,5 @@
 
-
-import 'package:base_project/app/export.dart';
+import '../../export.dart';
 
 class TextFieldDialogWidget extends StatelessWidget {
   final String title;

@@ -1,4 +1,7 @@
-import 'package:base_project/app/export.dart';
+
+
+import '../../../presentation/modules/authentication/models/data_model/media_file_model.dart';
+import '../../export.dart';
 
 class PicsVideosListWidget extends StatelessWidget {
   bool isSelectable = false;
@@ -27,13 +30,15 @@ class PicsVideosListWidget extends StatelessWidget {
 
   _addPhotoVideoWidget() => GestureDetector(
         onTap: _loadImage,
-        child: AssetImageWidget(
-          iconsIcAddImg,
-          imageHeight: height_60,
-          imageWidth: height_60,
-          imageFitType: BoxFit.fill,
-          radiusAll: radius_5,
-        ).paddingOnly(right: margin_8, bottom: margin_10, top: margin_3),
+        child:  Text("AddImage")
+
+        // AssetImageWidget(
+        //   iconsIcAddImg,
+        //   imageHeight: height_60,
+        //   imageWidth: height_60,
+        //   imageFitType: BoxFit.fill,
+        //   radiusAll: radius_5,
+        // ).paddingOnly(right: margin_8, bottom: margin_10, top: margin_3),
       );
 
   _imgVidList() => Column(
@@ -89,7 +94,7 @@ class PicsVideosListWidget extends StatelessWidget {
                                               if (mediaList[index - 1].type ==
                                                   typeVideoConst) ...[
                                                 AssetImageWidget(
-                                                  iconsIcPlay,
+                                                  "iconsIcPlay",
                                                   imageHeight: height_20,
                                                   imageWidth: height_20,
                                                   imageFitType: BoxFit.cover,
@@ -138,7 +143,7 @@ class PicsVideosListWidget extends StatelessWidget {
                                       mediaList.removeAt(index - 1);
                                     },
                                     widget: AssetImageWidget(
-                                      iconsIcCut,
+                                      "iconsIcCut",
                                       imageHeight: height_20,
                                       imageWidth: height_20,
                                     ),
@@ -243,7 +248,7 @@ class PicsVideosListWidget extends StatelessWidget {
               child: BounceWidget(
                 onPressed: () => Get.back(),
                 widget: AssetImageWidget(
-                  iconsIcCrossWhiteFilled1,
+                  "iconsIcCrossWhiteFilled1",
                   imageWidth: width_25,
                   imageHeight: width_25,
                   radiusAll: radius_8,
@@ -261,18 +266,22 @@ class PicsVideosListWidget extends StatelessWidget {
         Stack(
           children: [
             Center(
-                child: VideoPlayerWidget(
-              videoUrl: mediaList[index].localFilePath ?? '',
-              isNetwork: mediaList[index].localFilePath == null ||
-                  mediaList[index].localFilePath == '',
-            )),
+                child:
+
+                Text("VideoPlayerWidget")
+      // VideoPlayerWidget(
+      //         videoUrl: mediaList[index].localFilePath ?? '',
+      //         isNetwork: mediaList[index].localFilePath == null ||
+      //             mediaList[index].localFilePath == '',
+      //       )
+            ),
             Positioned(
               top: height_50,
               right: 0,
               child: BounceWidget(
                 onPressed: () => Get.back(),
                 widget: AssetImageWidget(
-                  iconsIcCrossWhiteFilled1,
+                  "iconsIcCrossWhiteFilled1",
                   imageWidth: width_25,
                   imageHeight: width_25,
                   radiusAll: radius_8,

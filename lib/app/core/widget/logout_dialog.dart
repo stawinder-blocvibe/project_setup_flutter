@@ -1,6 +1,6 @@
 
 
-import 'package:base_project/app/export.dart';
+import '../../export.dart';
 
 class LogOutDialogWidget extends StatelessWidget {
   final String title;

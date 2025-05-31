@@ -1,8 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:base_project/app/export.dart';
 
-import '../modules/support/controller/support_chat_controller.dart';
+import '../export.dart';
+
 
 class PushNotificationsManager {
   static final PushNotificationsManager _instance =
@@ -15,11 +14,11 @@ class PushNotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
-  static const MethodChannel _platform = MethodChannel('custom_notification');
+  // static const MethodChannel _platform = MethodChannel('custom_notification');
 
   var comingFromNotification = false;
   var userToken;
-  UserDataModel? userDataModel;
+  // UserDataModel? userDataModel;
 
   Future init() async {
     await _firebaseMessaging.requestPermission();
@@ -128,20 +127,20 @@ class PushNotificationsManager {
   }
 
   void _configureMethodChannel() {
-    _platform.setMethodCallHandler((call) async {
-      if (call.method == 'onNotificationClick') {
-        Map notificationData = Map.from(call.arguments);
-
-        debugPrint('Notification Clicked Data2: $notificationData');
-
-        final String typeId = notificationData['typeId']?.toString() ?? '0';
-
-        orderPlaceRoute(
-          typeId: typeId,
-          detail: notificationData,
-        );
-      }
-    });
+    // platform.setMethodCallHandler((call) async {
+    //   if (call.method == 'onNotificationClick') {
+    //     Map notificationData = Map.from(call.arguments);
+    //
+    //     debugPrint('Notification Clicked Data2: $notificationData');
+    //
+    //     final String typeId = notificationData['typeId']?.toString() ?? '0';
+    //
+    //     orderPlaceRoute(
+    //       typeId: typeId,
+    //       detail: notificationData,
+    //     );
+    //   }
+    // });
   }
 
   static Future _firebaseMessagingBackgroundHandler(
@@ -157,7 +156,7 @@ class PushNotificationsManager {
       'title': notification["title"] ?? "No Title",
       'status': notification["full_name"] ?? "No Name",
       'time': formattedTime,
-      'image_file': notification["image_file"] ?? "$iconProfile",
+      'image_file': notification["image_file"] ?? "iconProfile",
       'message': notification["description"] ?? "",
       'typeId': notification["type_id"]?.toString() ?? "0",
       'model_id': notification['model_id']?.toString() ?? '0',
@@ -172,13 +171,13 @@ class PushNotificationsManager {
   }
 
   Future showCustomNotificationWithData(Map data) async {
-    try {
-      final result =
-          await _platform.invokeMethod('showCustomNotification', data);
-      debugPrint('Custom Notification Result: $result');
-    } on PlatformException catch (e) {
-      debugPrint("Failed to show notification: '${e.message}'.");
-    }
+    // try {
+    //   final result =
+    //       await _platform.invokeMethod('showCustomNotification', data);
+    //   debugPrint('Custom Notification Result: $result');
+    // } on PlatformException catch (e) {
+    //   debugPrint("Failed to show notification: '${e.message}'.");
+    // }
   }
 
   void orderPlaceRoute({
@@ -199,7 +198,7 @@ class PushNotificationsManager {
       if (Get.isRegistered()) {
         Get.find().onReady();
       } else {
-        Get.put(SupportChatController()).onReady();
+        // Get.put(SupportChatController()).onReady();
       }
     } else if (typeId == constNotifyOrderConfirmed ||
         typeId == constNotifyOrderRejected ||

@@ -7,9 +7,10 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
 
-import 'package:base_project/app/export.dart';
+
 
 import '../../core/values/app_strings.dart';
+import '../../export.dart';
 
 class NetworkExceptions {
   static String messageData = "";
@@ -162,6 +163,8 @@ class NetworkExceptions {
           : messageData = strUnExceptedExption;
     }
   }
+
+
 }
 
 _crashReport({messageData, error, endPoint, stackTrace}) {
@@ -172,4 +175,8 @@ _crashReport({messageData, error, endPoint, stackTrace}) {
           "\n" +
           error.toString(),
       stackTrace);
+}
+
+void reportCrash(String error, stackTrace) {
+  debugPrint("error==>$error :: stackTrace==>$stackTrace");
 }

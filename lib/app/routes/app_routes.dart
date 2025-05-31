@@ -1,9 +1,12 @@
 
+
 abstract class AppRoutes {
   static const splashRoute = '/splashRoute';
   static const onBoardingRoute = '/onBoardingRoute';
-
   static const roleSelectionRoute = '/roleSelectionRoute';
+  static const mainParentRoute = '/mainParentRoute';
+  static const liveMatchesScreenRoute = "/liveMatchesScreenRoute";
+  static const upcomingMatchesScreenRoute = "/upcomingMatchesScreenRoute";
 
   static const loginRoute = '/loginRoute';
   static const signupRoute = '/signupRoute';
@@ -154,4 +157,6 @@ abstract class AppRoutes {
   static const trackOrderScreen = "/trackOrderScreen";
   static const aboutUsMobileView = "/aboutUsMobileView";
   static const supportChatScreen = '/supportChatScreen';
+
+
 }

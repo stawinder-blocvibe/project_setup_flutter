@@ -97,3 +97,6 @@ class HexColor extends Color {
 
   HexColor(final String hexColor) : super(getcolorfromHex(hexColor));
 }
+
+Color pinputBorderColor = Color(0xFFD27D08);
+Color appGreen = Color(0xFF004225);

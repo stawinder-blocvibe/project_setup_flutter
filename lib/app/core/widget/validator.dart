@@ -1,8 +1,8 @@
 
 
-import 'package:base_project/app/export.dart';
-
 /*========================Email Validator==============================================*/
+
+import '../../export.dart';
 
 class EmailValidator {
   static String? validateEmail(String value, {FocusNode? focusNode}) {

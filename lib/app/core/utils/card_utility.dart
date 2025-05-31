@@ -1,4 +1,6 @@
-import 'package:base_project/app/export.dart';
+
+
+import '../../export.dart';
 
 class Strings {
   static const String fieldReq = 'Oops ! please enter card number';

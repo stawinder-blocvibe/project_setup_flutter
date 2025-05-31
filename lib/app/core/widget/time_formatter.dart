@@ -1,6 +1,5 @@
 
-
-import 'package:base_project/app/export.dart';
+import '../../export.dart';
 
 String hourlyFormatter = 'hh:mm a';
 String dayFormatter = "yyyy-MM-dd";

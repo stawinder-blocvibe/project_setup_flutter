@@ -7,7 +7,8 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
 
-import 'package:base_project/app/data/repository/exceptions/base_exception.dart';
+
+import 'base_exception.dart';
 
 class NetworkException extends BaseException {
   NetworkException(String message) : super(message: message);

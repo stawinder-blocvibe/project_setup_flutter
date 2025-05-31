@@ -1,6 +1,15 @@
+/*
+ * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
+ * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
+ * All Rights Reserved.
+ * Proprietary and confidential :  All information contained herein is, and remains
+ * the property of ToXSL Technologies Pvt. Ltd. and its partners.
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ */
 
 
-import 'package:base_project/app/export.dart';
+
+import '../../export.dart';
 
 class ThemeConfig {
   static ThemeData createTheme({
@@ -23,6 +32,8 @@ class ThemeConfig {
       primarySwatch: Colors.red,
       cardColor: background,
       dividerColor: divider,
+      fontFamily: fontFamily,
+      
       pageTransitionsTheme: const PageTransitionsTheme(builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
@@ -89,13 +100,13 @@ class ThemeConfig {
         ),
         errorStyle: TextStyle(color: error),
         labelStyle: TextStyle(
-          fontFamily: 'Poppins',
+          fontFamily:fontFamily,
           fontWeight: FontWeight.w600,
           fontSize: 16.0,
           color: primaryText.withOpacity(0.5),
         ),
       ),
-      fontFamily: 'Poppins',
+      
       unselectedWidgetColor: HexColor('#DADCDD'),
       textTheme: TextTheme(
         displayLarge: TextStyle(
@@ -204,6 +215,7 @@ class ThemeConfig {
         buttonText: Colors.white,
         disabled: Colors.black,
         error: Colors.red,
+    
       );
 
   static ThemeData get darkTheme => createTheme(
@@ -218,5 +230,6 @@ class ThemeConfig {
         buttonText: Colors.white,
         disabled: Colors.black,
         error: Colors.red,
+    
       );
 }

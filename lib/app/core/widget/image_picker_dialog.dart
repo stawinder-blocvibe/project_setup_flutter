@@ -1,6 +1,6 @@
 
 
-import 'package:base_project/app/export.dart';
+import '../../export.dart';
 
 class ImagePickerDialogWidget extends StatelessWidget {
   final String? title;

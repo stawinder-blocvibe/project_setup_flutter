@@ -1,6 +1,7 @@
 
 
-import 'package:base_project/app/export.dart';
+
+import '../../export.dart';
 
 class ScreenHeading extends StatelessWidget {
   final String title;

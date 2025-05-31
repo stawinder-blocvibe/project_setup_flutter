@@ -59,7 +59,7 @@ class NetworkController extends GetxController {
                         child: Column(
                           children: [
                             AssetImageWidget(
-                              iconsAlert,
+                              "iconsAlert",
                               imageHeight: height_100,
                             ),
                             TextView('No internet connection',

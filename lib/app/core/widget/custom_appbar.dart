@@ -1,6 +1,14 @@
+/*
+ * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
+ * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
+ * All Rights Reserved.
+ * Proprietary and confidential :  All information contained herein is, and remains
+ * the property of ToXSL Technologies Pvt. Ltd. and its partners.
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ */
 
 
-import 'package:base_project/app/export.dart';
+import '../../export.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? appBarTitleText;
@@ -68,21 +76,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             title: TextView('', textStyle: textStyleHeadingSmall()),
             leading: leadingWidget ??
                 (showBackButton
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: margin_6),
-                        child: GetInkWell(
-                            child: AssetImageWidget(
-                              localKey == "en" ? iconsIcBack : iconsIcBackRtl,
-                              color: leadingColor,
-                            ).paddingSymmetric(vertical: margin_10),
-                            onTap: () {
-                              if (onTap == null) {
-                                Get.back(result: true);
-                              } else {
-                                onTap!();
-                              }
-                            }),
-                      )
+                    ?
+                    CircleAvatar(child: Icon(Icons.arrow_back),)
+
+                // Padding(
+                //         padding: EdgeInsets.symmetric(vertical: margin_6),
+                //         child: GetInkWell(
+                //             child: AssetImageWidget(
+                //               localKey == "en" ? iconsIcBack : iconsIcBackRtl,
+                //               color: leadingColor,
+                //             ).paddingSymmetric(vertical: margin_10),
+                //             onTap: () {
+                //               if (onTap == null) {
+                //                 Get.back(result: true);
+                //               } else {
+                //                 onTap!();
+                //               }
+                //             }),
+                //       )
                     : SizedBox()),
             centerTitle: titleInCentre ?? true,
             actions: [actionWidget ?? Container()],

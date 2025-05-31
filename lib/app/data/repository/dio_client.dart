@@ -7,11 +7,12 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
 
-import 'package:dio/io.dart';
 import 'package:base_project/app/export.dart';
-import 'package:base_project/app/logger/log_interceptor.dart' as LogInterceptor;
+import 'package:dio/io.dart';
+
 
 import '../../core/widget/device_details.dart';
+
 
 const _defaultConnectTimeout =
     Duration(milliseconds: Duration.millisecondsPerMinute);
@@ -59,7 +60,7 @@ class DioClient {
     };
 
     if (kDebugMode) {
-      _dio.interceptors.add(LogInterceptor.LogInterceptor(
+      _dio.interceptors.add(LogInterceptor(
           responseBody: true,
           error: true,
           requestHeader: true,

@@ -11,7 +11,7 @@ Widget noResultFoundWidget(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AssetImageWidget(
-          imagePath ?? iconsIcEmptyList,
+          imagePath ?? "iconsIcEmptyList",
           imageHeight: imageHeight ?? height_50,
         ).paddingOnly(bottom: padding ?? margin_5),
         TextView(message ?? keyNoResultFound.tr,

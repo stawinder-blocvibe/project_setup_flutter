@@ -1,5 +1,6 @@
 
-import 'package:base_project/app/export.dart';
+
+import '../../export.dart';
 
 class ApplicationAvailabilityDialog extends AlertDialog {
   const ApplicationAvailabilityDialog({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class ApplicationAvailabilityDialog extends AlertDialog {
                 topRight: Radius.circular(radius_10),
               )),
           child: AssetImageWidget(
-            iconsAlert,
+            "iconsAlert",
           )),
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -30,12 +31,12 @@ class ApplicationAvailabilityDialog extends AlertDialog {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextView(
-              keyDemoExpired.tr,
+              "keyDemoExpired".tr,
               textStyle: textStyleBodyLarge()
                   .copyWith(color: Colors.black, fontWeight: FontWeight.w600),
             ).marginOnly(bottom: margin_10),
             TextView(
-              keyAppDemoExpiredDesc.tr,
+              "keyAppDemoExpiredDesc".tr,
               maxLines: 4,
               textStyle: textStyleBodyLarge().copyWith(
                   color: Colors.black,

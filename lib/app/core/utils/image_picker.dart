@@ -1,6 +1,8 @@
 
 
-import 'package:base_project/app/export.dart';
+
+
+import '../../export.dart';
 
 /*=================================================================== Image Pick Using camera ===================================================*/
 
@@ -9,13 +11,14 @@ Future<PickedFile?> imageFromCamera() async {
       .pickImage(source: ImageSource.camera, imageQuality: 100);
   bool imageAccepted;
   if (pickedFile == null) {
-    return showInSnackBar(message: keyNoImageSelected.tr);
+    return showInSnackBar(message: "No Image Selected".tr);
   } else {
-    if (pickedFile.path.endsWith(keyPng.tr)) {
+    if (pickedFile.path.endsWith("Png".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith(keyJpg.tr)) {
+    } else if (pickedFile.path.endsWith("Jpg".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith(keyJpeg.tr)) {
+    } else if (pickedFile.path.endsWith(
+        "Jpeg".tr)) {
       imageAccepted = true;
     } else {
       imageAccepted = false;
@@ -23,7 +26,7 @@ Future<PickedFile?> imageFromCamera() async {
     if (imageAccepted) {
       return cropImage(pickedFile.path);
     } else {
-      SnackBar(content: Text(keyExtensionNotAllow.tr));
+      SnackBar(content: Text("Extension not allowed".tr));
     }
   }
   return null;
@@ -35,13 +38,13 @@ Future<PickedFile?> imageFromGallery({bool isRectangular = false}) async {
       .pickImage(source: ImageSource.gallery, imageQuality: 100);
   bool imageAccepted;
   if (pickedFile == null) {
-    return showInSnackBar(message: keyNoImageSelected.tr);
+    return showInSnackBar(message: "No Image Selected".tr);
   } else {
-    if (pickedFile.path.endsWith(keyPng.tr)) {
+    if (pickedFile.path.endsWith("Png".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith(keyJpg.tr)) {
+    } else if (pickedFile.path.endsWith("Jpg".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith(keyJpeg.tr)) {
+    } else if (pickedFile.path.endsWith("Jpeg".tr)) {
       imageAccepted = true;
     } else {
       imageAccepted = false;
@@ -49,7 +52,7 @@ Future<PickedFile?> imageFromGallery({bool isRectangular = false}) async {
     if (imageAccepted) {
       return cropImage(pickedFile.path, isRectangular: isRectangular);
     } else {
-      SnackBar(content: Text(keyExtensionNotAllow.tr));
+      SnackBar(content: Text("Extention not allowed".tr));
     }
   }
   return null;
@@ -58,7 +61,7 @@ Future<PickedFile?> imageFromGallery({bool isRectangular = false}) async {
 Future<List<String>> multiImageFromGallery() async {
   var pickedFiles = await ImagePicker().pickMultiImage(imageQuality: 100);
   if (pickedFiles == null) {
-    showInSnackBar(message: keyNoImage.tr);
+    showInSnackBar(message: "No Image".tr);
   } else {
     List<String> files = [];
     pickedFiles.forEach((element) {
@@ -70,10 +73,6 @@ Future<List<String>> multiImageFromGallery() async {
 }
 
 Future<PickedFile?> cropImage(filePath, {bool isRectangular = false}) async {
-
-  showInSnackBar(message: "under_dev__cropImage");
-
-  //
   // var croppedImage = await ImageCropper().cropImage(
   //   sourcePath: filePath,
   //   aspectRatio: CropAspectRatio(
@@ -85,7 +84,7 @@ Future<PickedFile?> cropImage(filePath, {bool isRectangular = false}) async {
   // } else {
   //   return PickedFile(croppedImage.path);
   // }
-  // return null;
+  return null;
 }
 
 Future<PickedFile?> videoFromCamera() async {
