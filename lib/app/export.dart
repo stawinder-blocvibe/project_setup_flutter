@@ -25,7 +25,7 @@ export 'package:dotted_border/dotted_border.dart';
 export 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 export 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
 export 'package:file_picker/file_picker.dart';
-export 'package:firebase_core/firebase_core.dart';
+// export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter/cupertino.dart' hide RefreshCallback;
 export 'package:flutter/foundation.dart';
 /* =============================================dart, flutter and getx =====================================*/

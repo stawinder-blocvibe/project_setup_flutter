@@ -7,9 +7,11 @@ abstract class AppRoutes {
   static const mainParentRoute = '/mainParentRoute';
   static const liveMatchesScreenRoute = "/liveMatchesScreenRoute";
   static const upcomingMatchesScreenRoute = "/upcomingMatchesScreenRoute";
-
+  static const overBallSelectionScreenRoute = "/overBallSelectionScreenRoute";
+  static const matchScoreScreenRoute = "/matchScoreScreenRoute";
   static const loginRoute = '/loginRoute';
   static const signupRoute = '/signupRoute';
+
   static const otpVerificationRoute = '/otpVerificationRoute';
   static const forgotPasswordOption = '/forgotPasswordOption';
   static const changePasswordRoute = '/changePasswordRoute';

@@ -2,6 +2,7 @@
 
 
 import 'package:base_project/presentation/modules/home/bindings/home_binding.dart';
+import 'package:base_project/presentation/modules/home/views/match_score_screen.dart';
 import 'package:base_project/presentation/modules/main_parent/bindings/main_bindings.dart';
 import 'package:base_project/presentation/modules/main_parent/views/main_parent_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -10,7 +11,10 @@ import '../../presentation/modules/authentication/bindings/login_binding.dart';
 import '../../presentation/modules/authentication/bindings/otp_verification_binding.dart';
 import '../../presentation/modules/authentication/views/login_screen.dart';
 import '../../presentation/modules/authentication/views/otp_verification_screen.dart';
+import '../../presentation/modules/authentication/views/register_screen.dart';
+import '../../presentation/modules/home/controllers/match_score_controller.dart';
 import '../../presentation/modules/home/views/live_matches_screen.dart';
+import '../../presentation/modules/home/views/over_ball_selection_screen.dart';
 import '../../presentation/modules/home/views/upcoming_matches_screen.dart';
 import '../../presentation/modules/splash/bindings/on_boarding_binding.dart';
 import '../../presentation/modules/splash/bindings/splash_binding.dart';
@@ -40,6 +44,12 @@ class AppPages {
     ),
 
     GetPage(
+      name: AppRoutes.signupRoute,
+      page: () => RegisterScreen(),
+      bindings: [LoginBinding()],
+    ),
+
+    GetPage(
       name: AppRoutes.otpVerificationRoute,
       page: () => OtpVerificationScreen(),
       bindings: [OtpVerificationBinding()],
@@ -59,6 +69,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.upcomingMatchesScreenRoute,
       page: () => UpcomingMatchesScreen(),
+      bindings: [HomeBinding()],
+    ),
+
+    GetPage(
+      name: AppRoutes.overBallSelectionScreenRoute,
+      page: () => OverBallSelectionScreen(),
+      bindings: [HomeBinding()],
+    ),
+
+    GetPage(
+      name: AppRoutes.matchScoreScreenRoute,
+      page: () => MatchScoreScreen(),
       bindings: [HomeBinding()],
     ),
 

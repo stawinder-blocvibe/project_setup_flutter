@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -250,26 +250,27 @@ class HelperFunction {
     }*/
   }
 
-  Future<void> requestPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      debugPrint('User  granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      debugPrint('User  granted provisional permission');
-    } else {
-      debugPrint('User  declined or has not accepted permission');
-    }
-    debugPrint('test');
-  }
+  Future<void> requestPermission() async {}
+  // {
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     badge: true,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  //
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     debugPrint('User  granted permission');
+  //   } else if (settings.authorizationStatus ==
+  //       AuthorizationStatus.provisional) {
+  //     debugPrint('User  granted provisional permission');
+  //   } else {
+  //     debugPrint('User  declined or has not accepted permission');
+  //   }
+  //   debugPrint('test');
+  // }
 
   static clearNotificationCount() {
     notificationCount.value = 0;
@@ -330,6 +331,13 @@ class HelperFunction {
       debugPrint('different platform code call');
     }
   }
+
+
+
+  static TextInputFormatter phoneNumberFormatter() {
+    return FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}$'));
+  }
+
 }
 
 /// https://mars.toxsl.in/food-app-yii2-2152/settings/variable/update?id=9&title=google-map-place   to change the Api in Web

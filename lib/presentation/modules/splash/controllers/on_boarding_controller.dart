@@ -18,18 +18,12 @@ class OnBoardingController extends GetxController {
 
   addData() {
     pages.clear();
-    pages.add(
-        OnBoardingWidget(
-          title: "first title",
-          subTitle: "first SubTitle",
+    pages.add(OnBoardingWidget());
+    pages.add(OnBoardingWidget(
+
     ));
     pages.add(OnBoardingWidget(
-      title: "first title1",
-      subTitle: "first SubTitle1",
-    ));
-    pages.add(OnBoardingWidget(
-      title: "first title2",
-      subTitle: "first SubTitle2",
+
     ));
   }
 

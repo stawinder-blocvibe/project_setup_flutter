@@ -64,7 +64,7 @@ Widget appButton({ String? buttonText,  Widget? child, Function()? onTap}) {
     child: Stack(
       alignment: Alignment.center,
       children: [
-        AssetImageWidget(yellowButtonBg, imageHeight: height_40),
+        AssetImageWidget(yellowButtonBg,),
         child ?? Text(
           buttonText??"test",
           textAlign: TextAlign.center,
@@ -103,6 +103,7 @@ Widget appBarWithWallet({ bool onlyWallet = false}){
             ),
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AssetImageWidget(addCashAsset,imageWidth: height_20,imageHeight: height_20,).marginOnly(right: margin_8),
               Text(
@@ -110,13 +111,13 @@ Widget appBarWithWallet({ bool onlyWallet = false}){
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: font_12,
                   fontFamily:fontFamily,
                   fontWeight: FontWeight.w500,
                   height: 1.50,
                   letterSpacing: -0.23,
                 ),
-              )
+              ).marginOnly(top: margin_2)
             ],
           ),
         ).marginOnly(right: margin_20):

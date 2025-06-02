@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../export.dart';
 
@@ -11,7 +11,7 @@ class PushNotificationsManager {
 
   PushNotificationsManager._internal();
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
   // static const MethodChannel _platform = MethodChannel('custom_notification');
@@ -20,26 +20,29 @@ class PushNotificationsManager {
   var userToken;
   // UserDataModel? userDataModel;
 
-  Future init() async {
-    await _firebaseMessaging.requestPermission();
-    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+  Future init() async
+  {}
+
+  /*{
+    // await _firebaseMessaging.requestPermission();
+    // await _firebaseMessaging.setForegroundNotificationPresentationOptions(
         alert: true, badge: true, sound: true);
 
-    await _firebaseMessaging.getToken().then((value) {
-      deviceToken = value;
-      debugPrint("Firebase Messaging token $value");
-      PreferenceManger().saveFcmToken(value);
-    });
+    // await _firebaseMessaging.getToken().then((value) {
+    //   deviceToken = value;
+    //   debugPrint("Firebase Messaging token $value");
+    //   PreferenceManger().saveFcmToken(value);
+    // });
 
     _configureMethodChannel();
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('onMessage: ${message.data}');
-      customNotificationPopup(message.data);
-      return;
-    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   debugPrint('onMessage: ${message.data}');
+    //   customNotificationPopup(message.data);
+    //   return;
+    // });
 
-/*
+*//*
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint('onMessageOpenedApp: ${message.data}');
       final messageData = message.data;
@@ -48,26 +51,26 @@ class PushNotificationsManager {
 
       orderPlaceRoute(typeId: typeId, detail: messageData);
     });
-*/
+*//*
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      debugPrint('onMessageOpenedApp: ${message.data}');
-
-      final messageData = message.data;
-      final String typeId = messageData["type_id"]?.toString() ?? "0";
-
-      if (typeId == constNotifyChatSupport || typeId == constNotifyChat) {
-        _navigateToChatScreen(
-          id: int.tryParse(messageData['created_by_id'] ?? '0'),
-          name: messageData['full_name'],
-          profilePicUrl: messageData['image_file'],
-          to_user_id: int.tryParse(messageData['to_user_id'] ?? '0') ?? 0,
-          orderId: messageData['model_id'],
-        );
-      } else {
-        orderPlaceRoute(typeId: typeId, detail: messageData);
-      }
-    });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   debugPrint('onMessageOpenedApp: ${message.data}');
+    //
+    //   final messageData = message.data;
+    //   final String typeId = messageData["type_id"]?.toString() ?? "0";
+    //
+    //   if (typeId == constNotifyChatSupport || typeId == constNotifyChat) {
+    //     _navigateToChatScreen(
+    //       id: int.tryParse(messageData['created_by_id'] ?? '0'),
+    //       name: messageData['full_name'],
+    //       profilePicUrl: messageData['image_file'],
+    //       to_user_id: int.tryParse(messageData['to_user_id'] ?? '0') ?? 0,
+    //       orderId: messageData['model_id'],
+    //     );
+    //   } else {
+    //     orderPlaceRoute(typeId: typeId, detail: messageData);
+    //   }
+    // });
 
     _firebaseMessaging.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
@@ -90,7 +93,7 @@ class PushNotificationsManager {
       }
     });
 
-    /*   _firebaseMessaging.getInitialMessage().then((RemoteMessage? message) {
+    *//*   _firebaseMessaging.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
         debugPrint('getInitialMessage: ${message.data}');
 
@@ -102,7 +105,7 @@ class PushNotificationsManager {
           detail: messageData,
         );
       }
-    });*/
+    });*//*
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint('onMessageOpenedApp: ${message.data}');
 
@@ -124,7 +127,7 @@ class PushNotificationsManager {
     });
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
+  }*/
 
   void _configureMethodChannel() {
     // platform.setMethodCallHandler((call) async {
@@ -143,10 +146,11 @@ class PushNotificationsManager {
     // });
   }
 
-  static Future _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
+/*  static Future _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async
+  {
     debugPrint('Background Message: ${message.data}');
-  }
+  }*/
 
   Future customNotificationPopup(Map notification) async {
     String formattedTime = notification["estimated_delivery_time"] != null

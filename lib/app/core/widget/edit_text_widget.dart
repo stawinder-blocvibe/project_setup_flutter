@@ -1,13 +1,3 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
-
-
 
 import '../../export.dart';
 
@@ -162,29 +152,25 @@ class TextFieldWidget extends StatelessWidget {
         fillColor: fillColor ?? mobileNumberColor,
         border: decoration ??
             OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderSide: const BorderSide(color: Colors.yellow),
+              borderRadius: BorderRadius.circular(borderRadius ?? 50),
             ),
-        focusedErrorBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        errorBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        focusedBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        enabledBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
+    enabledBorder:decoration ?? OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.yellow),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    focusedBorder: decoration ??OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.yellow, width: 1.5),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    errorBorder:  decoration ?? OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    focusedErrorBorder: decoration ??OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
       );
 
   inputDecoration() => InputDecoration(
@@ -215,33 +201,33 @@ class TextFieldWidget extends StatelessWidget {
         labelText: "",
         fillColor: fillColor ?? mobileNumberColor,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        focusedErrorBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        errorBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        focusedBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-        enabledBorder: decoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? radius_10),
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
+    border: decoration ??
+        OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.yellow,width: 1.5),
+          borderRadius: BorderRadius.circular(borderRadius ?? 50),
+        ),
+    enabledBorder:decoration ?? OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.yellow,width: 1.5),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    focusedBorder: decoration ??OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.yellow, width: 1.5),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    errorBorder:  decoration ?? OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red,width: 1.5),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
+    focusedErrorBorder: decoration ??OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red,width: 1.5),
+      borderRadius: BorderRadius.circular(borderRadius ?? 50),
+    ),
       );
 }
+
+
+
+
 
 class DecoratedInputBorder extends InputBorder {
   DecoratedInputBorder({
@@ -330,3 +316,133 @@ class DecoratedInputBorder extends InputBorder {
     return '${objectRuntimeType(this, 'DecoratedInputBorder')}($borderSide, $shadow, $child)';
   }
 }
+
+
+/*class TextFieldWidget extends StatelessWidget {
+  final String? hint;
+  final String? labelText;
+  final double? labelMargin;
+  final Color? fillColor;
+  final Color? courserColor;
+  final validate;
+  final TextStyle? hintStyle;
+  final TextStyle? style;
+  final TextEditingController? textController;
+  final FocusNode? focusNode;
+  final Function()? onTap;
+  final TextInputType? inputType;
+  final TextInputAction? inputAction;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final int? maxLines;
+  final double? borderRadius;
+  final int? minLine;
+  final int? maxLength;
+  final bool readOnly;
+  final bool? autoFocus;
+  final bool? obscureText;
+  final Function(String)? onChanged;
+  final List<TextInputFormatter>? formatter;
+  final EdgeInsets? contentPadding;
+  final BoxConstraints? suffixIconConstraints;
+
+  const TextFieldWidget({
+    super.key,
+    this.hint,
+    this.labelText,
+    this.fillColor,
+    this.courserColor,
+    this.validate,
+    this.hintStyle,
+    this.style,
+    this.textController,
+    this.focusNode,
+    this.onTap,
+    this.inputType,
+    this.inputAction,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.maxLines = 1,
+    this.minLine = 1,
+    this.borderRadius,
+    this.maxLength,
+    this.readOnly = false,
+    this.autoFocus = false,
+    this.obscureText,
+    this.onChanged,
+    this.formatter,
+    this.contentPadding,
+    this.suffixIconConstraints,
+    this.labelMargin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (labelText != null)
+          Padding(
+            padding: EdgeInsets.only(bottom: labelMargin ?? 6.0),
+            child: Text(
+              labelText ?? '',
+              style: const TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+            ),
+          ),
+        TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          controller: textController,
+          focusNode: focusNode,
+          readOnly: readOnly,
+          obscureText: obscureText ?? false,
+          autofocus: autoFocus ?? false,
+          keyboardType: inputType,
+          textInputAction: inputAction,
+          maxLength: maxLength,
+          maxLines: maxLines,
+          minLines: minLine,
+          inputFormatters: formatter,
+          cursorColor: courserColor ?? Colors.white,
+          onChanged: onChanged,
+          onTap: onTap,
+          validator: validate,
+          style: style ?? const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle:
+            hintStyle ?? const TextStyle(color: Colors.white70, fontSize: 15),
+            fillColor: fillColor ?? const Color(0xFF1D3B1D),
+            filled: true,
+            contentPadding: contentPadding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            counterText: '',
+            prefixIcon: prefixIcon,
+            prefixIconConstraints: const BoxConstraints(minWidth: 40),
+            suffixIcon: suffixIcon,
+            suffixIconConstraints: suffixIconConstraints,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 12.5),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.yellow),
+              borderRadius: BorderRadius.circular(borderRadius ?? 30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.yellow, width: 1.5),
+              borderRadius: BorderRadius.circular(borderRadius ?? 30),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(borderRadius ?? 30),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(borderRadius ?? 30),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}*/
+

@@ -14,6 +14,14 @@ const String leaderBoardAsset = 'assets/icons/leader_board.png';
 const String cskPlaceHolderAsset = 'assets/icons/csk.png';
 const String punjabPlaceHolderAsset = 'assets/icons/pk.png';
 const String walletIconAsset = 'assets/icons/wallet.png';
+const String syncIconAsset = 'assets/icons/sync_button.png';
+const String playerBgCircleAsset = 'assets/icons/player_bg_circle.png';
+const String rjJadegaProfileAsset = 'assets/icons/rj_jadega.png';
+const String klRahulProfileAsset = 'assets/icons/kl_rahul.png';
+const String dividerScoreBoardAsset = 'assets/icons/divider_score_board.png';
+const String overOverDefaultBgAsset = 'assets/icons/select_over_default.png';
+const String ballSelectionDefaultAsset = 'assets/icons/ball_selection_default.png';
+const String selectedBallAsset = 'assets/icons/selected_ball.png';
 
 
 

@@ -1,7 +1,7 @@
 
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:base_project/app/export.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -229,7 +229,7 @@ class SignUpController extends GetxController {
 
   Future signInWithGoogle() async {
     try {
-      var token = await FirebaseMessaging.instance.getToken();
+      var token = "fefgdgfdgddfdfgdg";//await FirebaseMessaging.instance.getToken();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         debugPrint("Google sign-in failed: user is null");
@@ -243,10 +243,10 @@ class SignUpController extends GetxController {
       }
 
       // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken!,
-        idToken: googleAuth.idToken!,
-      );
+      // final credential = GoogleAuthProvider.credential(
+      //   accessToken: googleAuth.accessToken!,
+      //   idToken: googleAuth.idToken!,
+      // );
 
       debugPrint("Google User Info:");
       debugPrint("Token: ${googleAuth.idToken!}");
@@ -257,7 +257,7 @@ class SignUpController extends GetxController {
       debugPrint("User ID: ${googleUser.id}");
       debugPrint("Photo URL: ${googleUser.photoUrl}");
 
-      await FirebaseAuth.instance
+     /* await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((value) {
         debugPrint('Successfully signed in: $value');
@@ -315,7 +315,7 @@ class SignUpController extends GetxController {
           // showInSnackBar(message: error.toString());
           customLoader.hide();
         });
-      }).whenComplete(() {});
+      }).whenComplete(() {});*/
     } catch (error) {
       debugPrint("Error during sign-in: $error");
       googleSignIn.signOut();

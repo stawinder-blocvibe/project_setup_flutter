@@ -1,5 +1,6 @@
 
 
+import 'package:base_project/app/core/utils/helper_function.dart';
 import 'package:base_project/app/export.dart';
 
 import '../../../../app/core/widget/country_picker.dart';
@@ -47,10 +48,9 @@ class LoginScreen extends GetView<LoginController> {
           style: TextStyle(
             color: Colors.white,
             fontSize:35,
-            fontFamily: 'TAN - SONGBIRD',
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w600,
             height: 1.0,
-            letterSpacing: 1.60,
+
           ),
         ),
         Text(
@@ -58,13 +58,19 @@ class LoginScreen extends GetView<LoginController> {
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
-            fontFamily: 'Maleah',
             fontWeight: FontWeight.w700,
           ),
         ),
+        buildPhoneNumberField(
+          textController: controller.mobileNumberTextController,
+          errorText: controller.errorTextNotifier.value,
+          focusNode: controller.mobileNumberFocusNode,
+          onChanged: (_) => controller.validatePhoneNumber(),
+        ).marginOnly(top: margin_8)??
         phoneNo(),
         appButton(
-          onTap: (){
+          onTap: () async {
+
             Get.toNamed(AppRoutes.otpVerificationRoute);
           },
           child:Text(
@@ -73,12 +79,11 @@ class LoginScreen extends GetView<LoginController> {
           style: TextStyle(
             color: const Color(0xFF004225),
             fontSize: 18,
-            fontFamily: 'TAN - SONGBIRD',
             fontWeight: FontWeight.w800,
             letterSpacing: 2,
           ),
-        ),),
-
+        ),).marginOnly(top: margin_15),
+        registerNow().marginOnly(top: margin_5),
       ],
     );
   }
@@ -105,4 +110,101 @@ class LoginScreen extends GetView<LoginController> {
       ),
     );
   }
+
+
+  Widget buildPhoneNumberField({
+    required TextEditingController textController,
+    required String? errorText,
+    required Function(String) onChanged,
+    required FocusNode focusNode,
+  }) {
+    return ValueListenableBuilder<String?>(
+      valueListenable: controller.errorTextNotifier,
+      builder: (BuildContext context, value, Widget? child) {
+        return  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF1D3B1D),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: focusNode.hasFocus ? Colors.yellow : Colors.yellow.shade700,
+                  width: 1.5,
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Row(
+                children: [
+                  const Icon(Icons.phone_android, color: Colors.white,size: 20,),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: textController,
+                      focusNode: focusNode,
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(color: Colors.white),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
+                      ],
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Your Mobile Number',
+                        hintStyle: TextStyle(color: Colors.white70),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                      onChanged: onChanged,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (value != null && value.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 6, left: 12),
+                child: Text(
+                  value,
+                  style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget registerNow(){
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(AppRoutes.signupRoute);
+      },
+      child: const Text.rich(
+        TextSpan(
+          children: [
+        TextSpan(
+        text: 'Dont registered Yet ? ',
+        style: TextStyle(
+        color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      TextSpan(
+        text: 'Registered Now',
+        style: TextStyle(
+          color: const Color(0xFFFF4E4E),
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      ],
+          ),
+          textAlign: TextAlign.center,
+          ),
+    );
+  }
+
 }

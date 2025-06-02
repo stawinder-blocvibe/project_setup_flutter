@@ -48,8 +48,8 @@ class CountryPicker extends StatelessWidget {
           ),
           keyboardType: TextInputType.number,
           validator: (data) => Validator.validatePhoneNumber(
-              mobileNumberTextController?.text ?? data.toString(),
-              selectedCountry),
+              value:mobileNumberTextController?.text ?? data.toString(),
+              selectedCountry: selectedCountry),
           initialCountryCode: selectedCountry?.code,
           invalidNumberMessage: keyInvalidMobileNumber.tr,
           dropdownTextStyle: textStyleHeadlineSmall()

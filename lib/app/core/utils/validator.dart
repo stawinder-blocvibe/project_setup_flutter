@@ -61,7 +61,7 @@ class Validator {
     return null;
   }
 
-  static String? validatePhoneNumber(String value, Country? selectedCountry) {
+  static String? validatePhoneNumber({required String value, Country? selectedCountry}) {
     if (value == '') {
       return keyPhoneEmEmpty.tr;
     } else if (selectedCountry != null) {

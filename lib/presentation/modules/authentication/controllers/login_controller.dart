@@ -6,8 +6,8 @@
  * the property of ToXSL Technologies Pvt. Ltd. and its partners.
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../app/export.dart';
@@ -136,7 +136,7 @@ class LoginController extends GetxController {
   }
 
   loginUser() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+    // String? token = await FirebaseMessaging.instance.getToken();
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     AndroidDeviceInfo androidDeviceInfo = await deviceInfoPlugin.androidInfo;
     Map<String, dynamic> data = AuthRequestModel.loginRequestModel(
@@ -144,7 +144,7 @@ class LoginController extends GetxController {
         // id: localStorage.read(PreferenceManger.roleId) == roleCustomer ? merchantIdTextController.text.trim() : riderIdTextController.text.trim(),
         deviceType: repository.deviceType,
         deviceName: repository.deviceName,
-        deviceToken: token, //repository.deviceID,
+        // deviceToken: token, //repository.deviceID,
         countryCode: selectedCountry?.value.dialCode.contains("+") == true
             ? selectedCountry?.value.dialCode
             : "+${selectedCountry?.value.dialCode}",
@@ -258,7 +258,7 @@ class LoginController extends GetxController {
 
   Future signInWithGoogle() async {
     try {
-      var token = await FirebaseMessaging.instance.getToken();
+      var token = "dfdfdfd";//await FirebaseMessaging.instance.getToken();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         debugPrint("Google sign-in failed: user is null");
@@ -272,10 +272,11 @@ class LoginController extends GetxController {
       }
 
       // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken!,
-        idToken: googleAuth.idToken!,
-      );
+      final credential = "";
+      // GoogleAuthProvider.credential(
+      //   accessToken: googleAuth.accessToken!,
+      //   idToken: googleAuth.idToken!,
+      // );
 
       debugPrint("Google User Info:");
       debugPrint("Token: ${googleAuth.idToken!}");
@@ -288,7 +289,7 @@ class LoginController extends GetxController {
       DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
       AndroidDeviceInfo androidDeviceInfo = await deviceInfoPlugin.androidInfo;
 
-      await FirebaseAuth.instance
+     /* await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((value) {
         debugPrint('Successfully signed in: $value');
@@ -352,7 +353,7 @@ class LoginController extends GetxController {
           // showInSnackBar(message: error.toString());
           customLoader.hide();
         });
-      }).whenComplete(() {});
+      }).whenComplete(() {});*/
     } catch (error) {
       debugPrint("Error during sign-in: $error");
       googleSignIn.signOut();
@@ -373,5 +374,31 @@ class LoginController extends GetxController {
       await logInGoogle();
       debugPrint("No user is signed in.");
     }*/
+  }
+
+
+
+
+
+
+  /////
+
+   final ValueNotifier<String?> errorTextNotifier = ValueNotifier(null);
+
+  void validatePhoneNumber() {
+    final text = mobileNumberTextController.text.trim();
+
+    if (text.isEmpty) {
+      errorTextNotifier.value = 'Phone number is required';
+    } else if (!RegExp(r'^\d{10}$').hasMatch(text)) {
+      errorTextNotifier.value = 'Enter a valid 10-digit number';
+    } else {
+      errorTextNotifier.value = null; // Valid
+    }
+  }
+
+  void dispose() {
+    mobileNumberTextController.dispose();
+    errorTextNotifier.dispose();
   }
 }

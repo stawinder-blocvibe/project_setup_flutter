@@ -1,13 +1,13 @@
 import 'package:base_project/app/export.dart';
 
 class OnBoardingWidget extends StatelessWidget {
-  final String title;
-  final String subTitle;
+  final String? title;
+  final String? subTitle;
 
   const OnBoardingWidget({
     Key? key,
-    required this.title,
-    required this.subTitle,
+      this.title,
+      this.subTitle,
 
   }) : super(key: key);
 
@@ -31,13 +31,10 @@ class OnBoardingWidget extends StatelessWidget {
     return Text(
       title??'Welcome back to Ball Street',
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style:   TextStyle(
         color: Colors.white,
-        fontSize: 16,
-        fontFamily: 'TAN - SONGBIRD',
-        fontWeight: FontWeight.w400,
-        height: 2.25,
-        letterSpacing: 1.60,
+        fontSize: font_20,
+        fontWeight: FontWeight.w600
       ),
     );
   }
@@ -48,10 +45,8 @@ class OnBoardingWidget extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Colors.white,
-        fontSize: 16,
-        fontFamily: 'Maleah',
+        fontSize: font_16,
         fontWeight: FontWeight.w700,
-        letterSpacing: 0.16,
       ),
     );
   }

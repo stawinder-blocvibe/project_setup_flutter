@@ -47,16 +47,16 @@ class TextFieldDialogWidget extends StatelessWidget {
   _textField() => TextFieldWidget(
         contentPadding: EdgeInsets.symmetric(horizontal: margin_15, vertical: margin_13),
         fillColor: Colors.white,
-        borderEnabled: true,
-        isBorderColor: true,
-        isShadow: false,
+        // borderEnabled: true,
+        // isBorderColor: true,
+        // isShadow: false,
         hint: textFieldHint,
         labelText: textFieldTitle,
         textController: textEditingController,
         maxLength: 80,
         inputType: TextInputType.name,
         inputAction: TextInputAction.next,
-        validate: (value) => Validator.fieldChecker(value: value, message: textFieldTitle),
+        validate: (value) => Validator.fieldChecker(value: value??"", message: textFieldTitle),
       ).paddingOnly(bottom: margin_15);
 
   Widget _dialogButton() {

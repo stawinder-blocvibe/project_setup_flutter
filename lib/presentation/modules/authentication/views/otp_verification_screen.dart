@@ -42,7 +42,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
           style: TextStyle(
             color: Colors.white,
             fontSize:35,
-            fontFamily: 'TAN - SONGBIRD',
+
             fontWeight: FontWeight.w400,
             height: 1.0,
             letterSpacing: 1.60,
@@ -56,7 +56,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontFamily: 'Maleah',
+
               fontWeight: FontWeight.w700,
             ),
           ),

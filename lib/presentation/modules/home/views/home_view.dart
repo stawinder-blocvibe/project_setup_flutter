@@ -138,7 +138,9 @@ class HomeScreen extends GetView<HomeController> {
           itemCount: controller.liveMatchesList.length,
           itemBuilder: (BuildContext context, int index, int realIndex) {
             return InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRoutes.matchScoreScreenRoute);
+              },
               child: _cardView(index),
             );
           },
@@ -452,7 +454,9 @@ class HomeScreen extends GetView<HomeController> {
         ),
         ListView.builder(
           itemBuilder: (context, index) {
-            return upcomingMatchCell();
+            return upcomingMatchCell( onTap: (){
+              Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+            });
           },
           itemCount: 5,
           shrinkWrap: true,
@@ -462,25 +466,28 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  upcomingMatchCell() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFFAF1),
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: greenButtonColor),
-      ),
-      child: Column(
-        spacing: 12,
-        children: [
+  upcomingMatchCell({onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFFAF1),
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(color: greenButtonColor),
+        ),
+        child: Column(
+          spacing: 12,
+          children: [
 
-          topWidget(isT20: false).marginOnly(top:margin_5 ),
+            topWidget(isT20: false).marginOnly(top:margin_5 ),
 
-          centerWidget(isT20: false),
-          SizedBox(height: height_10,)
-        ],
-      ),
-    ).marginOnly(bottom: margin_10);
+            centerWidget(isT20: false),
+            SizedBox(height: height_10,)
+          ],
+        ),
+      ).marginOnly(bottom: margin_10),
+    );
   }
 
   Widget dayTimingWidget(){

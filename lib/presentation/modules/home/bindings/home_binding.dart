@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
 import '../controllers/live_match_list_controller.dart';
+import '../controllers/match_score_controller.dart';
+import '../controllers/over_ball_selection_controller.dart';
 import '../controllers/upcoming_match_list_controller.dart';
 
 class HomeBinding extends Bindings {
@@ -10,6 +12,8 @@ class HomeBinding extends Bindings {
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<LiveMatchListController>(() => LiveMatchListController());
     Get.lazyPut<UpcomingMatchListController>(() => UpcomingMatchListController());
+    Get.lazyPut<MatchScoreController>(() => MatchScoreController());
+    Get.lazyPut<OverBallSelectionController>(() => OverBallSelectionController());
   }
 }
 
