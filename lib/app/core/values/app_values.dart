@@ -88,6 +88,7 @@ double margin_160 = 160.0.w;
 double margin_170 = 170.0.w;
 double margin_180 = 180.0.w;
 double margin_190 = 190.0.w;
+double margin_195 = 195.0.w;
 double margin_200 = 200.0.w;
 double margin_230 = 230.0.w;
 double margin_240 = 240.0.w;
@@ -96,6 +97,7 @@ double margin_250 = 250.0.w;
 double margin_260 = 260.0.w;
 double margin_270 = 270.0.w;
 double margin_280 = 280.0.w;
+double margin_300 = 300.0.w;
 
 /* ====================================================================== text width size ======================================================================*/
 

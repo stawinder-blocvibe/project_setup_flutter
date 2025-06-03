@@ -1,7 +1,7 @@
 
 import '../../../../app/export.dart';
 
-class OverBallSelectionController extends GetxController {
+class MatchDetailCategoryController extends GetxController {
 
   List<String> ballList= [
     "W",
@@ -26,9 +26,10 @@ class OverBallSelectionController extends GetxController {
     debugPrint("Selected Ball: $ballValue at index: $index");
   }
 
-
-
-
-
-
+  List<dynamic> keyboardListGrid = [
+    1,2,3,4,5,6,"WD","NB","BYE"
+  ];
+  List<dynamic> keyboardListList = [
+    "UNDO","5,7","OUT","LB"
+  ];
 }

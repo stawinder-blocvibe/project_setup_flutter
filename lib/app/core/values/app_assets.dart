@@ -22,6 +22,10 @@ const String dividerScoreBoardAsset = 'assets/icons/divider_score_board.png';
 const String overOverDefaultBgAsset = 'assets/icons/select_over_default.png';
 const String ballSelectionDefaultAsset = 'assets/icons/ball_selection_default.png';
 const String selectedBallAsset = 'assets/icons/selected_ball.png';
+const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
+ const String viewFullScoreBoardBgAsset = 'assets/icons/view_full_score_board_bg.png';
+ const String greenBgWithBorderAsset = 'assets/icons/breen_bg_with_shaddow_border.png';
+ const String dividerDottedAsset = 'assets/icons/divider_dotted.png';
 
 
 

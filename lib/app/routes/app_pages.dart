@@ -14,6 +14,7 @@ import '../../presentation/modules/authentication/views/otp_verification_screen.
 import '../../presentation/modules/authentication/views/register_screen.dart';
 import '../../presentation/modules/home/controllers/match_score_controller.dart';
 import '../../presentation/modules/home/views/live_matches_screen.dart';
+import '../../presentation/modules/home/views/match_detail_category_screen.dart';
 import '../../presentation/modules/home/views/over_ball_selection_screen.dart';
 import '../../presentation/modules/home/views/upcoming_matches_screen.dart';
 import '../../presentation/modules/splash/bindings/on_boarding_binding.dart';
@@ -81,6 +82,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.matchScoreScreenRoute,
       page: () => MatchScoreScreen(),
+      bindings: [HomeBinding()],
+    ),
+
+    GetPage(
+      name: AppRoutes.matchDetailCategoryScreenRoute,
+      page: () => MatchDetailCategoryScreen(),
       bindings: [HomeBinding()],
     ),
 

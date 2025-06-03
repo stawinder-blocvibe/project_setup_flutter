@@ -82,6 +82,7 @@ class HomeScreen extends GetView<HomeController> {
             GestureDetector(
               onTap: (){
                 Get.toNamed(AppRoutes.liveMatchesScreenRoute);
+
               },
               child: Row(
                 spacing: 4,
@@ -139,7 +140,8 @@ class HomeScreen extends GetView<HomeController> {
           itemBuilder: (BuildContext context, int index, int realIndex) {
             return InkWell(
               onTap: () {
-                Get.toNamed(AppRoutes.matchScoreScreenRoute);
+                // Get.toNamed(AppRoutes.matchScoreScreenRoute);
+                Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute);
               },
               child: _cardView(index),
             );

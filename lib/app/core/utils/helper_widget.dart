@@ -126,4 +126,82 @@ Widget appBarWithWallet({ bool onlyWallet = false}){
       ],
     ),
   );
+
+}
+Widget cricketCategoryCard({title,subTitle,description,margin,onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      margin: margin??const EdgeInsets.all(16),
+
+      decoration: BoxDecoration(
+        color: const Color(0xFFE7F0E9),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.green.shade700),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+
+          Row(
+
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Left Text Column
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:  [
+                    Text(
+                      title??'Har Over Crorepati',
+                      style: const TextStyle(
+                        fontSize: 19 ,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0E3E25),
+                      ),
+                    ).marginOnly(top: margin_10),
+                    const  SizedBox(height: 8),
+                    Text(
+                      maxLines: 3,
+                      subTitle??'Lorem ipsum is a dummy or placeholder text commonly used. lorem ipsum is a dummy or placeholder text commonly used.',
+                      style: const TextStyle(
+
+                        fontSize: 14,
+                        color: Color(0xFF0E3E25),
+                      ),
+                    ).marginOnly(bottom: margin_7),
+                  ],
+                ),
+              ),
+
+               AssetImageWidget(ballBullWicketAsset,imageHeight: height_70,imageWidth: height_60,)
+            ],
+          ).marginOnly(left: 16.r),
+
+          // Bottom banner
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF275D3B),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12.r),
+                bottomRight: Radius.circular(12.r),
+              ),
+            ),
+            child:  Center(
+              child: Text(
+                description??'Lorem ipsum is a dummy or placeholder',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: font_13,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }
