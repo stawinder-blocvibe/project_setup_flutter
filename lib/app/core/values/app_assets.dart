@@ -26,6 +26,9 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String viewFullScoreBoardBgAsset = 'assets/icons/view_full_score_board_bg.png';
  const String greenBgWithBorderAsset = 'assets/icons/breen_bg_with_shaddow_border.png';
  const String dividerDottedAsset = 'assets/icons/divider_dotted.png';
+ const String firstPrizeAsset = 'assets/icons/first_prize.png';
+ const String loaderPngAsset = 'assets/icons/loaderPng.png';
+ const String trophyOutlineAsset = 'assets/icons/trophy_outline.png';
 
 
 

@@ -205,3 +205,262 @@ Widget cricketCategoryCard({title,subTitle,description,margin,onTap}) {
     ),
   );
 }
+Widget trophyLogoWidget({height, width}) {
+  return AssetImageWidget(greenCupTrophy, imageHeight: height ?? height_100,
+    imageWidth: width ?? height_100,);
+}
+
+Widget contestCellWidget(){
+  return  Container(
+    decoration: ShapeDecoration(
+      gradient: LinearGradient(
+        begin: Alignment(0.00, 0.50),
+        end: Alignment(1.00, 0.50),
+        colors: [Colors.white, const Color(0xFFECFFEB)],
+      ),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          width: 0.50,
+          color: const Color(0xFF14A56E),
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+    child: Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        Positioned(
+            child: trophyLogoWidget(height: height_100,width: height_150)),
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    Text(
+                      'Prize Pool',
+                      style: TextStyle(
+                        color: const Color(0xFF003921),
+                        fontSize: 10,
+                        fontFamily: 'Afacad',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '5 Lakhs',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: const Color(0xFF003921),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ).marginOnly(bottom: margin_15),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF003921),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                  child:   Text(
+                    '49',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                leftPart(),
+                rightPart()
+              ],
+            ),
+
+
+          ],
+        ).paddingAll( margin_20),
+      ],
+    ),
+  );
+
+
+}
+Widget leftPart(){
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    spacing: 6,
+    children: [
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 6,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 10,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  Text(
+                    '1 Left',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: const Color(0xFFFF4242),
+                      fontSize: 12,
+                      fontFamily: 'Afacad',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Opacity(
+                    opacity: 0.60,
+                    child: Container(
+                      width: 1,
+                      height: 8,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFBFBFBF),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 10,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  Text(
+                    '2 Spots',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: const Color(0xFF003921),
+                      fontSize: 12,
+                      fontFamily: 'Afacad',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      Container(
+        width: Get.width *0.3,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 83,
+              height: 2,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFFF4242),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 2,
+                decoration: ShapeDecoration(
+                  color: const Color(0x7FFF4242),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+Widget rightPart(){
+  return Row(
+    mainAxisSize: MainAxisSize.max,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    spacing: width_8,
+    children: [
+
+      AssetImageWidget(firstPrizeAsset,imageHeight: height_15),
+      const Text(
+        'Lakhs',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: const Color(0xFF003921),
+          fontSize: 10,
+          fontFamily: 'Afacad',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      AssetImageWidget(trophyOutlineAsset,imageHeight: height_15),
+      const Text(
+        '50%',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: const Color(0xFF003921),
+          fontSize: 10,
+          fontFamily: 'Afacad',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      AssetImageWidget(loaderPngAsset,imageHeight: height_15,),
+      const Text(
+        '40',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: const Color(0xFF003921),
+          fontSize: 10,
+          fontFamily: 'Afacad',
+          fontWeight: FontWeight.w500,
+        ),
+      )
+    ],
+  );
+}

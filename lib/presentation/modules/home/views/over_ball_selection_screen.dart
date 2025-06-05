@@ -773,7 +773,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
         Get.back();
       },
           onJoin: (){
-            // Get.back();
+            Get.back();
             showDialog(
               context: Get.context!,
               barrierDismissible: true,
@@ -781,6 +781,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                 backgroundColor: Colors.transparent,
                 child: transactionSuccessTicketDialog((){
                   Get.back();
+                  Get.toNamed(AppRoutes.contestListScreenRoute);
                 }),
               ),
             );

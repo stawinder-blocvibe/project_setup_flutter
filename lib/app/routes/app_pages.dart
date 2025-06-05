@@ -13,6 +13,7 @@ import '../../presentation/modules/authentication/views/login_screen.dart';
 import '../../presentation/modules/authentication/views/otp_verification_screen.dart';
 import '../../presentation/modules/authentication/views/register_screen.dart';
 import '../../presentation/modules/home/controllers/match_score_controller.dart';
+import '../../presentation/modules/home/views/contest_list_screen.dart';
 import '../../presentation/modules/home/views/live_matches_screen.dart';
 import '../../presentation/modules/home/views/match_detail_category_screen.dart';
 import '../../presentation/modules/home/views/over_ball_selection_screen.dart';
@@ -76,6 +77,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.overBallSelectionScreenRoute,
       page: () => OverBallSelectionScreen(),
+      bindings: [HomeBinding()],
+    ),
+
+
+    GetPage(
+      name: AppRoutes.contestListScreenRoute,
+      page: () => ContestListScreen(),
       bindings: [HomeBinding()],
     ),
 

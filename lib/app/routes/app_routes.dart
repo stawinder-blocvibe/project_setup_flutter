@@ -12,6 +12,7 @@ abstract class AppRoutes {
   static const loginRoute = '/loginRoute';
   static const signupRoute = '/signupRoute';
   static const matchDetailCategoryScreenRoute = '/matchDetailCategoryScreenRoute';
+  static const contestListScreenRoute = '/contestListScreenRoute';
 
   static const otpVerificationRoute = '/otpVerificationRoute';
   static const forgotPasswordOption = '/forgotPasswordOption';

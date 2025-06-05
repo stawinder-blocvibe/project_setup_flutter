@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../controllers/contest_list_screen_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/live_match_list_controller.dart';
 import '../controllers/match_detail_category_controller.dart';
@@ -16,6 +17,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut<MatchScoreController>(() => MatchScoreController());
     Get.lazyPut<OverBallSelectionController>(() => OverBallSelectionController());
     Get.lazyPut<MatchDetailCategoryController>(() => MatchDetailCategoryController());
+    Get.lazyPut<ContestListScreenController>(() => ContestListScreenController());
   }
 }
 
