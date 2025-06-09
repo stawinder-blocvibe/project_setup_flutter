@@ -1,4 +1,4 @@
-import 'package:video_thumbnail/video_thumbnail.dart';
+// import 'package:video_thumbnail/video_thumbnail.dart';
 
 
 import '../../../../../app/export.dart';
@@ -46,15 +46,15 @@ class MediaFile {
   generateThumbnail() async {
     try {
       isLoadingThumbNail.value = true;
-      final thumbFile = await VideoThumbnail.thumbnailFile(
-        video: _filePathUrl ?? _localFilePath ?? '',
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.JPEG,
-        quality: 100,
-      );
-      if (thumbFile != null) thumbnail.value = thumbFile;
-      debugPrint(keyChooseVideo.tr + thumbnail.toString());
-      isLoadingThumbNail.value = false;
+      // final thumbFile = await VideoThumbnail.thumbnailFile(
+      //   video: _filePathUrl ?? _localFilePath ?? '',
+      //   thumbnailPath: (await getTemporaryDirectory()).path,
+      //   imageFormat: ImageFormat.JPEG,
+      //   quality: 100,
+      // );
+      // if (thumbFile != null) thumbnail.value = thumbFile;
+      // debugPrint(keyChooseVideo.tr + thumbnail.toString());
+      // isLoadingThumbNail.value = false;
     } catch (_) {
       isLoadingThumbNail.value = false;
     }

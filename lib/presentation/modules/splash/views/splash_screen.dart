@@ -10,7 +10,7 @@ class SplashScreen extends GetView<SplashController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: AssetImageWidget(splashScreen,imageHeight: Get.height,imageWidth: Get.width,),
+      body: AssetImageWidget(splashScreen,imageHeight: Get.height,imageWidth: Get.width,imageFitType: BoxFit.cover,),
     );
   }
 }

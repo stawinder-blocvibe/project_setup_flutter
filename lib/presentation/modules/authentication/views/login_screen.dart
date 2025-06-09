@@ -22,11 +22,11 @@ class LoginScreen extends GetView<LoginController> {
         },
         child: Scaffold(
           backgroundColor: Colors.white,
-
+          resizeToAvoidBottomInset: false,
           body: Stack(
             alignment: Alignment.center,
             children: [
-              AssetImageWidget(stadiumBullBall,imageWidth: Get.width,imageHeight: Get.height,),
+              AssetImageWidget(stadiumBullBall,imageWidth: Get.width,imageHeight: Get.height,imageFitType: BoxFit.cover,),
               Positioned(
                   top: height_30,
                   child: AssetImageWidget(ballStreetLogo,imageWidth: Get.width*0.7,imageHeight: Get.height*0.15).marginOnly(top: height_50)),

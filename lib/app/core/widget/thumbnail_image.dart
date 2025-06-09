@@ -1,6 +1,6 @@
 
 
-import 'package:video_thumbnail/video_thumbnail.dart';
+// import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../export.dart';
 
@@ -61,35 +61,36 @@ class _ThumbnailImageState extends State<ThumbnailImage> {
   Future? future;
 
   Future<String?> getThumbnailFromVideo() async {
-    if (Platform.isAndroid) {
-      try {
-        var url = await VideoThumbnail.thumbnailFile(
-          video: widget.videoUrl!,
-          imageFormat: ImageFormat.PNG,
-          quality: 100,
-          thumbnailPath: (await getTemporaryDirectory()).path,
-        );
-        debugPrint("video Url image$url");
-        return url;
-      } on Exception catch (e) {
-        throw "Error : $e";
-      }
-    } else {
-      try {
-        var path = (await getTemporaryDirectory()).path;
-        var fileName = widget.fileName?.split(".")[0];
-        var url = await VideoThumbnail.thumbnailFile(
-          video: widget.videoUrl!,
-          imageFormat: ImageFormat.PNG,
-          quality: 100,
-          thumbnailPath: '$path/$fileName.png',
-        );
-        debugPrint("video Url image$url");
-        return url;
-      } on Exception catch (e) {
-        throw "Error : $e";
-      }
-    }
+    // if (Platform.isAndroid) {
+    //   try {
+    //     var url = await VideoThumbnail.thumbnailFile(
+    //       video: widget.videoUrl!,
+    //       imageFormat: ImageFormat.PNG,
+    //       quality: 100,
+    //       thumbnailPath: (await getTemporaryDirectory()).path,
+    //     );
+    //     debugPrint("video Url image$url");
+    //     return url;
+    //   } on Exception catch (e) {
+    //     throw "Error : $e";
+    //   }
+    // }
+    // else {
+    //   try {
+    //     var path = (await getTemporaryDirectory()).path;
+    //     var fileName = widget.fileName?.split(".")[0];
+    //     var url = await VideoThumbnail.thumbnailFile(
+    //       video: widget.videoUrl!,
+    //       imageFormat: ImageFormat.PNG,
+    //       quality: 100,
+    //       thumbnailPath: '$path/$fileName.png',
+    //     );
+    //     debugPrint("video Url image$url");
+    //     return url;
+    //   } on Exception catch (e) {
+    //     throw "Error : $e";
+    //   }
+    // }
   }
 
   @override

@@ -11,7 +11,7 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
         body: Stack(
           alignment: Alignment.center,
           children: [
-            AssetImageWidget(onboardingScreenBackground, imageWidth: Get.width, imageHeight: Get.height),
+            AssetImageWidget(onboardingScreenBackground, imageWidth: Get.width, imageHeight: Get.height,imageFitType: BoxFit.cover,),
             Column(
               children: [
 
