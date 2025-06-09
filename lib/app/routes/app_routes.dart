@@ -1,5 +1,3 @@
-
-
 abstract class AppRoutes {
   static const splashRoute = '/splashRoute';
   static const onBoardingRoute = '/onBoardingRoute';
@@ -34,6 +32,8 @@ abstract class AppRoutes {
   static const addBankAccountRoute = '/addBankAccountRoute';
   static const ratingReviewRoute = '/ratingReviewRoute';
   static const referralRoute = '/referralRoute';
+  static const leaderboardWinningResultScreenRoute = '/leaderboardWinningResultScreenRoute';
+
 
   /*----------------restaurant----------------*/
   static const restaurantMainRoute = '/restaurantMainRoute';
@@ -161,6 +161,5 @@ abstract class AppRoutes {
   static const trackOrderScreen = "/trackOrderScreen";
   static const aboutUsMobileView = "/aboutUsMobileView";
   static const supportChatScreen = '/supportChatScreen';
-
 
 }

@@ -29,6 +29,8 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String firstPrizeAsset = 'assets/icons/first_prize.png';
  const String loaderPngAsset = 'assets/icons/loaderPng.png';
  const String trophyOutlineAsset = 'assets/icons/trophy_outline.png';
+ const String bullWicketPitchBallAsset = 'assets/icons/bull_wicket_pitch_ball.png';
+ const String stadiumBgAsset = 'assets/icons/stadium_bg.png';
 
 
 

@@ -373,39 +373,7 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  ballList() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: controller.ballList
-            .map((name) => Container(
-                  margin: EdgeInsets.only(right: margin_4),
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  decoration: ShapeDecoration(
-                    color: const Color(0x19FFCB00),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 0.30,
-                        color: const Color(0xFFD27D08),
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: Text(
-                    name,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontFamily: 'Poltawski Nowy',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ))
-            .toList(),
-      ),
-    );
-  }
+
 
   Widget upComingMatches() {
     return Column(
@@ -468,58 +436,8 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  upcomingMatchCell({onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFFEFFAF1),
-          borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(color: greenButtonColor),
-        ),
-        child: Column(
-          spacing: 12,
-          children: [
 
-            topWidget(isT20: false).marginOnly(top:margin_5 ),
 
-            centerWidget(isT20: false),
-            SizedBox(height: height_10,)
-          ],
-        ),
-      ).marginOnly(bottom: margin_10),
-    );
-  }
 
-  Widget dayTimingWidget(){
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'Tomorrow',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withValues(alpha: 153),
-            fontSize: 14,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          '12:00 PM',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withValues(alpha: 153),
-            fontSize: 14,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    );
-  }
 }
 

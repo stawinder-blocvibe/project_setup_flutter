@@ -210,97 +210,100 @@ Widget trophyLogoWidget({height, width}) {
     imageWidth: width ?? height_100,);
 }
 
-Widget contestCellWidget(){
-  return  Container(
-    decoration: ShapeDecoration(
-      gradient: LinearGradient(
-        begin: Alignment(0.00, 0.50),
-        end: Alignment(1.00, 0.50),
-        colors: [Colors.white, const Color(0xFFECFFEB)],
-      ),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          width: 0.50,
-          color: const Color(0xFF14A56E),
+Widget contestCellWidget({onTap}){
+  return  GestureDetector(
+      onTap:onTap,
+    child: Container(
+      decoration: ShapeDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(0.00, 0.50),
+          end: Alignment(1.00, 0.50),
+          colors: [Colors.white, const Color(0xFFECFFEB)],
         ),
-        borderRadius: BorderRadius.circular(12),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 0.50,
+            color: const Color(0xFF14A56E),
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
-    ),
-    child: Stack(
-      alignment: Alignment.bottomRight,
-      children: [
-        Positioned(
-            child: trophyLogoWidget(height: height_100,width: height_150)),
-        Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8,
-                  children: [
-                    Text(
-                      'Prize Pool',
-                      style: TextStyle(
-                        color: const Color(0xFF003921),
-                        fontSize: 10,
-                        fontFamily: 'Afacad',
-                        fontWeight: FontWeight.w500,
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          Positioned(
+              child: trophyLogoWidget(height: height_100,width: height_150)),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 8,
+                    children: [
+                      Text(
+                        'Prize Pool',
+                        style: TextStyle(
+                          color: const Color(0xFF003921),
+                          fontSize: 10,
+                          fontFamily: 'Afacad',
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      Text(
+                        '5 Lakhs',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: const Color(0xFF003921),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ).marginOnly(bottom: margin_15),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFF003921),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     ),
-                    Text(
-                      '5 Lakhs',
+                    child:   Text(
+                      '49',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: const Color(0xFF003921),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ],
-                ).marginOnly(bottom: margin_15),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF003921),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                  ),
-                  child:   Text(
-                    '49',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                )
-              ],
-            ),
+                  )
+                ],
+              ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                leftPart(),
-                rightPart()
-              ],
-            ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  leftPart(),
+                  rightPart()
+                ],
+              ),
 
 
-          ],
-        ).paddingAll( margin_20),
-      ],
+            ],
+          ).paddingAll( margin_20),
+        ],
+      ),
     ),
   );
 
 
 }
-Widget leftPart(){
+Widget leftPart({rangeDividerWidth}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,7 +384,7 @@ Widget leftPart(){
         ],
       ),
       Container(
-        width: Get.width *0.3,
+        width: rangeDividerWidth??Get.width *0.3,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -462,5 +465,276 @@ Widget rightPart(){
         ),
       )
     ],
+  );
+}
+
+ Widget upcomingMatchCell({onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFFAF1),
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: greenButtonColor),
+      ),
+      child: Column(
+        spacing: 12,
+        children: [
+
+          topWidget(isT20: false).marginOnly(top:margin_5 ),
+
+          centerWidget(isT20: false),
+          SizedBox(height: height_10,)
+        ],
+      ),
+    ).marginOnly(bottom: margin_10),
+  );
+}
+Widget topWidget({isT20 = true}) {
+  return Row(
+    mainAxisSize: MainAxisSize.max,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Container(
+        height: 20,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        alignment: Alignment.center,
+        decoration:   ShapeDecoration(
+          color: isT20?const Color(0xFFDD2727): const Color(0xFFFFD359),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(4),
+              bottomRight: Radius.circular(4),
+            ),
+          ),
+        ),
+        child: Text(
+          'T20',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontFamily:fontFamily,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      Text(
+        'TATA IPL,',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: const Color(0xFF004225),
+          fontSize: 14,
+          fontFamily: 'Maleah',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      Text(
+        'Qualifier 1',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black.withOpacity(0.6),
+          fontSize: 13,
+          fontFamily: 'Maleah',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      Text(
+        'Maharaja yadavindra...',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black.withOpacity(0.6),
+          fontSize: 13,
+          fontFamily: 'Maleah',
+          fontWeight: FontWeight.w700,
+        ),
+      ).marginOnly(right: margin_10),
+    ],
+  ).marginOnly(top: margin_10);
+}
+
+centerWidget({isT20 = true}) {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    spacing: 25,
+    children: [
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          NetworkImageWidget(
+            imageUrl: "",
+            imageHeight: height_40,
+            imageWidth: height_40,
+            placeHolder: punjabPlaceHolderAsset,
+            // radiusAll: 50.r,
+          ),
+          SizedBox(width: 6),
+          Text(
+            'PUN',
+            style: TextStyle(
+              color: const Color(0xFF004225),
+              fontSize: 12,
+              fontFamily: 'TAN - SONGBIRD',
+              fontWeight: FontWeight.w600,
+              height: 3,
+              letterSpacing: 1.20,
+            ),
+          ),
+        ],
+      ),
+
+      isT20?
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Vs',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 20,
+              fontFamily: 'Maleah',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ):dayTimingWidget(),
+
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'CSK',
+            style: TextStyle(
+              color: const Color(0xFF004225),
+              fontSize: 12,
+              fontFamily: 'TAN - SONGBIRD',
+              fontWeight: FontWeight.w600,
+              height: 3,
+              letterSpacing: 1.20,
+            ),
+          ),
+          SizedBox(width: 6),
+          NetworkImageWidget(
+            imageUrl: "",
+            imageHeight: height_40,
+            imageWidth: height_40,
+            placeHolder: cskPlaceHolderAsset,
+            // radiusAll: 50.r,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget bottomWidget() {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+    decoration: BoxDecoration(
+      color: appGreen,
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
+      ),
+    ),
+    child: Row(
+      spacing: 10,
+      children: [
+        Text(
+          'PUN -120/3',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: const Color(0xFFF8FFF8),
+            fontSize: 12,
+            fontFamily:fontFamily,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Container(width: 1, color: Colors.white, height: height_12),
+
+        ballList(),
+      ],
+    ),
+  );
+}
+Widget dayTimingWidget(){
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text(
+        'Tomorrow',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black.withValues(alpha: 153),
+          fontSize: 14,
+          fontFamily: 'Maleah',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      Text(
+        '12:00 PM',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black.withValues(alpha: 153),
+          fontSize: 14,
+          fontFamily: 'Maleah',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ],
+  );
+}
+ballList() {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: [
+        "W",
+        "6",
+        "4",
+        "6",
+        "NB",
+        "0","NB",
+        "0",
+      ]
+          .map((name) => Container(
+        margin: EdgeInsets.only(right: margin_4),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: ShapeDecoration(
+          color: const Color(0x19FFCB00),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 0.30,
+              color: const Color(0xFFD27D08),
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        child: Text(
+          name,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontFamily: 'Poltawski Nowy',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ))
+          .toList(),
+    ),
   );
 }

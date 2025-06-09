@@ -228,7 +228,9 @@ class ContestListScreen extends GetView<ContestListScreenController> {
         children: [
           contestTextWidget(),
           Column(
-            children: List.generate(10, (e)=>contestCellWidget().marginOnly(bottom: margin_10)),
+            children: List.generate(10, (e)=>contestCellWidget(onTap: (){
+              Get.toNamed(AppRoutes.leaderboardWinningResultScreenRoute);
+            }).marginOnly(bottom: margin_10)),
           )
         ],
       ).marginOnly(top: margin_230),
@@ -307,35 +309,7 @@ class ContestListScreen extends GetView<ContestListScreenController> {
   }
 
 
-// Function to create a dynamic GridView with 7 items per row
-  Widget overGridWidget({required List<String> items}) {
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      crossAxisCount: 7,
-      // 7 items per row
-      shrinkWrap: true,
-      // Makes height dynamic
-      physics: const NeverScrollableScrollPhysics(),
-      // Disables scrolling
-      crossAxisSpacing: 8,
-      // Space between columns
-      mainAxisSpacing: 8,
-      // Space between rows
-      children: List.generate(items.length, (index) {
-        return bgDefaultOver(data: "${index + 1}") ?? Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.green[700],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            items[index],
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
-        );
-      }),
-    );
-  }
+
 
   contestTextWidget() {
     return Text(
