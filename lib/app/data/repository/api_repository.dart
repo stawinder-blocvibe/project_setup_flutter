@@ -140,4 +140,207 @@ class APIRepository {
     }
   }
 
+
+
+
+
+  /// New Api Calls
+
+  Future sendOtpApi({phone}) async {
+
+    try {
+      final response = await dioClient!.post(
+          sendOtpEndPoint,
+          data: {
+            "phone": phone
+          },
+      );
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, sendOtpEndPoint));
+    }
+  }
+
+  Future verifyOtpApi({phone,otp}) async {
+    try {
+      final response = await dioClient!.post(
+          verifyOtpEndPoint,
+          data: {
+            "phone": phone,
+            "otp": otp
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, verifyOtpEndPoint));
+    }
+  }
+
+  Future completeTransactionApi({userId,amount,type,gatewayTransectionId}) async {
+    try {
+      final response = await dioClient!.post(
+          addPaymentEndPoint,
+          data: {
+            "userId": userId,
+            "amount": amount,
+            "type": type,
+            // "matchId": matchId,
+            "gatewayTransectionId": gatewayTransectionId,
+            // "poolId": poolId,
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, addPaymentEndPoint));
+    }
+  }
+  Future joinPoolApi({userId,poolId,matchId}) async {
+    try {
+      final response = await dioClient!.post(
+          joinPoolEndPoint,
+          data: {
+            "userId": userId??"68455ea965ad4b0de2683243",
+            "poolId": poolId??"12517",
+            "matchId": matchId??"68457bcc25a67b5e80a8d8f6"
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, joinPoolEndPoint));
+    }
+  }
+
+
+  /// to heavy payload
+  Future saveUserPredictionApi({userId,poolId,matchId}) async {
+    try {
+      final response = await dioClient!.post(
+          saveUserPredictionEndPoint,
+          data: {
+            "userId": userId??"68455ea965ad4b0de2683243",
+            "poolId": poolId??"12517",
+            "matchId": matchId??"68457bcc25a67b5e80a8d8f6"
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, saveUserPredictionEndPoint));
+    }
+  }
+
+  Future homeScreenApi() async {
+    try {
+      final response = await dioClient!.get(
+          homeEndPoint,
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, homeEndPoint));
+    }
+  }
+
+  Future poolDetailApi({matchId}) async {
+    try {
+      final response = await dioClient!.get(
+          poolDetailsPoint,
+          queryParameters: {
+            "matchId":matchId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, poolDetailsPoint));
+    }
+  }
+
+  Future walletDetailApi({userId}) async {
+    try {
+      final response = await dioClient!.get(
+          walletDetailsPoint,
+          queryParameters: {
+            "userId":userId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, walletDetailsPoint));
+    }
+  }
+
+  Future transactionDetailApi({userId}) async {
+    try {
+      final response = await dioClient!.get(
+          userTransactionEndPoint,
+          queryParameters: {
+            "userId":userId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, walletDetailsPoint));
+    }
+  }
+  Future allPredictionApi({userId}) async {
+    try {
+      final response = await dioClient!.get(
+          allPredictionEndPoint,
+          queryParameters: {
+            "userId":userId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, allPredictionEndPoint));
+    }
+  }
+
+  Future getUsersMatchPredictionApi({userId,matchId,poolId}) async {
+    try {
+      final response = await dioClient!.get(
+          getUsersMatchPredictionEndPoint,
+          queryParameters: {
+            "userId":userId,
+            "matchId":matchId,
+            "poolId":poolId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, getUsersMatchPredictionEndPoint));
+    }
+  }
+
 }

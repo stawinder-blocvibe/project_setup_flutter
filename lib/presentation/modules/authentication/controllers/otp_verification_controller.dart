@@ -45,16 +45,9 @@ class OtpVerificationController extends GetxController {
   }
 
   getArguments() {
-    if (Get.arguments != null) {
-      isFromLogin = Get.arguments[argIsFromLogin] ?? false;
-      debugPrint('isFromLogin${isFromLogin}');
-      fromForgetPassword = Get.arguments[fromForgetPasswordKey] ?? false;
-      phone = Get.arguments[phoneKey] != null ? Get.arguments[phoneKey] : "";
-      email = Get.arguments[emailKey] != null ? Get.arguments[emailKey] : "";
-      countryDialCode = Get.arguments[countryDialCodeekey] != null
-          ? Get.arguments[countryDialCodeekey]
-          : "";
-      debugPrint(countryDialCode);
+    var args =  Get.arguments;
+    if(args!=null && args['phone']!=null){
+      phone = args['phone'];
     }
   }
 
@@ -96,67 +89,8 @@ class OtpVerificationController extends GetxController {
   }
 
   verification() {
-    Map<String, dynamic> data = AuthRequestModel.verifyOtpRequestModel(
-        otp: otpTextController.text.trim(),
-        contactNo: userData.contactNo ?? phone ?? null,
-        email: email ?? null,
-        countryCode: userData.countryCode?.toString().replaceFirst("++", "+") ??
-            "$countryDialCode" ??
-            null);
+    onSubmitTap(otp: otpTextController.text);
 
-    debugPrint('data--->${data.toString()}');
-    APIRepository().verifyOtp(data).then((value) {
-      if (value != null) {
-        currentUserDataModel.value = value;
-        if (fromForgetPassword) {
-          Get.toNamed(AppRoutes.changePasswordRoute, arguments: {
-            fromForgetPasswordKey: true,
-            phoneKey: phone,
-            emailKey: email,
-            countryDialCodeekey:
-                countryDialCode.toString().replaceFirst("++", "+")
-          });
-        } else {
-          Get.offAllNamed(
-            AppRoutes.customerProfileSetup,
-            arguments: {
-              "fromOtp": true,
-              "contact_no":
-                  currentUserDataModel.value.detail?.contactNo.toString(),
-              "country_code": currentUserDataModel.value.detail?.countryCode
-                  .toString()
-                  .replaceFirst("++", "+"),
-            },
-          );
-        }
-        showInSnackBar(message: currentUserDataModel.value.message.toString());
-        /*else if (userResponseModel.detail?.roleId.toString() == roleCustomer.toString() && userResponseModel.detail?.otpVerify == 1) {
-          preferenceManger.saveAuthToken(userResponseModel.token ?? "");
-          preferenceManger.saveRole(userResponseModel.detail?.roleId ?? 0);
-          preferenceManger.saveRegisterData(userResponseModel.detail);
-
-          Get.offAllNamed(AppRoutes.customerMainScreen);
-          showInSnackBar(message: keySignupSuccessful.tr);
-        }*/
-        // else if (userResponseModel.detail?.roleId.toString() == roleDriver.toString() && userResponseModel.detail?.isDefault == 0) {
-        //   saveData(userResponseModel);
-        //   Get.offAllNamed(AppRoutes.driverProfileSetupRoute);
-        // } else if (userResponseModel.detail?.roleId.toString() == roleDriver.toString() && userResponseModel.detail?.isDefault == 1) {
-        //   saveData(userResponseModel);
-        //   Get.offAllNamed(AppRoutes.driverMainRoute);
-        // } else if (userResponseModel.detail?.roleId.toString() == roleRestaurant.toString() && userResponseModel.detail?.isAdded == 0) {
-        //   saveData(userResponseModel);
-        //   Get.offAllNamed(AppRoutes.addRestaurantRoute);
-        // } else if (userResponseModel.detail?.roleId.toString() == roleRestaurant.toString() && userResponseModel.detail?.isAdded == 1) {
-        //   saveData(userResponseModel);
-        // } else {
-        //   Get.offAllNamed(AppRoutes.loginRoute);
-        // }
-        saveData(currentUserDataModel.value);
-      }
-    }).onError((error, stackTrace) {
-      showInSnackBar(message: error.toString());
-    });
   }
 
   saveData(userResponseModel) {
@@ -166,17 +100,43 @@ class OtpVerificationController extends GetxController {
   }
 
   resendOtp() {
-    Map<String, dynamic> data = AuthRequestModel.resendOtpRequestModel(
-        contactNo: userData.contactNo ?? phone ?? null,
-        email: email ?? null,
-        countryCode: userData.countryCode ?? "+${countryDialCode}" ?? null);
-    repository.resendOtpApiCall(data).then((value) {
-      if (value != null) {
-        otpTextController.clear();
-        showInSnackBar(message: "${value.message} ${value.detail.otp}");
+
+    sendApiCall();
+
+  }
+
+
+
+  sendApiCall() {
+    repository.sendOtpApi(phone: phone).then((value) async {
+      debugPrint("Send Otp Response: $value");
+      if(value["message"]!=null){
+        await showInSnackBar(message: value["message"]);
       }
-    }).onError((error, stackTrace) {
-      showInSnackBar(message: error.toString());
+
+    });
+  }
+
+  void onSubmitTap({otp}) {
+    repository.verifyOtpApi(phone: phone,otp: otp).then((value) async {
+      debugPrint("Send Otp Response: $value");
+
+      if(value["message"]!=null)
+        showInSnackBar(message: value['message']);
+
+
+      if(value["user"]!=null){
+        // UserDataModel
+
+        
+
+        debugPrint('tokenBhej---->${value["user"]['token']??"satta_token" }');
+        preferenceManger.saveAuthToken(value["user"]['token'] ?? "satta_token");
+        await preferenceManger.saveRegisterData(UserDataModel.fromJson(value["user"]));
+        Get.toNamed(AppRoutes.mainParentRoute);
+
+      }
+
     });
   }
 }

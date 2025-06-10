@@ -131,75 +131,14 @@ class SignUpController extends GetxController {
 
     if (customerFormGlobalKey.currentState!.validate()) {
       if (isTermsAccepted.value) {
-        registerApiCall();
+      showInSnackBar(message: "message_22");
       } else {
         // showInSnackBar(message: keyAcceptTnc.tr);
       }
     }
   }
 
-  registerApiCall() {
-    Map<String, dynamic> data = AuthRequestModel.registerRequestData(
-      contactNumber: mobileNumberTextController.text.trim(),
-      countryCode: selectedCountry?.value.dialCode.contains("+") == true
-          ? selectedCountry?.value.dialCode
-          : "+${selectedCountry?.value.dialCode}",
-      password: passwordTextController.text.trim(),
-      confirmPassword: confirmPasswordTextController.text.trim(),
-      // firstName: firstNameTextController.text.trim(),
-      // lastName: lastNameTextController.text.trim(),
-      // email: emailTextController.text.trim(),
-      // dob: dobTextController.text.trim(),
-      // deviceType: repository.deviceType,
-      // deviceName: repository.deviceName,
-      // deviceToken: repository.deviceID,
-      // merchantId: userRole == roleDriver ? riderIdTextController.text.trim() : merchantIdTextController.text.trim(),
-      roleId: userRole,
-      // gender: selectedGender.value?.id,
-      // typeId: selectedMerchantType.value?.id,
-    );
 
-    APIRepository.registerUsers(data).then((value) {
-      if (value != null) {
-        UserResponseModel userResponseModel = value;
-        preferenceManger.saveAuthToken(userResponseModel.token ?? "");
-        preferenceManger
-            .saveRole(int.parse(userResponseModel.detail?.roleId ?? 0));
-
-        preferenceManger.saveRegisterData(userResponseModel.detail);
-        if (userResponseModel.detail?.otpVerify == null ||
-            userResponseModel.detail?.otpVerify == 0) {
-          showInSnackBar(
-              message: "${keyOtpIs.tr} ${userResponseModel.detail?.otp}");
-          Get.toNamed(AppRoutes.otpVerificationRoute,
-              arguments: {argIsFromLogin: false});
-        } else {
-          if (userResponseModel.detail?.roleId.toString() ==
-              roleRestaurant.toString()) {
-            if (userResponseModel.detail?.isAdded == 0) {
-              Get.offAllNamed(AppRoutes.addRestaurantRoute);
-            } else {
-              Get.offAllNamed(AppRoutes.restaurantMainRoute);
-            }
-          } else if (userResponseModel.detail?.roleId.toString() ==
-              roleDriver.toString()) {
-            if (userResponseModel.detail?.isDefault == 0) {
-              Get.offAllNamed(AppRoutes.driverProfileSetupRoute);
-            } else if (userResponseModel.detail?.isDefault == 1) {
-              Get.offAllNamed(AppRoutes.addVehicleRoute);
-            } else if (userResponseModel.detail?.isDefault == 2) {
-              Get.offAllNamed(AppRoutes.driverMainRoute);
-            }
-          } else {
-            Get.offAllNamed(AppRoutes.customerMainScreen);
-          }
-        }
-      }
-    }).onError((error, stackTrace) {
-      customLoader.hide();
-      showInSnackBar(message: error.toString());
-    });
-  }
 
   @override
   void onClose() {

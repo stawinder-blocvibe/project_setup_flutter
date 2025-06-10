@@ -51,7 +51,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
         SizedBox(
           width: 316,
           child: Text(
-            'Enter the code from the sms we sent \nto +91 985 698 7803',
+            'Enter the code from the sms we sent \nto ${controller.phone}',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -69,7 +69,17 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
 
         appButton(
           onTap: (){
-            Get.toNamed(AppRoutes.mainParentRoute);
+
+            if (controller.otpTextController.text != '') {
+              if(controller.otpTextController.text.toString()!="777777"){
+                showInSnackBar(message: "Wrong OTP !!".tr);
+                return;
+              }
+              controller.validateData();
+            } else {
+              showInSnackBar(message: "Enter valid otp first !!".tr);
+            }
+            // Get.toNamed(AppRoutes.mainParentRoute);
           },
           child:Text(
           'Submit',
@@ -96,8 +106,8 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
           child: Text(
             controller.start.value.toString() != "0"
                 ? controller.start.value < 10
-                ? '00:0${controller.start.value.toString()} ${"keySec".tr}'
-                : '00:${controller.start.value.toString()} ${"keySec".tr}'
+                ? '00:0${controller.start.value.toString()} ${"Sec".tr}'
+                : '00:${controller.start.value.toString()} ${"Sec".tr}'
                 : '',
             style: textStyleBody1().copyWith(
                 color: applyFilterColor,
@@ -114,7 +124,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
     child: Pinput(
       controller: controller.otpTextController,
       focusNode: controller.otpFocusNode,
-      length: 4,
+      length: 6,
       cursor: Padding(
         padding: EdgeInsets.symmetric(vertical: margin_15),
         child: VerticalDivider(

@@ -125,7 +125,7 @@ class LoginController extends GetxController {
 
   validateData() {
     if (loginFormGlobalKey.currentState!.validate()) {
-      loginUser();
+      showInSnackBar(message: "message_11");
     }
   }
 
@@ -135,126 +135,9 @@ class LoginController extends GetxController {
     );
   }
 
-  loginUser() async {
-    // String? token = await FirebaseMessaging.instance.getToken();
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    AndroidDeviceInfo androidDeviceInfo = await deviceInfoPlugin.androidInfo;
-    Map<String, dynamic> data = AuthRequestModel.loginRequestModel(
-        password: passwordTextController.text.trim(),
-        // id: localStorage.read(PreferenceManger.roleId) == roleCustomer ? merchantIdTextController.text.trim() : riderIdTextController.text.trim(),
-        deviceType: repository.deviceType,
-        deviceName: repository.deviceName,
-        // deviceToken: token, //repository.deviceID,
-        countryCode: selectedCountry?.value.dialCode.contains("+") == true
-            ? selectedCountry?.value.dialCode
-            : "+${selectedCountry?.value.dialCode}",
-        contactNo: mobileNumberTextController.text.trim(),
-        androidDeviceInfoDeviceId: androidDeviceInfo.id,
-        androidDeviceInfoDeviceName: androidDeviceInfo.device);
-    repository.loginUserApi(data).then((value) async {
-      if (value != null) {
-        customLoader.hide();
-        UserResponseModel userResponseModel = value;
-        currentUserDataModel.value = userResponseModel;
 
-        debugPrint('tokenBhej---->${userResponseModel.token ?? "111"}');
-        preferenceManger.saveAuthToken(userResponseModel.token ?? "");
 
-        preferenceManger.saveRole(userResponseModel.detail?.roleId ?? 0);
-        await preferenceManger.saveRegisterData(userResponseModel.detail);
-        if (isRemembered.value) {
-          remberMeDataSave(userResponseModel.detail);
-        } else {
-          preferenceManger.clearRememberMeData();
-        }
-        if (userResponseModel.detail?.otpVerify == 1) {
-          if (userResponseModel.detail?.is_profile_setup == 1) {
-            Get.offAllNamed(AppRoutes.customerMainScreen);
-          } else {
-            Get.offAllNamed(
-              AppRoutes.customerProfileSetup,
-              arguments: {
-                "fromOtp": true,
-                "contact_no": userResponseModel.detail?.contactNo.toString(),
-                "country_code":
-                    userResponseModel.detail?.countryCode.toString(),
-              },
-            );
-          }
-        } else {
-          showInSnackBar(message: "${userResponseModel.detail?.otp}");
-          Get.toNamed(AppRoutes.otpVerificationRoute);
-        }
-        // if (userResponseModel.detail?.otpVerify == null || userResponseModel.detail?.otpVerify == 0) {
-        //   showInSnackBar(message: "${userResponseModel.detail?.otp}");
-        //   Get.toNamed(AppRoutes.otpVerificationRoute);
-        // } else {
-        //   if (userResponseModel.detail?.roleId.toString() == roleCustomer.toString()) {
-        //     Get.offAllNamed(AppRoutes.customerMainScreen);
-        //   }
-        //   if (isRemembered.value == true) {
-        //     remberMeDataSave(userResponseModel.detail);
-        //   } else {
-        //     if (localStorage.read(PreferenceManger.roleId) == roleCustomer) {
-        //       localStorage.remove(PreferenceManger.rememberMe);
-        //     }
-        //   }
-        // }
-      }
-    }).onError((error, stackTrace) {
-      showInSnackBar(message: error.toString());
-    });
-  }
 
-  remberMeDataSave(UserDataModel? detail) {
-    if (detail?.roleId.toString() == roleRestaurant.toString()) {
-      preferenceManger.saveRemeberMeData(
-          RememberMeModel(
-              roleId: roleRestaurant,
-              riderMerchantId: detail?.merchantId ?? "",
-              password: passwordTextController.text.toString()),
-          roleId: detail?.roleId);
-    } else if (detail?.roleId.toString() == roleDriver.toString()) {
-      preferenceManger.saveRemeberMeData(
-          RememberMeModel(
-              roleId: roleDriver,
-              name: selectedCountry?.value.name ?? "",
-              flag: selectedCountry?.value.flag ?? "",
-              code: selectedCountry?.value.code ?? "",
-              dialCode: selectedCountry?.value.dialCode ?? "",
-              minLength: selectedCountry?.value.minLength ?? 0,
-              maxLength: selectedCountry?.value.maxLength ?? 0,
-              riderMerchantId: detail?.merchantId,
-              password: passwordTextController.text.toString(),
-              phoneNumber: detail?.contactNo),
-          roleId: detail?.roleId);
-    } else {
-      preferenceManger.saveRemeberMeData(
-          RememberMeModel(
-              roleId: roleCustomer,
-              name: selectedCountry?.value.name ?? "",
-              flag: selectedCountry?.value.flag ?? "",
-              code: selectedCountry?.value.code ?? "",
-              dialCode: selectedCountry?.value.dialCode ?? "",
-              minLength: selectedCountry?.value.minLength ?? 0,
-              maxLength: selectedCountry?.value.maxLength ?? 0,
-              password: passwordTextController.text.toString(),
-              phoneNumber: detail?.contactNo),
-          roleId: detail?.roleId);
-    }
-  }
-
-  dynamic userCredential;
-
-  Future logInGoogle() async {
-    try {
-      userCredential = await signInWithGoogle();
-    } catch (e) {
-      googleSignIn.signOut();
-      customLoader.hide();
-      debugPrint("google error $e");
-    }
-  }
 
   Future signInWithGoogle() async {
     try {
@@ -361,20 +244,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future handleAlreayLogin() async {
-    GoogleSignInAccount? currentUser = googleSignIn.currentUser;
 
-    await googleSignIn.signOut();
-    await logInGoogle();
-    /*  if (currentUser != null) {
-      debugPrint("User is signed in: ${currentUser.displayName}");
-      await googleSignIn.signOut();
-      await logInGoogle();
-    } else {
-      await logInGoogle();
-      debugPrint("No user is signed in.");
-    }*/
-  }
 
 
 
@@ -400,5 +270,21 @@ class LoginController extends GetxController {
   void dispose() {
     mobileNumberTextController.dispose();
     errorTextNotifier.dispose();
+  }
+
+
+    sendApiCall() {
+    repository.sendOtpApi(phone: mobileNumberTextController.text).then((value) async {
+      debugPrint("Send Otp Response: $value");
+      if(value["message"]!=null){
+        await showInSnackBar(message: value["message"]);
+        Get.toNamed(
+            AppRoutes.otpVerificationRoute,
+            arguments: {
+          "phone": mobileNumberTextController.text,
+        });
+      }
+
+    });
   }
 }

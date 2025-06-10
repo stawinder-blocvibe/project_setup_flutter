@@ -13,7 +13,7 @@ class UserResponseModel {
   UserResponseModel.fromJson(Map<String, dynamic> json) {
     token = json['token'] ?? json['access-token'];
     detail = json['detail'] != null
-        ? new UserDataModel.fromJson(json['detail'])
+        ?  UserDataModel?.fromJson(json['detail'])
         : null;
     message = json['message'];
     copyrighths = json['copyrighths'];

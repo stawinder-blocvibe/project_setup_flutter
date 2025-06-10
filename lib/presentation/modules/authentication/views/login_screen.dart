@@ -71,9 +71,13 @@ class LoginScreen extends GetView<LoginController> {
         appButton(
           onTap: () async {
 
-            Get.toNamed(AppRoutes.otpVerificationRoute);
+            if(controller.errorTextNotifier.value==null){
+              controller.sendApiCall();
+            }
+
+            // Get.toNamed(AppRoutes.otpVerificationRoute);
           },
-          child:Text(
+          child:const Text(
           'GET OTP',
           textAlign: TextAlign.center,
           style: TextStyle(

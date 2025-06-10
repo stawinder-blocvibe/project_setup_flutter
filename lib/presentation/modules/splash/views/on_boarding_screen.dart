@@ -82,7 +82,7 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
+          onTap: () async {
             int nextPage = controller.selectedPageIndex.value + 1;
             if (nextPage < controller.pages.length) {
               controller.pageController.animateToPage(
@@ -91,6 +91,14 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
                 curve: Curves.easeInOut,
               );
             } else {
+
+
+              // debugPrint('Navigating to login route');
+              // return ;
+              await preferenceManger.firstLaunch(true);
+              debugPrint(
+                  'firstLaunch-->${await preferenceManger.getStatusFirstLaunch()}');
+            Get.toNamed(AppRoutes.loginRoute);
               // TODO: Navigate to next screen after onboarding
             }
           },
@@ -123,9 +131,13 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
 
   Widget skipButtonWidget({required String buttonText}) {
     return GestureDetector(
-      onTap: (){
+      onTap: ()async {
+        // Get.toNamed(AppRoutes.loginRoute);
+        await preferenceManger.firstLaunch(true);
+        debugPrint(
+            'firstLaunch-->${await preferenceManger.getStatusFirstLaunch()}');
         Get.toNamed(AppRoutes.loginRoute);
-      },
+        },
       child: Container(
         width: Get.width,
         margin: EdgeInsets.symmetric(horizontal: height_35,),

@@ -11,13 +11,26 @@ class SplashController extends GetxController {
   void _startSplashFlow() async {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
-      // Optionally show a no internet screen or dialog
       Get.snackbar('No Internet', 'Please check your connection.');
       return;
     }
-    // Simulate splash delay
     await Future.delayed(Duration(milliseconds: 1500));
-    // Navigate to onboarding screen
+    handleRouting();
+    // Get.offAllNamed(AppRoutes.onBoardingRoute);
+  }
+}
+
+handleRouting() async  {
+  var token = await preferenceManger.getAuthToken();
+  bool? isFirstLaunched = await preferenceManger.getStatusFirstLaunch();
+  debugPrint("isFirstLaunched--->$token>>$isFirstLaunched");
+  if (isFirstLaunched != null && isFirstLaunched) {
+    if (token != null) {
+      Get.offAllNamed(AppRoutes.mainParentRoute);
+    } else {
+      Get.offAllNamed(AppRoutes.loginRoute);
+    }
+  } else {
     Get.offAllNamed(AppRoutes.onBoardingRoute);
   }
 }

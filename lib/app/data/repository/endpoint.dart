@@ -10,12 +10,12 @@
 // live
 // const String baseUrl = "https://mars.toxsl.in/food-app-yii2-2152/api";
 // const String baseUrl = "http://192.168.2.151:8080/api"; // local yaswant Sir
-const String baseUrl = "http://192.168.2.222:8080/api"; // local ansh Sir
+const String baseUrl = "http://13.200.65.39:3001/api"; // local ansh Sir
 // const String baseUrl = "http://192.168.11.153/food-app-yii2-2152/api";
 
 const String signUpEndPoint = "/user/signup";
 const String loginEndPoint = "/user/login";
-const String verifyOtpEndPoint = "/user/verify-otp";
+
 const String forgetPasswordEndPoint = "/user/forgot-password";
 const String resendOtpEndPoint = "/user/resend-otp";
 const profileSetupEndPoint = "/user/profile-update";
@@ -200,4 +200,18 @@ const String totalPriceApiUrl = "/cart/total-price";
 const String addHomePageApiUrl = "/restaurant/add-home-page";
 const String driverUpdateLocationApiUrl = "/user/update-location";
 
-// Time_2152_Customer_build_31_March
+
+const String sendOtpEndPoint = "/auth/send-otp";
+const String verifyOtpEndPoint = "/auth/verify-otp";
+const String homeEndPoint = "/auth/home";
+const String addPaymentEndPoint = "/auth/add-payment";
+const String joinPoolEndPoint = "/auth/join-pool";
+const String poolDetailsPoint = "/auth/pools";
+const String walletDetailsPoint = "/auth/wallet";
+const String saveUserPredictionEndPoint = "/auth/save-prediction";
+const String userTransactionEndPoint = "/auth/user-transactions";
+const String allPredictionEndPoint = "/auth/get-user-all-predictions";
+const String getUsersMatchPredictionEndPoint = "/auth/get-user-match-predictions";
+
+
+
