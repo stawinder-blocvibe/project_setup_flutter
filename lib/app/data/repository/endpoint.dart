@@ -212,6 +212,7 @@ const String saveUserPredictionEndPoint = "/auth/save-prediction";
 const String userTransactionEndPoint = "/auth/user-transactions";
 const String allPredictionEndPoint = "/auth/get-user-all-predictions";
 const String getUsersMatchPredictionEndPoint = "/auth/get-user-match-predictions";
+const String myPredictedMatchesEndPoint = "/auth/my-predicted-matches";
 
 
 

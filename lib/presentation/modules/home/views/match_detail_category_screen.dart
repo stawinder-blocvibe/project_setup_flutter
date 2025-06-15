@@ -15,81 +15,81 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
   final controller = Get.put(MatchDetailCategoryController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        children: [
-          appBarWithWallet(onlyWallet:true),
-
-
-          Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: Get.height * 0.8,
-                child: AssetImageWidget(
-                  imageFitType: BoxFit.cover,
-                  stadiumBullBall,
-                  imageHeight: Get.height * 0.8,
-                  imageWidth: double.infinity,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xFFEFFAF1),
+        body: ListView(
+          children: [
+            appBarWithWallet(onlyWallet:true),
+            Stack(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: Get.height * 0.8,
+                  child: AssetImageWidget(
+                    imageFitType: BoxFit.cover,
+                    stadiumBullBall,
+                    imageHeight: Get.height * 0.8,
+                    imageWidth: double.infinity,
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 0,
-                 child: Container(
-                  height: Get.height*0.635,
-                  width: Get.width,
-                  color: const Color(0xFFEFFAF1),
+                Positioned(
+                  bottom: 0,
+                   child: Container(
+                    height: Get.height*0.635,
+                    width: Get.width,
+                    color: const Color(0xFFEFFAF1),
+                  ),
                 ),
-              ),
-
-
-
-              ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(1),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Column(
-                    children: [
-                      matchType(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          scoreSection(),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: punjabPlaceHolderAsset,
-                            // radiusAll: 50.r,
-                          ),
-                          vsCircleWidget().marginSymmetric(horizontal: margin_15),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: cskPlaceHolderAsset,
-                            // radiusAll: 50.r,
-                          ),
-                          scoreSection(teamName: "CSK"),
-                        ],
-                      ),
-                    ],
-                  ).marginOnly(top: margin_40),
+      
+      
+      
+                ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(1),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Column(
+                      children: [
+                        matchType(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamAAbbr)),
+                            NetworkImageWidget(
+                              imageUrl: "",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: punjabPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            vsCircleWidget().marginSymmetric(horizontal: margin_15),
+                            NetworkImageWidget(
+                              imageUrl: "",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: cskPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            Obx(()=>  scoreSection(teamName: controller.liveMatch.value?.teamBAbbr)),
+                          ],
+                        ),
+                      ],
+                    ).marginOnly(top: margin_40),
+                  ),
                 ),
-              ),
-
-              playingTextWidget(),
-
-              syncWidget(),
-
-
-              partnershipWidget(),
-
-            ],
-          )
-
-        ],
+      
+                playingTextWidget(),
+      
+                syncWidget(),
+      
+      
+                partnershipWidget(),
+      
+              ],
+            )
+      
+          ],
+        ),
       ),
     );
   }
@@ -124,7 +124,7 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
-          ),
+          )
         ),
         Container(
           width: 47,
@@ -218,9 +218,22 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         shrinkWrap: true,
         children: [
           cricketCategoryCard(onTap: (){
-            Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+            Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
+              "liveMatch":controller.liveMatch.value,
+            });
           }),
-          cricketCategoryCard(title: "kurukshetra (120 balls)",margin: EdgeInsets.all(margin_16,).copyWith(top: 0))
+          cricketCategoryCard(
+            onTap: (){
+              Get.toNamed(AppRoutes.contestListScreenRoute,arguments: {
+                "liveMatch":controller.liveMatch.value,
+              });
+            },
+              gradient: const LinearGradient(colors: [
+                Color(0xFF875CF2),
+                Color(0xFF381C7D),
+              ]),
+              borderColor: Color(0xFF3A266D),
+              title: "Kurukshetra\n(120 balls)",margin: EdgeInsets.all(margin_16,).copyWith(top: 0))
         ],
       ).marginOnly(top: margin_230),
     );

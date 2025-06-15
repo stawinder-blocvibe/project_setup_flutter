@@ -71,7 +71,11 @@ class LoginScreen extends GetView<LoginController> {
         appButton(
           onTap: () async {
 
-            if(controller.errorTextNotifier.value==null){
+            if(controller.mobileNumberTextController.text.trim().isEmpty){
+              controller.errorTextNotifier.value = "Please enter your mobile number";
+              return;
+            }
+            else if(controller.errorTextNotifier.value==null){
               controller.sendApiCall();
             }
 
@@ -152,13 +156,16 @@ class LoginScreen extends GetView<LoginController> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(10),
                       ],
+
                       decoration: const InputDecoration(
+
                         hintText: 'Enter Your Mobile Number',
-                        hintStyle: TextStyle(color: Colors.white70),
+                        hintStyle: TextStyle(color: Colors.white),
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
+
                       ),
                       onChanged: onChanged,
                     ),

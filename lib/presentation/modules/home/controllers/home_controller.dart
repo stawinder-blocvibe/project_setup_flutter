@@ -1,3 +1,5 @@
+import 'package:base_project/app/export.dart';
+import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -5,6 +7,7 @@ class HomeController extends GetxController {
   RxString title = 'Home'.obs;
 
   RxInt carousalIndex = 0.obs;
+  RxInt carousalBannerImageIndex = 0.obs;
 
   List<String> liveMatchesList= [
     'Match 1',
@@ -26,7 +29,23 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Initialize your controller
   }
+  @override
+  void onReady() {
+    homeApiCall();
+    super.onReady();
+  }
+
+
+  homeApiCall(){
+    repository.homeScreenApi().then((value){
+     if(value['data'] != null){
+        homeApiResponse.value = HomeApiResponse.fromJson(value["data"]);
+        homeApiResponse.refresh();
+      }
+    });
+  }
+
+  Rx<HomeApiResponse?> homeApiResponse = Rxn();
 }
 

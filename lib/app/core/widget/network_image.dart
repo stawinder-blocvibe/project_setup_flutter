@@ -49,7 +49,8 @@ class NetworkImageWidget extends StatelessWidget {
               bottomLeft: Radius.circular(radiusBottomLeft),
               bottomRight: Radius.circular(radiusBottomRight))
           : BorderRadius.circular(radiusAll!),
-      child: Image.network("$imageUrl",
+      child:
+    /*  Image.network("$imageUrl",
           height: imageHeight,
           width: imageWidth,
           fit: imageFitType,
@@ -80,20 +81,20 @@ class NetworkImageWidget extends StatelessWidget {
                         : null,
                   ),
                 );
-          }),
-      /*FancyShimmerImage(
+          }),*/
+      FancyShimmerImage(
           height: imageHeight,
           width: imageWidth,
           boxFit: imageFitType,
           imageUrl: "$imageUrl",
           errorWidget: AssetImageWidget(
-            placeHolder ?? iconsIcPlaceholder,
+            placeHolder ?? leaderBoardAsset,
             radiusAll: radiusAll,
             imageHeight: imageHeight,
             imageWidth: imageWidth,
             imageFitType: BoxFit.fill,
           ),
-        )*/
+        )
     );
   }
 }

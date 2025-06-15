@@ -6,6 +6,7 @@ abstract class AppRoutes {
   static const liveMatchesScreenRoute = "/liveMatchesScreenRoute";
   static const upcomingMatchesScreenRoute = "/upcomingMatchesScreenRoute";
   static const overBallSelectionScreenRoute = "/overBallSelectionScreenRoute";
+  static const overBallSelectionResultScreenRoute = "/overBallSelectionResultScreenRoute";
   static const matchScoreScreenRoute = "/matchScoreScreenRoute";
   static const loginRoute = '/loginRoute';
   static const signupRoute = '/signupRoute';
@@ -33,6 +34,13 @@ abstract class AppRoutes {
   static const ratingReviewRoute = '/ratingReviewRoute';
   static const referralRoute = '/referralRoute';
   static const leaderboardWinningResultScreenRoute = '/leaderboardWinningResultScreenRoute';
+  static const myInfoRoute = '/myInfoRoute';
+  static const helpAndSupportRoute = '/helpAndSupportRoute';
+  static const termAndConditionRoute = '/termAndConditionRoute';
+  static const aboutUsRoute = '/aboutUsRoute';
+  static const transactionHistoryRoute = '/transactionHistoryRoute';
+  static const addAmountWalletRoute = '/addAmountWalletRoute';
+  static const myWinningsRoute = '/myWinningsRoute';
 
 
   /*----------------restaurant----------------*/

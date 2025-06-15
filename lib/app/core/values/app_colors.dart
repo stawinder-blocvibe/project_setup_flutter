@@ -100,3 +100,5 @@ class HexColor extends Color {
 
 Color pinputBorderColor = Color(0xFFD27D08);
 Color appGreen = Color(0xFF004225);
+
+Color bottomBgColor =Color(0xFF003921);

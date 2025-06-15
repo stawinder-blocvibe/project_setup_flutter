@@ -15,74 +15,80 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        children: [
-          appBarWithWallet(onlyWallet:true),
-
-
-          Stack(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Expanded(child: AssetImageWidget(
-                  imageFitType: BoxFit.cover,
-                  stadiumBullBall,
-                  imageHeight: Get.height*0.8,
-                  imageWidth: double.infinity
-
-              )),
-              Positioned(
-                bottom: 0,
-                 child: Container(
-                  height: Get.height*0.645,
-                  width: Get.width,
-                  color: const Color(0xFFEFFAF1),
-                ),
-              ),
-
-
-
-              ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(1),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Column(
-                    children: [
-                      matchType(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              appBarWithWallet(onlyWallet:true),
+          
+          
+              Stack(
+                children: [
+                  Expanded(child: AssetImageWidget(
+                      imageFitType: BoxFit.cover,
+                      stadiumBullBall,
+                      imageHeight: Get.height*0.8,
+                      imageWidth: double.infinity
+          
+                  )),
+                  Positioned(
+                    bottom: 0,
+                     child: Container(
+                      height: Get.height*0.645,
+                      width: Get.width,
+                      color: const Color(0xFFEFFAF1),
+                    ),
+                  ),
+          
+          
+          
+                  ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(1),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Column(
                         children: [
-                          scoreSection(),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: punjabPlaceHolderAsset,
-                            // radiusAll: 50.r,
+                          matchType(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamAAbbr)),
+                              NetworkImageWidget(
+                                imageUrl: controller.liveMatch.value?.teamALogoUrl??"",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: punjabPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
+                              vsCircleWidget().marginSymmetric(horizontal: margin_15),
+                              NetworkImageWidget(
+                                imageUrl: controller.liveMatch.value?.teamBLogoUrl??"",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: cskPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
+                              Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamBAbbr)),
+                            ],
                           ),
-                          vsCircleWidget().marginSymmetric(horizontal: margin_15),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: cskPlaceHolderAsset,
-                            // radiusAll: 50.r,
-                          ),
-                          scoreSection(teamName: "CSK"),
                         ],
-                      ),
-                    ],
-                  ).marginOnly(top: margin_40),
-                ),
-              ),
+                      ).marginOnly(top: margin_40),
+                    ),
+                  ),
 
-              playingTextWidget(),
-              syncWidget(),
 
-              partnershipWidget(),
-
+                  // if(controller.liveMatch.value.externalMatchId)
+                  Obx(()=> playingTextWidget(teamName: controller.liveMatch.value?.teamAAbbr)),
+                  syncWidget(),
+          
+                  partnershipWidget(),
+          
+                ],
+              )
+          
             ],
-          )
-
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -178,10 +184,10 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
     );
   }
 
-  playingTextWidget(){
+  Widget playingTextWidget({teamName}){
     return Center(
       child: Text(
-        'CSK Is playing their Innings',
+        '$teamName Is playing their Innings',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,

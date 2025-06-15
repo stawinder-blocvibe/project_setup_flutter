@@ -123,15 +123,13 @@ class OtpVerificationController extends GetxController {
 
       if(value["message"]!=null)
         showInSnackBar(message: value['message']);
-
-
       if(value["user"]!=null){
         // UserDataModel
 
         
 
-        debugPrint('tokenBhej---->${value["user"]['token']??"satta_token" }');
-        preferenceManger.saveAuthToken(value["user"]['token'] ?? "satta_token");
+        debugPrint('tokenBhej---->${value['token']??"satta_token" }');
+        preferenceManger.saveAuthToken(value["token"] ?? "satta_token");
         await preferenceManger.saveRegisterData(UserDataModel.fromJson(value["user"]));
         Get.toNamed(AppRoutes.mainParentRoute);
 

@@ -1,6 +1,8 @@
+import 'package:base_project/presentation/modules/home/models/pool_model.dart';
 import 'package:get/get.dart';
 
 import '../../../../app/export.dart';
+import '../models/home_api_response.dart';
 
 class LeaderboardWinningResultController extends GetxController with GetSingleTickerProviderStateMixin  {
   // Add your logic and variables here
@@ -32,6 +34,29 @@ class LeaderboardWinningResultController extends GetxController with GetSingleTi
   ];
 
   RxInt selectedBreakUpIndexTab = 0.obs;
+
+
+  Rx<LiveMatches?> liveMatch = Rxn();
+  Rx<PoolModel?> pool = Rxn();
+  handleArgument(){
+    var args = Get.arguments;
+    if(args!=null && args['liveMatch']!=null){
+      liveMatch.value = args['liveMatch'];
+      liveMatch.refresh();
+      // contestListApiCall(matchId: liveMatch.value?.matchId);
+    }
+
+    if(args!=null && args['pool']!=null){
+      pool.value = args['pool'];
+      pool.refresh();
+    }
+  }
+
+  @override
+  void onReady() {
+    handleArgument();
+    super.onReady();
+  }
 }
 
 // Step 1: Data model

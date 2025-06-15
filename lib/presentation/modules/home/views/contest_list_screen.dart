@@ -18,75 +18,79 @@ class ContestListScreen extends GetView<ContestListScreenController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        children: [
-          appBarWithWallet(onlyWallet: true),
-
-
-          Stack(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              AssetImageWidget(
-                imageFitType: BoxFit.cover,
-                stadiumBullBall,
-                imageHeight: Get.height * 0.8,
-                imageWidth: double.infinity
-              ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  height: Get.height * 0.645,
-                  width: Get.width,
-                  color: const Color(0xFFEFFAF1),
-                ),
-              ),
-
-
-              ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(1),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Column(
-                    children: [
-                      matchType(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              appBarWithWallet(onlyWallet: true),
+          
+          
+              Stack(
+                children: [
+                  AssetImageWidget(
+                    imageFitType: BoxFit.cover,
+                    stadiumBullBall,
+                    imageHeight: Get.height * 0.8,
+                    imageWidth: double.infinity
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: Get.height * 0.645,
+                      width: Get.width,
+                      color: const Color(0xFFEFFAF1),
+                    ),
+                  ),
+          
+          
+                  ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(1),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Column(
                         children: [
-                          scoreSection(),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: punjabPlaceHolderAsset,
-                            // radiusAll: 50.r,
+                          matchType(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              scoreSection(),
+                              NetworkImageWidget(
+                                imageUrl: "",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: punjabPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
+                              vsCircleWidget().marginSymmetric(
+                                  horizontal: margin_15),
+                              NetworkImageWidget(
+                                imageUrl: "",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: cskPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
+                              scoreSection(teamName: "CSK"),
+                            ],
                           ),
-                          vsCircleWidget().marginSymmetric(
-                              horizontal: margin_15),
-                          NetworkImageWidget(
-                            imageUrl: "",
-                            imageHeight: height_40,
-                            imageWidth: height_40,
-                            placeHolder: cskPlaceHolderAsset,
-                            // radiusAll: 50.r,
-                          ),
-                          scoreSection(teamName: "CSK"),
                         ],
-                      ),
-                    ],
-                  ).marginOnly(top: margin_40),
-                ),
-              ),
-
-              playingTextWidget(),
-              Positioned(
-                right: 0,
-                child: syncWidget(),
-              ),
-              partnershipWidget(),
-
+                      ).marginOnly(top: margin_40),
+                    ),
+                  ),
+          
+                  playingTextWidget(),
+                  Positioned(
+                    right: 0,
+                    child: syncWidget(),
+                  ),
+                  partnershipWidget(),
+          
+                ],
+              )
+          
             ],
-          )
-
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -227,10 +231,19 @@ class ContestListScreen extends GetView<ContestListScreenController> {
         shrinkWrap: true,
         children: [
           contestTextWidget(),
-          Column(
-            children: List.generate(10, (e)=>contestCellWidget(onTap: (){
-              Get.toNamed(AppRoutes.leaderboardWinningResultScreenRoute);
-            }).marginOnly(bottom: margin_10)),
+
+          Obx(
+              ()=> Column(
+              children: List.generate(controller.poolList.length, (e)=>contestCellWidget(
+                  pool:controller.poolList[e],
+                  onTap: (){
+                Get.toNamed(AppRoutes.leaderboardWinningResultScreenRoute,arguments: {
+                  "liveMatch":controller.liveMatch.value,
+                  "pool":controller.poolList.value[e]
+
+                });
+              }).marginOnly(bottom: margin_10)),
+            ),
           )
         ],
       ).marginOnly(top: margin_230),

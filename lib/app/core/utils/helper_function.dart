@@ -337,6 +337,10 @@ class HelperFunction {
   static TextInputFormatter phoneNumberFormatter() {
     return FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}$'));
   }
+  static String formatTimeToAmPm(DateTime dateTime) {
+    // Formats to 'hh:mm AM/PM' (e.g., 01:30 PM)
+    return DateFormat('hh:mm a').format(dateTime);
+  }
 
 }
 

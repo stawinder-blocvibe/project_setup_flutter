@@ -8,10 +8,11 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../../app/export.dart';
 import '../controllers/live_match_list_controller.dart';
 import '../controllers/over_ball_selection_controller.dart';
+import '../controllers/over_ball_selection_result_controller.dart';
 import '../controllers/upcoming_match_list_controller.dart';
 
-class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
-  final controller = Get.put(OverBallSelectionController());
+class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultController> {
+  final controller = Get.put(OverBallSelectionResultController());
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +86,9 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   playingTextWidget(),
                   Positioned(
                     right: 0,
-                    child: SizedBox()??syncWidget(),
+                    child: syncWidget(),
                   ),
-                  partnershipWidget()
-
-          
+                  partnershipWidget(),
                 ],
               )
           
@@ -229,20 +228,30 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
   Widget partnershipWidget() {
     return Container(
       // color: Colors.red,
-      height: Get.height * 0.89,
+      height: Get.height * 0.90,
       child: ListView(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
           selectOverBlockWidget(),
-          selectBallBlockWidget(title:"Select Ball" ),
+          selectBallBlockWidget(title:"Ball" ),
 
-          buildCustomButtonGrid()
-           ,
+          Obx(
+              ()=> controller.myPredictions.isEmpty?SizedBox():
 
+                  Column(
+                    children: controller.myPredictions.first.innings?.first.overs?.map((e)=>
+                        resultBallBlockWidget(title: "Actual ball", ballList:e.input?.map((e)=>e.toString()).toList()??[]
+                        )).toList()??[],
+                  )??
+              resultBallBlockWidget(ballList: controller.myPredictions.first.innings?.first.overs?.first.input?.map((e)=>e.toString()).toList()??[],title: "Actual Ball")
+                  ??
+              Text("${controller.myPredictions.first.innings?.first.overs?.first.input?.length}").marginOnly(left: margin_20)
+
+          )
 
         ],
-      ).marginOnly(top: margin_210),
+      ).marginOnly(top: margin_230),
     );
   }
 
@@ -392,19 +401,16 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
         mainAxisSpacing: 8,
         // Space between rows
         children: List.generate(items.length, (index) {
-          return controller.isOverHaveBall(overIndex: index)?
-          selectedOver(data: "${index + 1}",  isOverSelected: controller.selectedOverIndex.value==index,
-              onTap: (){
-                controller.updateOverIndex(index: index, overValue: "${index + 1}");
-              }):
+          return
           bgDefaultOver(
 
               data: "${index + 1}",
               isOverSelected: controller.selectedOverIndex.value==index,
               onTap: (){
-            controller.updateOverIndex(index: index, overValue: "${index + 1}");
+            // controller.updateOverIndex(index: index, overValue: "${index + 1}");
           }
-          )  ;
+          ) ;
+
         }),
       ),
     );
@@ -414,7 +420,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     return Container(
       // height: height_200,
       width: Get.width,
-      padding: EdgeInsets.only(bottom: margin_0),
+      padding: EdgeInsets.only(bottom: margin_15),
       // decoration: BoxDecoration(
       //
       //   borderRadius: BorderRadius.circular(18),
@@ -428,20 +434,9 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
         children: [
           Row(
             children: [
-              headingTextWidget(title: ("Select Over"),),
+              headingTextWidget(title: "Over"),
               Spacer(),
 
-
-              Obx(()=> headingTextWidget(title: controller.inningSwitch.value?"Second inning":"First inning").marginOnly(left: margin_5)),
-
-              Obx(
-                  ()=> Switch(
-                      inactiveTrackColor: Colors.grey,
-                      value: controller.inningSwitch.value, onChanged: (value){
-                  // controller.inningSwitch.value =  !controller.inningSwitch.value;
-                  // controller.inningSwitch.refresh();
-                }),
-              ),
 
 
             ],
@@ -459,7 +454,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   height: Get.height * 0.18,
                   child: overGridWidget(
                       items: List.generate(20, (index) => "$index"))),
-              // trophyLogoWidget()
+              trophyLogoWidget()
             ],
           ),
 
@@ -499,8 +494,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
               controller.isBallHaveValue(overIndex: controller.selectedOverIndex.value,ballIndex: index)
                   ? selectedBall(
                   onTap: () {
-                    controller.updateBallIndex(
-                        index: index, ballValue: "${index + 1}");
+                    // controller.updateBallIndex(
+                    //     index: index, ballValue: "${index + 1}");
                   },
                   data: "${controller.getBallValue(ballIndex: index,overIndex: controller.selectedOverIndex.value??0)}",
                   isBallSelected: controller.selectedBallIndex.value == index).marginOnly(
@@ -510,8 +505,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   : bgDefaultBall(
                 isBallSelected: controller.selectedBallIndex.value == index,
                   data: "${index + 1}", onTap: () {
-                controller.updateBallIndex(
-                    index: index, ballValue: "${index + 1}");
+                // controller.updateBallIndex(
+                //     index: index, ballValue: "${index + 1}");
                   }
               ).marginOnly(bottom: margin_10));
             },

@@ -182,7 +182,7 @@ class APIRepository {
     }
   }
 
-  Future completeTransactionApi({userId,amount,type,gatewayTransectionId}) async {
+  Future completeTransactionApi({userId,amount,type,gatewayTransectionId,matchId}) async {
     try {
       final response = await dioClient!.post(
           addPaymentEndPoint,
@@ -190,7 +190,7 @@ class APIRepository {
             "userId": userId,
             "amount": amount,
             "type": type,
-            // "matchId": matchId,
+            "matchId": matchId,
             "gatewayTransectionId": gatewayTransectionId,
             // "poolId": poolId,
           },
@@ -224,14 +224,29 @@ class APIRepository {
 
 
   /// to heavy payload
-  Future saveUserPredictionApi({userId,poolId,matchId}) async {
+  Future saveUserPredictionApi({userId,poolId,matchId,compitionType,overPrediction}) async {
     try {
+      var data = {
+        "userId": userId,
+        if(poolId!="")
+        "poolId": poolId,
+        "matchId": matchId,
+        "compitionType": compitionType,
+        "overPrediction":overPrediction
+      };
+
+      debugPrint("datadatadata=>${data}");
+
+
       final response = await dioClient!.post(
           saveUserPredictionEndPoint,
           data: {
-            "userId": userId??"68455ea965ad4b0de2683243",
-            "poolId": poolId??"12517",
-            "matchId": matchId??"68457bcc25a67b5e80a8d8f6"
+            "userId": userId,
+            if(poolId!="" && poolId!=null)
+            "poolId": poolId,
+            "matchId": matchId,
+            "compitionType": compitionType,
+            "overPrediction":overPrediction
           },
           skipAuth: false);
 
@@ -332,6 +347,22 @@ class APIRepository {
             "userId":userId,
             "matchId":matchId,
             "poolId":poolId
+          },
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, getUsersMatchPredictionEndPoint));
+    }
+  }
+  Future myPredictedMatchesApi({userId}) async {
+    try {
+      final response = await dioClient!.get(
+          myPredictedMatchesEndPoint,
+          queryParameters: {
+            "userId":userId,
           },
           skipAuth: false);
 

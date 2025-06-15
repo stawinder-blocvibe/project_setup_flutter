@@ -8,33 +8,43 @@ class UpcomingMatchesScreen extends GetView<UpcomingMatchListController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        spacing: 10,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          appBarWithWallet(onlyWallet:false),
-          const Text(
-            'Upcoming Matches',
-            style: TextStyle(
-              color:  Color(0xFF004225),
-              fontSize: 22,
-              fontFamily: 'TAN - SONGBIRD',
-              fontWeight: FontWeight.w400,
-            ),
-          ).marginOnly(left: margin_20),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: margin_20),
-
-                itemCount: 20,
-                shrinkWrap: true,
-                itemBuilder: (context,index){
-              return upcomingMatchCell().marginOnly(bottom: margin_10);
-            }),
-          )
-        ],
+    return SafeArea(
+      child: Scaffold(
+        
+        backgroundColor: const Color(0xFFEFFAF1),
+        body: Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            appBarWithWallet(onlyWallet:false),
+            const Text(
+              'Upcoming Matches',
+              style: TextStyle(
+                color:  Color(0xFF004225),
+                fontSize: 22,
+                fontFamily: 'TAN - SONGBIRD',
+                fontWeight: FontWeight.w400,
+              ),
+            ).marginOnly(left: margin_20),
+            Obx(
+                ()=> Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: margin_20),
+                    itemCount: controller.upcomingMatchesList.length,
+                    shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    var upcomingMatch = controller.upcomingMatchesList[index];
+                    return upcomingMatchCell(
+                        upcomingMatch:upcomingMatch,
+                        onTap: (){
+                          Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+                        });
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -282,24 +292,5 @@ class UpcomingMatchesScreen extends GetView<UpcomingMatchListController> {
   }
 
 
-  Widget upcomingMatchCell() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFFAF1),
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: greenButtonColor),
-      ),
-      child: Column(
-        spacing: 12,
-        children: [
 
-          topWidget(isT20: false).marginOnly(top:margin_5 ),
-
-          centerWidget(isT20: false),
-          SizedBox(height: height_10,)
-        ],
-      ),
-    ).marginOnly(bottom: margin_10);
-  }
 }

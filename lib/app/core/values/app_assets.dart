@@ -31,6 +31,14 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String trophyOutlineAsset = 'assets/icons/trophy_outline.png';
  const String bullWicketPitchBallAsset = 'assets/icons/bull_wicket_pitch_ball.png';
  const String stadiumBgAsset = 'assets/icons/stadium_bg.png';
+ const String appBarBgAsset = 'assets/icons/app_bar_bg.png';
+ const String premiumIconAsset = 'assets/icons/premium_icon.png';
+ const String redBullAsset = 'assets/icons/red_bull.png';
+ const String leftBullRightBallAsset = 'assets/icons/left_bull_right_ball.png';
+ const String dashboardGifAsset = 'assets/icons/dashboard.gif';
+
+ const String profileIconAsset = 'assets/icons/profile_icon.png';
+ const String coinsAsset = 'assets/icons/coins.png';
 
 
 
@@ -42,3 +50,5 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
 
 ///  SVG Assets
 ///  Network Assets
+
+const String testImageNetwork = "https://picsum.photos/id/237/400/300";

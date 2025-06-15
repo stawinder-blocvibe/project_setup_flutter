@@ -1,5 +1,6 @@
 
 import '../../../../app/export.dart';
+import '../models/home_api_response.dart';
 
 class MatchDetailCategoryController extends GetxController {
 
@@ -32,4 +33,27 @@ class MatchDetailCategoryController extends GetxController {
   List<dynamic> keyboardListList = [
     "UNDO","5,7","OUT","LB"
   ];
+
+
+
+
+
+  @override
+  void onReady() {
+    handleArguments();
+    super.onReady();
+  }
+
+  Rx<LiveMatches?> liveMatch = Rxn();
+  void handleArguments() {
+    var args = Get.arguments;
+    if(args!=null && args['liveMatch'] != null) {
+      liveMatch.value = args['liveMatch'] as LiveMatches;
+      liveMatch.refresh();
+
+      debugPrint("Live match data found: ${liveMatch.value?.toJson()}");
+    } else {
+      debugPrint("No live match data found in arguments");
+    }
+  }
 }

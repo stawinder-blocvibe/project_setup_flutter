@@ -1,6 +1,52 @@
 
+import 'package:base_project/presentation/modules/authentication/models/data_model/user_data_model.dart';
+import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
+
 import '../../../../app/export.dart';
+import '../models/pool_model.dart';
 
 class ContestListScreenController extends GetxController {
 
+
+  RxList<PoolModel> poolList = RxList();
+  contestListApiCall({matchId}){
+    repository.poolDetailApi(matchId: matchId).then((value){
+      if(value!=null && value['pools']!=null){
+        var data = value['pools'] as List;
+        poolList.value =  data.map((e)=>PoolModel.fromJson(e)).toList();
+        poolList.refresh();
+      }
+    });
+  }
+
+
+  Rx<LiveMatches?> liveMatch = Rxn();
+  handleArgument(){
+    //"liveMatch":controller.liveMatch.value
+    var args = Get.arguments;
+    if(args!=null && args['liveMatch']!=null){
+      liveMatch.value = args['liveMatch'];
+      liveMatch.refresh();
+
+      contestListApiCall(matchId: liveMatch.value?.matchId);
+    }
+  }
+
+  Rx<UserDataModel?> user = Rxn();
+  handleUserData() async {
+    preferenceManger.getSavedLoginData().then((value) {
+      user.value = value;
+      user.refresh();
+      debugPrint("user=====>${user.value?.toJson()}");
+
+    });
+  }
+
+  @override
+  void onReady() {
+     handleUserData();
+    handleArgument();
+
+    super.onReady();
+  }
 }

@@ -1,10 +1,10 @@
-import 'package:base_project/app/core/values/app_assets.dart';
-import 'package:base_project/app/core/widget/asset_image.dart';
+import 'dart:math';
+
 import 'package:base_project/app/export.dart';
+import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+
+
 
 import '../controllers/home_controller.dart';
 
@@ -16,7 +16,7 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: const Color(0xFFEFFAF1),
       body: Column(
         children: [
-          appBarWithWallet(onlyWallet: true),
+          appBarWithWallet(onlyWallet: true,isHomeScreen: true),
           Expanded(
             child: Stack(
               children: [
@@ -53,6 +53,9 @@ class HomeScreen extends GetView<HomeController> {
     return Column(
       spacing: 10,
       children: [
+
+
+        bannerCarousel()??
         leaderBoardWidget(),
 
         liveMatchesWidget(),
@@ -81,8 +84,9 @@ class HomeScreen extends GetView<HomeController> {
             ),
             GestureDetector(
               onTap: (){
-                Get.toNamed(AppRoutes.liveMatchesScreenRoute);
-
+                Get.toNamed(AppRoutes.liveMatchesScreenRoute,arguments: {
+                  'liveMatches': controller.homeApiResponse.value?.liveMatches,
+                });
               },
               child: Row(
                 spacing: 4,
@@ -119,36 +123,87 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget matchCarouselList() => SizedBox(
-        height: height_115, // Ensures a fixed height for the carousel
+  Widget matchCarouselList() => Obx(
+      ()=> SizedBox(
+          height: height_115, // Ensures a fixed height for the carousel
+          child: CarouselSlider.builder(
+            options: CarouselOptions(
+              onPageChanged: (value, r) {
+                controller.carousalIndex.value = value;
+                controller.update();
+                debugPrint("Carousel Index: \\${controller.carousalIndex.value}");
+              },
+              viewportFraction: 1.0,
+              height: height_115,
+              autoPlay: true,
+              enableInfiniteScroll: false,
+              reverse: false,
+              enlargeStrategy: CenterPageEnlargeStrategy.height,
+              enlargeCenterPage: false,
+            ),
+            itemCount: controller.homeApiResponse.value?.liveMatches?.length??0,
+            itemBuilder: (BuildContext context, int index, int realIndex) {
+              var liveMatch = controller.homeApiResponse.value?.liveMatches?[index];
+              return InkWell(
+                onTap: () {
+                  // Get.toNamed(AppRoutes.matchScoreScreenRoute);
+                  Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute,arguments: {
+                    'liveMatch': liveMatch,
+                  });
+                },
+                child: _cardView(liveMatch: liveMatch!),
+              );
+            },
+        )),
+  );
+
+  Widget bannerCarousel() => Obx(
+        () {
+      final banners = controller.homeApiResponse.value?.banners;
+      if (banners == null || banners.isEmpty) {
+        return Container(color: Colors.red, height: height_50);
+      }
+      return SizedBox(
+        height: Get.height * 0.11,
         child: CarouselSlider.builder(
           options: CarouselOptions(
             onPageChanged: (value, r) {
-              controller.carousalIndex.value = value;
+              controller.carousalBannerImageIndex.value = value;
               controller.update();
-              debugPrint("Carousel Index: \\${controller.carousalIndex.value}");
+              debugPrint("carousalBannerImageIndex Index: ${controller.carousalBannerImageIndex.value}");
             },
             viewportFraction: 1.0,
-            height: height_115,
+            height: Get.height * 0.11,
             autoPlay: true,
             enableInfiniteScroll: false,
             reverse: false,
             enlargeStrategy: CenterPageEnlargeStrategy.height,
             enlargeCenterPage: false,
           ),
-          itemCount: controller.liveMatchesList.length,
+          itemCount: banners.length,
           itemBuilder: (BuildContext context, int index, int realIndex) {
-            return InkWell(
-              onTap: () {
-                // Get.toNamed(AppRoutes.matchScoreScreenRoute);
-                Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute);
-              },
-              child: _cardView(index),
-            );
-          },
-      ));
+            // final imageUrl = banners[index] ?? "";
+            debugPrint("Banner Index: $index, Real Index: $realIndex, ");
+            return NetworkImageWidget(
+              imageUrl: "",
+              placeHolder: leaderBoardAsset,
+              imageHeight: Get.height * 0.2,
+              imageWidth: Get.width,
+              imageFitType: BoxFit.cover,
+              radiusAll: 10.r,
 
-  Widget _cardView(int index) {
+              color: greenButtonColor,
+              // Add caching and fade effect if supported by NetworkImageWidget
+              // Example: fadeInDuration: Duration(milliseconds: 300),
+              // cache: true,
+            ).marginSymmetric(horizontal: margin_10);
+          },
+        ),
+      );
+    },
+  );
+
+  Widget _cardView({required LiveMatches liveMatch}) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -160,11 +215,11 @@ class HomeScreen extends GetView<HomeController> {
   spacing: 12,
         children: [
 
-          topWidget(),
+          topWidget(liveMatch:liveMatch),
 
-          centerWidget(),
+          centerWidget(liveMatch:liveMatch),
 
-          bottomWidget(),
+          bottomWidget(liveMatch:liveMatch),
         ],
       ),
     );
@@ -179,23 +234,26 @@ class HomeScreen extends GetView<HomeController> {
           () => Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              controller.liveMatchesList.length,
-              (index) => Container(
-                height: height_8,
-                width: height_8,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: controller.carousalIndex.value == index
-                      ? Colors.grey
-                      : Colors.grey.shade300,
-                ),
-              ).marginAll(margin_2),
+              controller.homeApiResponse.value?.liveMatches?.length??3,
+              (index) {
+
+                return Container(
+                  height: height_8,
+                  width: height_8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: controller.carousalIndex.value == index
+                        ? Colors.grey
+                        : Colors.grey.shade300,
+                  ),
+                ).marginAll(margin_2);
+              },
             ),
           ),
         ),
       ).marginOnly(top: margin_5);
 
-  Widget topWidget({isT20 = true}) {
+  Widget topWidget({required LiveMatches liveMatch,isT20 = true}) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,7 +273,7 @@ class HomeScreen extends GetView<HomeController> {
             ),
           ),
           child: Text(
-            'T20',
+            liveMatch.type??'T20',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -245,21 +303,27 @@ class HomeScreen extends GetView<HomeController> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        Text(
-          'Maharaja yadavindra...',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withOpacity(0.6),
-            fontSize: 13,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ).marginOnly(right: margin_10),
+        SizedBox(
+          width: Get.width*0.39,
+          child: Text(
+
+            liveMatch.venue??'Maharaja yadavindra...',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 13,
+              fontFamily: 'Maleah',
+              fontWeight: FontWeight.w700,
+            ),
+          ).marginOnly(right: margin_10),
+        ),
       ],
     ).marginOnly(top: margin_10);
   }
 
-  centerWidget({isT20 = true}) {
+  centerWidget({isT20 = true, required LiveMatches liveMatch}) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -272,7 +336,7 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             NetworkImageWidget(
-              imageUrl: "",
+              imageUrl: liveMatch.teamALogoUrl??"",
               imageHeight: height_40,
               imageWidth: height_40,
               placeHolder: punjabPlaceHolderAsset,
@@ -280,7 +344,7 @@ class HomeScreen extends GetView<HomeController> {
             ),
             SizedBox(width: 6),
             Text(
-              'PUN',
+              liveMatch.teamAAbbr??'PUN',
               style: TextStyle(
                 color: const Color(0xFF004225),
                 fontSize: 12,
@@ -310,7 +374,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ],
-        ):dayTimingWidget(),
+        ):dayTimingWidget(dateTime: liveMatch.startDatetime),
 
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -318,8 +382,8 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'CSK',
-              style: TextStyle(
+              liveMatch.teamBAbbr??'CSK',
+              style: const TextStyle(
                 color: const Color(0xFF004225),
                 fontSize: 12,
                 fontFamily: 'TAN - SONGBIRD',
@@ -330,7 +394,7 @@ class HomeScreen extends GetView<HomeController> {
             ),
             SizedBox(width: 6),
             NetworkImageWidget(
-              imageUrl: "",
+              imageUrl: liveMatch.teamBLogoUrl??"",
               imageHeight: height_40,
               imageWidth: height_40,
               placeHolder: cskPlaceHolderAsset,
@@ -342,7 +406,7 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget bottomWidget() {
+  Widget bottomWidget({required LiveMatches liveMatch}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 9, horizontal: 12),
       decoration: BoxDecoration(
@@ -397,7 +461,9 @@ class HomeScreen extends GetView<HomeController> {
 
             GestureDetector(
               onTap: (){
-                Get.toNamed(AppRoutes.upcomingMatchesScreenRoute);
+                Get.toNamed(AppRoutes.upcomingMatchesScreenRoute,arguments: {
+                  'upcomingMatches': controller.homeApiResponse.value?.upcomingMatches,
+                });
               },
               child: Row(
                 spacing: 4,
@@ -422,15 +488,23 @@ class HomeScreen extends GetView<HomeController> {
             )
           ],
         ),
+        Obx(
+        ()=>controller.homeApiResponse.value?.upcomingMatches?.isEmpty==true
+            ?
+        SizedBox.shrink():
         ListView.builder(
-          itemBuilder: (context, index) {
-            return upcomingMatchCell( onTap: (){
-              Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
-            });
-          },
-          itemCount: 5,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              var upcomingMatch = controller.homeApiResponse.value?.upcomingMatches?[index];
+              return upcomingMatchCell(
+                  upcomingMatch:upcomingMatch,
+                  onTap: (){
+                Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+              });
+            },
+            itemCount: min(4, controller.homeApiResponse.value?.upcomingMatches?.length??0),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+          ),
         ),
       ],
     );

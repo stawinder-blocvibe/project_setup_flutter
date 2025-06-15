@@ -8,7 +8,7 @@ import '../../../../app/export.dart';
 import '../models/over_model.dart';
 import '../views/bottom_sheets.dart';
 
-class OverBallSelectionController extends GetxController {
+class OverBallSelectionResultController extends GetxController {
 
   Rx<UserDataModel?> user = Rxn();
 
@@ -72,7 +72,8 @@ class OverBallSelectionController extends GetxController {
   @override
   void onReady() {
     handleArguments();
-    handleUserData();
+      handleUserData();
+
     overList.value =  List.generate(20, (index) {
       return Over(
         overNumber: index + 1,
@@ -103,10 +104,6 @@ class OverBallSelectionController extends GetxController {
       pool.value = args['pool'];
       pool.refresh();
     }
-
-
-
-
   }
 
   RxList<Over> overList = RxList();
@@ -244,7 +241,7 @@ class OverBallSelectionController extends GetxController {
       matchId: liveMatch.value?.matchId??pool.value?.matchId??"",
 
       poolId: pool.value?.poolId,
-      compitionType: pool.value?.poolId!=null?"kuruk":"harover",
+      compitionType: pool.value?.poolId!=null?"kuruk":"Harover",
       overPrediction: overPrediction
     ).then((value){
       if(value!=null && value['message']!=null){
@@ -312,14 +309,36 @@ class OverBallSelectionController extends GetxController {
     // deefeff
   }
 
-   handleUserData() async {
+   Future handleUserData() async {
    preferenceManger.getSavedLoginData().then((value){
      user.value = value;
      user.refresh();
      debugPrint("user=====>${user.value?.toJson()}");
+
+
+       hitAllPredictionApi();
    });
 
   }
 
 
+  RxList<SavePredictionModel> myPredictions = RxList();
+  Future hitAllPredictionApi()async {
+    repository.allPredictionApi(userId: user.value?.id).then((value){
+
+      debugPrint("ddddddd====>${(value['data'][0]['overPrediction'])}");
+      if(value!=null && value['data']!=null){
+        var list = value['data'] as List;
+        myPredictions.clear();
+        list.forEach((element){
+         var overPrediction =  element['overPrediction'];
+         myPredictions.add(SavePredictionModel.fromJson(overPrediction));
+        });
+        myPredictions.refresh();
+
+
+        debugPrint("myPredictionsmyPredictionsmyPredictions=>${myPredictions.length}");
+      }
+    });
+  }
 }

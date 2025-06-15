@@ -1,4 +1,6 @@
 
+import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
+
 import '../../../../app/export.dart';
 import '../controllers/live_match_list_controller.dart';
 
@@ -7,39 +9,45 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        spacing: 10,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          appBarWithWallet(onlyWallet:false),
-          Text(
-            'Live Matches',
-            style: TextStyle(
-              color: const Color(0xFF004225),
-              fontSize: 22,
-              fontFamily: 'TAN - SONGBIRD',
-              fontWeight: FontWeight.w400,
-            ),
-          ).marginOnly(left: margin_20),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: margin_20),
+    return SafeArea(
+      child: Scaffold(
 
-                itemCount: 20,
-                shrinkWrap: true,
-                itemBuilder: (context,index){
-              return liveMatchCell().marginOnly(bottom: margin_10);
-            }),
-          )
-        ],
+        backgroundColor: const Color(0xFFEFFAF1),
+        body: Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            appBarWithWallet(onlyWallet:false),
+            const Text(
+              'Live Matches',
+              style: TextStyle(
+                color: const Color(0xFF004225),
+                fontSize: 22,
+                fontFamily: 'TAN - SONGBIRD',
+                fontWeight: FontWeight.w400,
+              ),
+            ).marginOnly(left: margin_20),
+            Obx(
+                ()=> Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: margin_20),
+                    itemCount: controller.liveMatches.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context,index){
+                    var liveMatch = controller.liveMatches[index];
+                  return liveMatchCell(liveMatch:liveMatch).marginOnly(bottom: margin_10);
+                }),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
 
-  Widget liveMatchCell(){
+
+  Widget liveMatchCell({required LiveMatches liveMatch}) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -51,18 +59,18 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
         spacing: 12,
         children: [
 
-          topWidget(),
+          topWidget(liveMatch:liveMatch),
 
-          centerWidget(),
+          centerWidget(liveMatch:liveMatch),
 
-          bottomWidget(),
+          bottomWidget(liveMatch:liveMatch),
         ],
       ),
     );
   }
 
 
-  Widget topWidget({isT20 = true}) {
+  Widget topWidget({required LiveMatches liveMatch,isT20 = true}) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +90,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             ),
           ),
           child: Text(
-            'T20',
+            liveMatch.type??'T20',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -112,20 +120,27 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        Text(
-          'Maharaja yadavindra...',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withOpacity(0.6),
-            fontSize: 13,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ).marginOnly(right: margin_10),
+        SizedBox(
+          width: Get.width*0.39,
+          child: Text(
+
+            liveMatch.venue??'Maharaja yadavindra...',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 13,
+              fontFamily: 'Maleah',
+              fontWeight: FontWeight.w700,
+            ),
+          ).marginOnly(right: margin_10),
+        ),
       ],
     ).marginOnly(top: margin_10);
   }
-  centerWidget({isT20 = true}) {
+
+  centerWidget({isT20 = true, required LiveMatches liveMatch}) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -138,7 +153,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             NetworkImageWidget(
-              imageUrl: "",
+              imageUrl: liveMatch.teamALogoUrl??"",
               imageHeight: height_40,
               imageWidth: height_40,
               placeHolder: punjabPlaceHolderAsset,
@@ -146,7 +161,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             ),
             SizedBox(width: 6),
             Text(
-              'PUN',
+              liveMatch.teamAAbbr??'PUN',
               style: TextStyle(
                 color: const Color(0xFF004225),
                 fontSize: 12,
@@ -176,7 +191,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
               ),
             ),
           ],
-        ):dayTimingWidget(),
+        ):dayTimingWidget(dateTime: liveMatch.startDatetime),
 
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -184,8 +199,8 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'CSK',
-              style: TextStyle(
+              liveMatch.teamBAbbr??'CSK',
+              style: const TextStyle(
                 color: const Color(0xFF004225),
                 fontSize: 12,
                 fontFamily: 'TAN - SONGBIRD',
@@ -196,7 +211,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             ),
             SizedBox(width: 6),
             NetworkImageWidget(
-              imageUrl: "",
+              imageUrl: liveMatch.teamBLogoUrl??"",
               imageHeight: height_40,
               imageWidth: height_40,
               placeHolder: cskPlaceHolderAsset,
@@ -207,17 +222,19 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
       ],
     );
   }
-  Widget bottomWidget() {
+
+  Widget bottomWidget({required LiveMatches liveMatch}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 9, horizontal: 12),
       decoration: BoxDecoration(
         color: appGreen,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),
         ),
       ),
       child: Row(
+        spacing: 10,
         children: [
           Text(
             'PUN -120/3',
@@ -230,42 +247,16 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             ),
           ),
           Container(width: 1, color: Colors.white, height: height_12),
-          SizedBox(width: 10),
+
           ballList(),
         ],
       ),
     );
   }
 
-  Widget dayTimingWidget(){
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'Tomorrow',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withValues(alpha: 153),
-            fontSize: 14,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          '12:00 PM',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black.withValues(alpha: 153),
-            fontSize: 14,
-            fontFamily: 'Maleah',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    );
-  }
+
+
+
   ballList() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

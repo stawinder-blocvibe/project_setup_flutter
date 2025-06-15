@@ -28,14 +28,15 @@ class MainParentScreen extends GetView<MainParentController> {
     child: Stack(
       clipBehavior: Clip.none,
       children: [
+        AssetImageWidget(appBarBgAsset,radiusAll: margin_10,).marginAll(margin_8).paddingSymmetric(vertical: margin_6,),
         Container(
           margin: EdgeInsets.all(margin_8),
           padding: EdgeInsets.symmetric(vertical: margin_6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(radius_12),
-            border: Border.all(color: const Color(0xFF004225),),
+            border: Border.all(color: Colors.transparent,),
 
-            color: const Color(0xFF004225),
+            color: Colors.transparent,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(radius_12),
@@ -43,17 +44,15 @@ class MainParentScreen extends GetView<MainParentController> {
               currentIndex: controller.bottomNavIndex.value,
               type: BottomNavigationBarType.fixed,
               enableFeedback: false,
-              backgroundColor: const Color(0xFF004225),
+              backgroundColor: Colors.transparent,
               showUnselectedLabels: true,
               showSelectedLabels: true,
               selectedLabelStyle: textStyleBody1().copyWith(
                   fontSize: font_12,
-                  fontFamily: 'workSans',
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
-              unselectedLabelStyle: textStyleBody1().copyWith(
 
-                  fontFamily: 'workSans',
+                  fontWeight: FontWeight.w500,
+                  color: Colors.transparent),
+              unselectedLabelStyle: textStyleBody1().copyWith(
                   fontSize: font_12,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey.shade400),
@@ -70,33 +69,33 @@ class MainParentScreen extends GetView<MainParentController> {
                     icon: _bottomIcon(
                         icon: CupertinoIcons.home,
                         color: controller.bottomNavIndex.value == 0
-                            ? appColor
+                            ? Colors.white
                             : greyColor),
 
                     label: "Home".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
-                        icon: CupertinoIcons.calendar,
+                        icon: Icons.sports_cricket,
                         color: controller.bottomNavIndex.value == 1
-                            ? appColor
+                            ? Colors.white
                             : greyColor),
-                    label: "Event".tr),
+                    label: "My Match's".tr),
                 BottomNavigationBarItem(
                   icon: SizedBox.shrink(), // Reserved space for Predict
                   label: "",
                 ),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
-                        icon: CupertinoIcons.chart_bar,
+                        icon: Icons.waterfall_chart,
                         color: controller.bottomNavIndex.value == 3
-                            ? appColor
+                            ? Colors.white
                             : greyColor),
-                    label: "Ranking".tr),
+                    label: "My Winnings".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.profile_circled,
                         color: controller.bottomNavIndex.value == 4
-                            ? appColor
+                            ? Colors.white
                             : greyColor),
                     label: "Profile".tr),
               ],
@@ -106,12 +105,15 @@ class MainParentScreen extends GetView<MainParentController> {
 
         /// Custom Predict Button
         Positioned.fill(
-          top: -10,
+          top: 25,
           child: Align(
             alignment: Alignment.topCenter,
             child: GestureDetector(
               onTap: () => controller.updateBottomNavIndex(2),
-              child: Container(
+              child:
+              AssetImageWidget(redBullAsset,imageWidth: height_25,
+                imageHeight: height_25,imageFitType: BoxFit.cover,)??
+              Container(
                 width: 80,
                 height: 80,
                 clipBehavior: Clip.antiAlias,
@@ -134,7 +136,10 @@ class MainParentScreen extends GetView<MainParentController> {
                     Positioned(
                       left: 6.48,
                       top: 6.48,
-                      child: Container(
+                      child:
+
+
+                      Container(
                         width: 67.04,
                         height: 67.04,
                         clipBehavior: Clip.antiAlias,

@@ -14,34 +14,39 @@ class LeaderboardWinningResultScreen
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar:
-      body: Column(
-        children: [
-          appBarWithWallet(onlyWallet: true),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 10,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [guranteedPlusPrizeWidget(), stockWidget()],
-              ),
-              amountTextWidget().marginOnly(top: margin_20),
-              leftPart(rangeDividerWidth: Get.width),
-              appButton(buttonText: "Join Contest",onTap: (){
-
-                Get.until((route) => route.settings.name == AppRoutes.overBallSelectionScreenRoute);
-                // Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
-              }).marginOnly(top: margin_10),
-              Container(
-                alignment: Alignment.centerLeft,
-                width: Get.width * 0.5,
-                child: rightPart(),
-              ),
-            ],
-          ).paddingAll(margin_20),
-          tabBarWidget(),
-          tabBarData(),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            appBarWithWallet(onlyWallet: true),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 10,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [guranteedPlusPrizeWidget(), stockWidget()],
+                ),
+                amountTextWidget().marginOnly(top: margin_20),
+                leftPart(rangeDividerWidth: Get.width),
+                appButton(buttonText: "Join Contest",onTap: (){
+        
+                  // Get.until((route) => route.settings.name == AppRoutes.overBallSelectionScreenRoute);
+                  Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
+                    "liveMatch":controller.liveMatch.value,
+                    "pool":controller.pool.value
+                  });
+                }).marginOnly(top: margin_10),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: Get.width * 0.5,
+                  child: rightPart(winPrize: controller.pool.value?.winningPrice),
+                ),
+              ],
+            ).paddingAll(margin_20),
+            tabBarWidget(),
+            tabBarData(),
+          ],
+        ),
       ),
     );
   }
@@ -118,24 +123,28 @@ class LeaderboardWinningResultScreen
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       spacing: 2.73,
       children: [
-        Text(
-          '5 Lakh',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: const Color(0xFF003921),
-            fontSize: 24.55,
-            fontFamily: 'Afacad',
-            fontWeight: FontWeight.w600,
+        Obx(
+        ()=> Text(
+            controller.pool.value?.winningPrice.toString()??'5 Lakh',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: const Color(0xFF003921),
+              fontSize: 24.55,
+              fontFamily: 'Afacad',
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        Text(
-          '5 Lakh',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: const Color(0xFF003921),
-            fontSize: 24.55,
-            fontFamily: 'Afacad',
-            fontWeight: FontWeight.w600,
+        Obx(
+              ()=> Text(
+            controller.pool.value?.joiningPrice.toString()??'5 Lakh',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: const Color(0xFF003921),
+              fontSize: 24.55,
+              fontFamily: 'Afacad',
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -186,7 +195,10 @@ class LeaderboardWinningResultScreen
         beTheFirstText(),
         Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
 
-        SizedBox(
+
+       Center(child: AssetImageWidget( "assets/icons/dashboard.gif", imageHeight: height_200, imageWidth: Get.width*0.7))
+
+       /* SizedBox(
           width: 162,
           child: Text(
             'All Team (20,35,6)',
@@ -214,7 +226,7 @@ class LeaderboardWinningResultScreen
               return leaderBoardCellWidget();
             },
           ),
-        ),
+        ),*/
       ],
     ).marginOnly(left: margin_10,);
   }
@@ -293,8 +305,8 @@ class LeaderboardWinningResultScreen
       spacing: 10,
       children: [
         beTheFirstText(),
-        Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
-        guarantedMaximumBreakupWidget(),
+        // Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
+        // guarantedMaximumBreakupWidget(),
         Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
         Expanded(
           child: ListView.builder(
