@@ -342,6 +342,43 @@ class HelperFunction {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
+  static String formatDateTime({required String dateTimeString}) {
+    try {
+      // Define the input format
+      final inputFormat = DateFormat('d MMMM yyyy hh:mm a');
+
+      // Parse the input string
+      final dateTime = inputFormat.parse(dateTimeString);
+
+      // Define your desired output format (customize here)
+      final outputFormat = DateFormat('yyyy-MM-dd HH:mm'); // e.g., 2025-04-04 09:30
+
+      // Return the formatted string
+      return outputFormat.format(dateTime);
+    } catch (e) {
+      return 'Invalid date format';
+    }
+
+
+
+  }
+
+  static bool isWalletBalanceZero() {
+    if (walletBalance.value == null) {
+      return true;
+    } else if (walletBalance.value?.balance == null) {
+      return true;
+    } else if (walletBalance.value?.balance == 0) {
+      return true;
+    } else if (walletBalance.value<1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
 }
 
 /// https://mars.toxsl.in/food-app-yii2-2152/settings/variable/update?id=9&title=google-map-place   to change the Api in Web

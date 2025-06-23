@@ -20,6 +20,7 @@ import '../../presentation/modules/home/views/contest_list_screen.dart';
 import '../../presentation/modules/home/views/help_and_support.dart';
 import '../../presentation/modules/home/views/live_matches_screen.dart';
 import '../../presentation/modules/home/views/match_detail_category_screen.dart';
+import '../../presentation/modules/home/views/my_contest_result_card.dart';
 import '../../presentation/modules/home/views/my_info_screen.dart';
 import '../../presentation/modules/home/views/my_winnings.dart';
 import '../../presentation/modules/home/views/over_ball_selection_result_screen.dart';
@@ -30,6 +31,7 @@ import '../../presentation/modules/splash/bindings/on_boarding_binding.dart';
 import '../../presentation/modules/splash/bindings/splash_binding.dart';
 import '../../presentation/modules/splash/views/on_boarding_screen.dart';
 import '../../presentation/modules/splash/views/splash_screen.dart';
+import '../../presentation/modules/test_case/test1.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -79,6 +81,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.upcomingMatchesScreenRoute,
       page: () => UpcomingMatchesScreen(),
+      bindings: [HomeBinding()],
+    ),
+
+    GetPage(
+      name: AppRoutes.harOverBallSelectionRoute,
+      page: () => OverBallSelectionScreen(),
       bindings: [HomeBinding()],
     ),
 
@@ -150,7 +158,22 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.myWinningsRoute,
-      page: () => MyWinnings(),
+      page: () => MyWinnings(needBackButton: true,),
+      bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.myInfoRoute,
+      page: () => MyInfoScreen(),
+      bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.testPageRoute,
+      page: () => Test1(),
+      // bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.myContestResultCardRoute,
+      page: () => MyContestResultCard(),
       bindings: [HomeBinding()],
     ),
 

@@ -47,7 +47,7 @@ class LoginScreen extends GetView<LoginController> {
           'Verify your phone number',
           style: TextStyle(
             color: Colors.white,
-            fontSize:35,
+            fontSize:25,
             fontWeight: FontWeight.w600,
             height: 1.0,
 
@@ -57,7 +57,7 @@ class LoginScreen extends GetView<LoginController> {
           'We have send you an One Time Password(OTP) on this mobile Number',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
         ),

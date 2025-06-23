@@ -1,11 +1,4 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
+
 
 // live
 // const String baseUrl = "https://mars.toxsl.in/food-app-yii2-2152/api";
@@ -211,8 +204,16 @@ const String walletDetailsPoint = "/auth/wallet";
 const String saveUserPredictionEndPoint = "/auth/save-prediction";
 const String userTransactionEndPoint = "/auth/user-transactions";
 const String allPredictionEndPoint = "/auth/get-user-all-predictions";
-const String getUsersMatchPredictionEndPoint = "/auth/get-user-match-predictions";
+
+//
 const String myPredictedMatchesEndPoint = "/auth/my-predicted-matches";
+
+const String getUsersMatchPredictionEndPoint = "/auth/get-user-match-predictions";
+const String getMatchResultEndPoint = "/auth/get-match-result";
+const String winnerSlotEndPoint = "/auth/winner-slots";
+
+//Paid Api
+const String getLiveMatchEndPoint = "/v2/getLiveMatch";
 
 
 

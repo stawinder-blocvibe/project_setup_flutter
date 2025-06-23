@@ -19,12 +19,8 @@ class OnBoardingController extends GetxController {
   addData() {
     pages.clear();
     pages.add(OnBoardingWidget());
-    pages.add(OnBoardingWidget(
-
-    ));
-    pages.add(OnBoardingWidget(
-
-    ));
+    pages.add(OnBoardingWidget());
+    pages.add(OnBoardingWidget());
   }
 
   movePageAction() {

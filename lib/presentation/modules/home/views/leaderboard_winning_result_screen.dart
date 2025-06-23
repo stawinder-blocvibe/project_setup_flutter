@@ -1,8 +1,10 @@
 import 'package:base_project/app/core/values/app_values.dart';
+import 'package:base_project/presentation/modules/home/models/slot_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:win32/win32.dart';
 import '../../../../app/core/utils/helper_widget.dart';
+import '../../../../app/core/utils/indian_currency_converter.dart';
 import '../../../../app/export.dart';
 import '../controllers/leaderboard_winning_result_controller.dart';
 
@@ -13,7 +15,6 @@ class LeaderboardWinningResultScreen
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar:
       body: SafeArea(
         child: Column(
           children: [
@@ -28,18 +29,25 @@ class LeaderboardWinningResultScreen
                 ),
                 amountTextWidget().marginOnly(top: margin_20),
                 leftPart(rangeDividerWidth: Get.width),
-                appButton(buttonText: "Join Contest",onTap: (){
-        
-                  // Get.until((route) => route.settings.name == AppRoutes.overBallSelectionScreenRoute);
-                  Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
-                    "liveMatch":controller.liveMatch.value,
-                    "pool":controller.pool.value
-                  });
-                }).marginOnly(top: margin_10),
+                appButton(
+                  buttonText: "Join Contest",
+                  onTap: () {
+                    // Get.until((route) => route.settings.name == AppRoutes.overBallSelectionScreenRoute);
+                    Get.toNamed(
+                      AppRoutes.overBallSelectionScreenRoute,
+                      arguments: {
+                        "liveMatch": controller.liveMatch.value,
+                        "pool": controller.pool.value,
+                      },
+                    );
+                  },
+                ).marginOnly(top: margin_10),
                 Container(
                   alignment: Alignment.centerLeft,
                   width: Get.width * 0.5,
-                  child: rightPart(winPrize: controller.pool.value?.winningPrice),
+                  child: rightPart(
+                    winPrize: controller.pool.value?.winningPrice,
+                  ),
                 ),
               ],
             ).paddingAll(margin_20),
@@ -124,8 +132,8 @@ class LeaderboardWinningResultScreen
       spacing: 2.73,
       children: [
         Obx(
-        ()=> Text(
-            controller.pool.value?.winningPrice.toString()??'5 Lakh',
+          () => Text(
+            controller.pool.value?.winningPrice.toString() ?? '5 Lakh',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: const Color(0xFF003921),
@@ -136,8 +144,8 @@ class LeaderboardWinningResultScreen
           ),
         ),
         Obx(
-              ()=> Text(
-            controller.pool.value?.joiningPrice.toString()??'5 Lakh',
+          () => Text(
+            controller.pool.value?.joiningPrice.toString() ?? '5 Lakh',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: const Color(0xFF003921),
@@ -180,7 +188,7 @@ class LeaderboardWinningResultScreen
             // Winning Tab
             winingWidget(),
             // Result Tab
-             resultWidget().marginOnly(right: margin_10),
+            resultWidget().marginOnly(right: margin_10),
           ],
         ),
       ),
@@ -195,10 +203,15 @@ class LeaderboardWinningResultScreen
         beTheFirstText(),
         Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
 
+        Center(
+          child: AssetImageWidget(
+            "assets/icons/dashboard.gif",
+            imageHeight: height_200,
+            imageWidth: Get.width * 0.7,
+          ),
+        ),
 
-       Center(child: AssetImageWidget( "assets/icons/dashboard.gif", imageHeight: height_200, imageWidth: Get.width*0.7))
-
-       /* SizedBox(
+        /* SizedBox(
           width: 162,
           child: Text(
             'All Team (20,35,6)',
@@ -228,7 +241,7 @@ class LeaderboardWinningResultScreen
           ),
         ),*/
       ],
-    ).marginOnly(left: margin_10,);
+    ).marginOnly(left: margin_10);
   }
 
   Widget leaderBoardCellWidget() {
@@ -308,45 +321,52 @@ class LeaderboardWinningResultScreen
         // Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
         // guarantedMaximumBreakupWidget(),
         Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.only(bottom: margin_20),
-            shrinkWrap: true,
-            itemCount: controller.prizeList.length,
-            itemBuilder: (context, index) {
-              final entry = controller.prizeList[index];
+        Obx(
+          () => Expanded(
+            child: ListView.separated(
+              padding: EdgeInsets.only(bottom: margin_20),
+              shrinkWrap: true,
+              itemCount: controller.winingPrizesList.length,
+              itemBuilder: (context, index) {
+                final cell = controller.winingPrizesList[index];
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Section Header (if any)
-                  if (entry.sectionHeader != null)
-                    sectionDivider(entry.sectionHeader!),
+                return winningCell(cell: cell, index: index);
 
-                  // Top banner for Rank 1 (centered)
-                  if (entry.rank == "Rank 1") ...[
-                    const Center(
-                      child: Text(
-                        "Rank 1",
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        entry.prize,
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                /*Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Section Header (if any)
+                    if (entry.sectionHeader != null)
+                      sectionDivider(entry.sectionHeader!),
+
+                    // Top banner for Rank 1 (centered)
+                    if (entry.rank == "Rank 1") ...[
+                      const Center(
+                        child: Text(
+                          "Rank 1",
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                  ] else
-                    prizeRow(entry.rank, entry.prize),
-                ],
-              );
-            },
+                      Center(
+                        child: Text(
+                          entry.prize,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ] else
+                      prizeRow(entry.rank, entry.prize),
+                  ],
+                );*/
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(color: Colors.grey.shade300).marginSymmetric(vertical: margin_10).marginOnly(right: margin_10);
+              },
+            ),
           ),
         ),
       ],
@@ -368,28 +388,33 @@ class LeaderboardWinningResultScreen
         spacing: 10,
         children: [
           Obx(
-          ()=> Expanded(
+            () => Expanded(
               child: GestureDetector(
                 onTap: () {
                   controller.selectedBreakUpIndexTab.value = 0;
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration:controller.selectedBreakUpIndexTab.value==1?BoxDecoration():ShapeDecoration(
-                    color: const Color(0xFFF2F3F7),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 2,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
                   ),
+                  decoration: controller.selectedBreakUpIndexTab.value == 1
+                      ? BoxDecoration()
+                      : ShapeDecoration(
+                          color: const Color(0xFFF2F3F7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 2,
+                              offset: Offset(0, 0),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
                   child: Text(
                     'Guaranteed Breakup',
                     textAlign: TextAlign.center,
@@ -405,28 +430,33 @@ class LeaderboardWinningResultScreen
             ),
           ),
           Obx(
-            ()=> Expanded(
+            () => Expanded(
               child: GestureDetector(
                 onTap: () {
                   controller.selectedBreakUpIndexTab.value = 1;
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration:controller.selectedBreakUpIndexTab.value==0?BoxDecoration():ShapeDecoration(
-                    color: const Color(0xFFF2F3F7),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 2,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
                   ),
+                  decoration: controller.selectedBreakUpIndexTab.value == 0
+                      ? BoxDecoration()
+                      : ShapeDecoration(
+                          color: const Color(0xFFF2F3F7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 2,
+                              offset: Offset(0, 0),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
                   child: Text(
                     'maximum Breakup',
                     style: TextStyle(
@@ -445,7 +475,7 @@ class LeaderboardWinningResultScreen
     );
   }
 
-  Widget prizeRow(String rank, String prize) {
+  Widget prizeRow({ rank,  prize}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -475,7 +505,7 @@ class LeaderboardWinningResultScreen
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
               title,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style:  TextStyle(fontSize: font_16, color: Colors.grey),
             ),
           ),
           const Expanded(child: Divider(color: Colors.grey)),
@@ -496,9 +526,11 @@ class LeaderboardWinningResultScreen
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return upcomingMatchCell( onTap: (){
-                Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
-              });
+              return upcomingMatchCell(
+                onTap: () {
+                  Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+                },
+              );
             },
             itemCount: 5,
             physics: NeverScrollableScrollPhysics(),
@@ -506,5 +538,45 @@ class LeaderboardWinningResultScreen
         ),
       ],
     ).marginOnly(left: margin_10);
+  }
+
+  winningCell({required SlotCell cell, index}) {
+    return Column(
+      children: [
+        sectionDivider(
+          handleRank(
+            index: index,
+          ),
+        ).marginSymmetric(horizontal: margin_70),
+        handleRankWiseText(prize: IndianCurrencyConverter.convertToWords(cell.prize??1000)),
+        prizeRow(prize:cell.prize.toString()??IndianCurrencyConverter.convertToWords(cell.prize??1000)??"",rank: cell.fromRank == cell.toRank?"# ${cell.fromRank}":'# ${cell.fromRank} - ${cell.toRank}'),
+      ],
+    );
+  }
+
+  String handleRank({required index, fromRank, toRank}) {
+    return "Rank ${index+1}";
+
+    if (index == 0) {
+
+    } else if (index == 1) {
+      return "Rank 2";
+    } else if (index == 2) {
+      return "Rank 3";
+    }
+    return "Rank $fromRank - $toRank";
+  }
+
+  handleRankWiseText({prize}) {
+    return Center(
+      child: Text(
+        "₹ $prize",
+        style:  TextStyle(
+          fontSize: font_22,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
   }
 }

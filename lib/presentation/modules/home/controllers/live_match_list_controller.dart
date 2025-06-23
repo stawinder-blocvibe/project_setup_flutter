@@ -10,8 +10,7 @@ class LiveMatchListController extends GetxController {
     "4",
     "6",
     "NB",
-    "0","NB",
-    "0",
+    "0", "6",
   ];
 
   RxList<LiveMatches> liveMatches = RxList();

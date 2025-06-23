@@ -1,17 +1,9 @@
-import 'package:base_project/app/core/utils/helper_widget.dart';
-import 'package:base_project/app/core/values/app_assets.dart';
-import 'package:base_project/app/core/values/app_values.dart';
-import 'package:base_project/app/core/widget/asset_image.dart';
-import 'package:base_project/app/export.dart';
+  import 'package:base_project/app/export.dart';
 import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
-import 'package:base_project/presentation/modules/main_parent/controllers/main_parent_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../controllers/my_matches_controller.dart';
+ import '../controllers/my_matches_controller.dart';
 
 class MyMatchesScreen extends GetView<MyMatchesController> {
-  final MyMatchesController controller = Get.put(MyMatchesController());
+   var controller = Get.put(MyMatchesController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +36,8 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
                             ),
                           ),
                         ),
-            
+
+
                         // Match list widget
                         myMatchesListWidget(),
                       ],
@@ -64,7 +57,7 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
 
     return
       Obx(
-          ()=>controller.myMatchList.isEmpty?AssetImageWidget(dashboardGifAsset).marginAll(margin_100): ListView.builder(
+          ()=>controller.myMatchList.isEmpty?AssetImageWidget(emptyListGifAsset).marginAll(margin_100): ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: controller.myMatchList.length,
@@ -87,9 +80,37 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
               teamBName: match.teamBName,
               venue: match.venue,
             );
+
+            var liveMatch = LiveMatches().copyWith(
+              matchId: match.matchId,
+              time: match.time,
+              date: match.date,
+              type: match.type,
+              title: match.title,
+              externalMatchId: match.externalMatchId,
+              startDatetime: match.startDatetime,
+              status: match.status,
+              teamAAbbr: match.teamAAbbr,
+              teamALogoUrl: match.teamALogoUrl,
+              teamAName: match.teamAName,
+              teamBAbbr: match.teamBAbbr,
+              teamBLogoUrl: match.teamBLogoUrl,
+              teamBName: match.teamBName,
+              venue: match.venue,
+            );
         return upcomingMatchCell(upcomingMatch: upcomm,onTap: (){
+
           Get.toNamed(AppRoutes.overBallSelectionResultScreenRoute,arguments: {
-            "isEdit":true
+            "isEdit":true,
+            'liveMatch':liveMatch,
+            'unComing':upcomm,
+          });
+          
+          return ;
+          Get.toNamed(AppRoutes.overBallSelectionResultScreenRoute,arguments: {
+            "isEdit":true,
+            'liveMatch':liveMatch,
+            'unComing':upcomm,
           });
         });
             }),

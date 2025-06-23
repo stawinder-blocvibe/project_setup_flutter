@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../app/export.dart';
 import '../models/home_api_response.dart';
+import '../models/slot_cell.dart';
 
 class LeaderboardWinningResultController extends GetxController with GetSingleTickerProviderStateMixin  {
   // Add your logic and variables here
@@ -52,9 +53,25 @@ class LeaderboardWinningResultController extends GetxController with GetSingleTi
     }
   }
 
+
+  RxList<SlotCell> winingPrizesList = RxList();
+  hitWinningResultApiCall(){
+    repository.winingPrizesListApi(matchId: liveMatch.value?.matchId??pool.value?.matchId).then((value){
+      if(value is List<SlotCell>){
+        winingPrizesList.value = value;
+        winingPrizesList.refresh();
+      }else{
+        winingPrizesList.value = [];
+        winingPrizesList.refresh();
+      }
+
+    });
+  }
+
   @override
   void onReady() {
     handleArgument();
+    hitWinningResultApiCall();
     super.onReady();
   }
 }

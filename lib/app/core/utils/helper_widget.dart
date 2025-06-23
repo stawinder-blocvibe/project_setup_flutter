@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:base_project/app/core/utils/helper_function.dart';
 import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
 import 'package:base_project/presentation/modules/home/models/pool_model.dart';
@@ -5,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:win32/win32.dart';
-
+import 'package:base_project/app/routes/app_routes.dart';
 
 import '../../export.dart';
 
@@ -108,32 +110,58 @@ Widget appBarWithWallet({ isHomeScreen = false,bool onlyWallet = false,onTapBack
             Spacer(),
             geniusButton(onTap:(){}).marginOnly(right: margin_10),
             onlyWallet?
-            Container(
-              height: height_30,
-              padding: const EdgeInsets.symmetric(vertical: 7,horizontal: 12),
-              alignment: Alignment.center,
-              decoration: ShapeDecoration(
-                color: Colors.black.withOpacity(0.2),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(60),
-                ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AssetImageWidget(addCashAsset,imageWidth: height_20,imageHeight: height_20,).marginOnly(right: margin_8),
-                  Text(
-                    'Add Cash',
-                    textAlign: TextAlign.center,
-                    style:TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+            GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.addAmountWalletRoute);
+              },
+              child: Container(
+                height: height_30,
+                padding: const EdgeInsets.symmetric(vertical: 7,horizontal: 12),
+                alignment: Alignment.center,
+                decoration: ShapeDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(60),
                   ),
-                  ).marginOnly(top: margin_2)
-                ],
-              ),
-            ).marginOnly(right: margin_20):
-            AssetImageWidget(walletIconAsset,imageWidth: height_20,imageHeight: height_20,).marginOnly(right: margin_20),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AssetImageWidget(addCashAsset,imageWidth: height_20,imageHeight: height_20,).marginOnly(right: margin_8),
+                    Obx(
+                      ()=>
+                          Text(
+                            (walletBalance.value>0)?
+                        "₹ ${walletBalance.value}":"Add Cash",
+                        textAlign: TextAlign.center,
+                        style:const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      ).marginOnly(top: margin_2),
+                    )
+                  ],
+                ),
+              ).marginOnly(right: margin_20),
+            ):
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AssetImageWidget(walletIconAsset,imageWidth: height_20,imageHeight: height_20,) ,
+                Obx(
+                ()=>Text(  "₹ ${walletBalance.value??"100"}" ,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ).marginOnly(top: margin_5,left: margin_5),
+                )
+              ],
+            ).marginOnly(right: margin_20),
 
           ],
         ),
@@ -141,6 +169,16 @@ Widget appBarWithWallet({ isHomeScreen = false,bool onlyWallet = false,onTapBack
     ),
   );
 
+}
+
+handleWalletBalance() {
+  //HelperFunction.isWalletBalanceZero()
+  if (walletBalance.value) {
+    return "Add Cash";
+  } else{
+    return null;
+  }
+  return "Add Cash";
 }
 
 Widget geniusButton({required  Function() onTap}) {
@@ -329,7 +367,7 @@ Widget contestCellWidget({onTap, required PoolModel pool}){
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  leftPart(sport: pool.maxParticipants.toString()),
+                  leftPart(sport: min(3,pool.maxParticipants??3).toString()),
                   rightPart()
                 ],
               ),
@@ -760,8 +798,7 @@ ballList() {
         "4",
         "6",
         "NB",
-        "0","NB",
-        "0",
+        "0",  "6",
       ]
           .map((name) => Container(
         margin: EdgeInsets.only(right: margin_4),
@@ -835,6 +872,8 @@ Widget item({needNextButton=false,title,asset,onTap}){
     child: Row(
       spacing: margin_8,
       children: [
+        (asset is IconData)?
+        Icon(asset,color: Colors.black,size: 20):
         AssetImageWidget(
           asset??profileIconAsset,imageFitType: BoxFit.cover,imageHeight: height_24,imageWidth: height_24,),
 
@@ -908,3 +947,76 @@ Widget classNameTitle({title,onTapBack,onTapClose}) {
     ],
   );
 }
+
+Widget inningWidget(){
+  return Container(
+    decoration: ShapeDecoration(
+      color: const Color(0xFF003921),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          width: 1,
+          color: Colors.white.withValues(alpha: 77),
+        ),
+        borderRadius: BorderRadius.circular(60),
+      ),
+    ),
+    padding: const EdgeInsets.all(8),
+    // child: ,
+  );
+}
+
+void showAddMoneyBottomSheet() {
+  showModalBottomSheet(
+    context: Get.context!,
+    isScrollControlled: true,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.account_balance_wallet_rounded, size: 48, color: Colors.amber[800]),
+            const SizedBox(height: 16),
+            Text(
+              "Add Money to Wallet",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "You need to add money to your wallet before proceeding.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.amber[800],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                icon: Icon(Icons.add_circle_outline, size: 20,color: Colors.white,),
+                label: Text("Add Money", style: TextStyle(fontSize: 16,color: Colors.white)),
+                onPressed: () {
+                  Get.back();
+                  Get.toNamed(AppRoutes.addAmountWalletRoute);
+
+                  // Navigator.pop(context); // Close bottom sheet
+                  // Navigator.pushNamed(context, "/add-money"); // Route to add money page
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+

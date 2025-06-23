@@ -125,7 +125,7 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget matchCarouselList() => Obx(
       ()=> SizedBox(
-          height: height_115, // Ensures a fixed height for the carousel
+        height:height_128,
           child: CarouselSlider.builder(
             options: CarouselOptions(
               onPageChanged: (value, r) {
@@ -134,7 +134,7 @@ class HomeScreen extends GetView<HomeController> {
                 debugPrint("Carousel Index: \\${controller.carousalIndex.value}");
               },
               viewportFraction: 1.0,
-              height: height_115,
+              height: Get.height*0.21,
               autoPlay: true,
               enableInfiniteScroll: false,
               reverse: false,
@@ -212,7 +212,7 @@ class HomeScreen extends GetView<HomeController> {
         border: Border.all(color: greenButtonColor),
       ),
       child: Column(
-  spacing: 12,
+           spacing: 12,
         children: [
 
           topWidget(liveMatch:liveMatch),

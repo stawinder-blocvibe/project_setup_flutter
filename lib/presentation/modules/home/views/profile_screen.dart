@@ -1,4 +1,5 @@
  import 'package:base_project/app/export.dart';
+import '../../authentication/models/response_models/user_data_model.dart';
 import '../controllers/profile_controller.dart';
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
@@ -29,13 +30,14 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     spacing: margin_8,
                     children: [
-                      item(),
-                      appDivider(),
+                      // item(),
+                      // appDivider(),
 
-                      item(title: "+91 - 9877995250"),
-                      appDivider(),
+                      Obx(()=> item(
+                          title: "+91 - ${currentUserDataModel.value.detail?.mobileNumber??"9877995251"}")),
+                      // appDivider(),
 
-                      item(title: "14 - 03 - 2001"),
+                      // item(title: "14 - 03 - 2001"),
                     ],
                   ),
                 ),
@@ -66,6 +68,7 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () {
                           Get.toNamed(AppRoutes.myInfoRoute);
                         },
+
                       ),
                     ],
                   ),
@@ -92,9 +95,7 @@ class ProfileScreen extends StatelessWidget {
                       item(title: "About us",onTap: (){
                         Get.toNamed(AppRoutes.aboutUsRoute);
                       }),
-                      appDivider(),
 
-                      item(title: "My info "),
                     ],
                   ),
                 ),
@@ -158,7 +159,11 @@ class ProfileScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(7),
         ),
       ),
-      child: item(title: "Log Out "),
+      child: item(title: "Log Out ",asset: Icons.login_rounded,onTap: (){
+        preferenceManger.clearLoginData();
+        currentUserDataModel.value = UserResponseModel();
+        Get.offAllNamed(AppRoutes.loginRoute);
+      }),
     );
   }
 

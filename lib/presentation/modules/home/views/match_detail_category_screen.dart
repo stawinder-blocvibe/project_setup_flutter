@@ -21,6 +21,70 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         body: ListView(
           children: [
             appBarWithWallet(onlyWallet:true),
+
+            Obx(
+                  ()=> Stack(
+                children: [
+                  const AssetImageWidget(matchGroundAsset),
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(1),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.transparent, // Required for BackdropFilter to work
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.matchScoreScreenRoute,arguments: {
+                        "liveMatch":controller.liveMatch.value,
+                      }
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        matchType(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Obx(()=> scoreSection(
+                              teamName: controller.liveMatch.value?.teamAAbbr,
+                              // over: "${controller.liveScore.value?.teamaScore?.overs}",
+                              // score: controller.liveScore.value?.teamaScore?.completeScore,
+                            )),
+                            NetworkImageWidget(
+                              imageUrl: controller.liveMatch.value?.teamALogoUrl??"",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: punjabPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            vsCircleWidget().marginSymmetric(
+                                horizontal: margin_15),
+                            NetworkImageWidget(
+                              imageUrl: controller.liveMatch.value?.teamBLogoUrl??"",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: cskPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            Obx(()=>  scoreSection(teamName: controller.liveMatch.value?.teamBAbbr,))
+                              // over: "${controller.liveScore.value?.teambScore?.overs}",
+                              // score: controller.liveScore.value?.teambScore?.completeScore,)),
+                          ],
+                        ),
+                      ],
+                    ).marginOnly(top: margin_40),
+                  ),
+                  playingTextWidget(teamName: controller.liveMatch.value?.teamAName),
+                 ],
+              ),
+            ),
+            partnershipWidget(),
+            if(false)
             Stack(
               children: [
                 SizedBox(
@@ -185,23 +249,18 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
     );
   }
 
-  playingTextWidget(){
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            'CSK Is playing their Innings',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+  Widget playingTextWidget({teamName}){
+    return Center(
+      child: Text(
+        '$teamName Is playing their Innings',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 13,
+          fontWeight: FontWeight.w700,
         ),
-        viewFullScoreBoard()
-      ],
-    ).marginOnly(top: margin_140);
+      ),
+    ).marginOnly(top: margin_160);
   }
 
   Widget syncWidget(){
@@ -210,6 +269,11 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         child: AssetImageWidget(syncIconAsset,imageWidth: height_40,imageHeight: height_40,).marginOnly(top: margin_190,right: margin_20));
   }
 
+  // viewFullScoreBoard(onTap: (){
+  // Get.toNamed(AppRoutes.matchScoreScreenRoute,arguments: {
+  // "liveMatch":controller.liveMatch.value,
+  // });
+  // })
   Widget partnershipWidget(){
     return SizedBox(
       height: Get.height*0.90,
@@ -222,8 +286,10 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
               "liveMatch":controller.liveMatch.value,
             });
           }),
-          cricketCategoryCard(
+          cricketCategoryCard
+            (
             onTap: (){
+              debugPrint("liveMatch.value===>${controller.liveMatch.value?.toJson()}");
               Get.toNamed(AppRoutes.contestListScreenRoute,arguments: {
                 "liveMatch":controller.liveMatch.value,
               });
@@ -233,29 +299,33 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
                 Color(0xFF381C7D),
               ]),
               borderColor: Color(0xFF3A266D),
-              title: "Kurukshetra\n(120 balls)",margin: EdgeInsets.all(margin_16,).copyWith(top: 0))
+              title: "Kurukshetra\n(120 balls)",
+              margin: EdgeInsets.all(margin_16,).copyWith(top: 0))
         ],
-      ).marginOnly(top: margin_230),
+      ),
     );
   }
  
 
 
-  Widget viewFullScoreBoard() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-       AssetImageWidget(viewFullScoreBoardBgAsset,imageWidth: height_150,),
-        const Text(
-          'View Full Scorecard',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Segoe UI',
+  Widget viewFullScoreBoard({onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+         AssetImageWidget(viewFullScoreBoardBgAsset,imageWidth: height_150,),
+          const Text(
+            'View Full Scorecard',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Segoe UI',
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

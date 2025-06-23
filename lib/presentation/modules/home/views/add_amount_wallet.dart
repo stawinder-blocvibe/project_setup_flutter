@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../app/core/values/app_assets.dart';
 import '../../../../app/core/values/app_values.dart';
+import '../controllers/add_amount_controller.dart';
 import '../controllers/profile_controller.dart';
 
-class AddAmountWallet extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
+class AddAmountWallet extends GetView<AddAmountController> {
+  final controller = Get.put(AddAmountController());
 
 
   @override
@@ -41,7 +42,11 @@ class AddAmountWallet extends StatelessWidget {
                   spacing: margin_10,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.arrow_back_ios,color: Colors.white,),
+                    GestureDetector(
+                        onTap:(){
+                          Get.back();
+        },
+                        child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                     hellowText(name: "Satwinder Shergill"),
 
                     Text(
@@ -49,51 +54,57 @@ class AddAmountWallet extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 13,
-                        fontFamily: 'Afacad',
-                        fontWeight: FontWeight.w500,
+                         fontWeight: FontWeight.w500,
                         letterSpacing: -0.26,
                       ),
                     ),
 
-                    walletBullCard()
+                    Obx(()=> walletBullCard(balance: walletBalance.value))
                   ],
                 ),
 
               ),
 
-              Row(
-                spacing: margin_10,
-                children: [
-                  amountPrizeCell(prize: "₹ 50.00"),
-                  amountPrizeCell(prize: "₹ 100.00"),
-                  amountPrizeCell(prize: "₹ 500.00"),
-                ],
+              Obx(
+                ()=> Row(
+                  // spacing: margin_10, // spacing is not a property of Row, use SizedBox for spacing
+                  children: [
+                    amountPrizeCell(prize: "₹ 50.00", isSelected: controller.selectedAmountIndex.value == 0, onTap: () {
+                      controller.selectedAmountIndex.value = 0;
+                      controller.selectedAmountIndex.refresh();
+                    }),
+                    SizedBox(width: margin_10),
+                    amountPrizeCell(prize: "₹ 100.00", isSelected: controller.selectedAmountIndex.value == 1, onTap: () {
+                      controller.selectedAmountIndex.value = 1;
+                      controller.selectedAmountIndex.refresh();
+                    }),
+                    SizedBox(width: margin_10),
+                    amountPrizeCell(prize: "₹ 500.00", isSelected: controller.selectedAmountIndex.value == 2, onTap: () {
+                      controller.selectedAmountIndex.value = 2;
+                      controller.selectedAmountIndex.refresh();
+                    }),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: height_36,
-                  child: amountPrizeCell(prize: "Other amount")),
+              // Fix for 'Other amount' cell: don't use Expanded, just a regular widget
+              amountPrizeCell(prize: "Other amount", isSelected: controller.selectedAmountIndex.value == 3, useExpanded: false, onTap: () {
+                controller.selectedAmountIndex.value = 3;
+                controller.selectedAmountIndex.refresh();
+              }),
 
               introductionCard(),
 
               Spacer(),
               checkWithText(),
-              appButton(onTap: (){},buttonText: "Add  ₹500"),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+              Obx(()=> appButton(onTap: (){
+                controller.addAmountCall(
+                  amount: handleAmount(),
+                  onPaymentDone: (){
+                    showInSnackBar(message: "Payment Done");
+                    Navigator.pop(Get.context!);
+                  }
+                );
+              },buttonText: "Add  ₹${handleAmount()}")),
 
 
 
@@ -117,7 +128,7 @@ class AddAmountWallet extends StatelessWidget {
     );
   }
 
-  Widget walletBullCard(){
+  Widget walletBullCard({balance}){
     return Container(//
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -150,12 +161,11 @@ class AddAmountWallet extends StatelessWidget {
                     ),
 
                     Text(
-                      '₹ 500.00',
+                      '₹ ${balance??"5000"}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
-                        fontFamily: 'Afacad',
-                        fontWeight: FontWeight.w500,
+                         fontWeight: FontWeight.w500,
                       ),
                     ).marginOnly(top: margin_10)
                   ],
@@ -172,12 +182,12 @@ class AddAmountWallet extends StatelessWidget {
   }
 
 
-  Widget amountPrizeCell({prize}){
-    return Expanded(
+  Widget amountPrizeCell({prize, required bool isSelected, onTap, bool useExpanded = true}) {
+    Widget cell = GestureDetector(
+      onTap: onTap,
       child: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-
         decoration: ShapeDecoration(
           gradient: LinearGradient(
             begin: Alignment(0.00, 0.50),
@@ -186,22 +196,23 @@ class AddAmountWallet extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              width: 0.50,
-              color: const Color(0xFF14A56E),
+              width: isSelected ? 1 : 0.50,
+              color: isSelected ? Colors.yellow : const Color(0xFF14A56E),
             ),
             borderRadius: BorderRadius.circular(8),
           ),
         ),
         child: Text(
-          prize??'50.00',
+          prize ?? '50.00',
           style: TextStyle(
             color: const Color(0xFF003921),
             fontSize: 14,
-             fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
     );
+    return useExpanded ? Expanded(child: cell) : cell;
   }
 
   Widget introductionCard(){
@@ -264,17 +275,33 @@ class AddAmountWallet extends StatelessWidget {
         Checkbox(value: true, onChanged: (value){
 
         }),
-        Text(
-          'A long established fact that a reader will be..',
-          style: TextStyle(
-            color: const Color(0xFF666666),
-            fontSize: 14,
-            fontFamily: 'Afacad',
-            fontWeight: FontWeight.w400,
+        Flexible(
+          child: Text(
+            'A long established fact that a reader will be..',
+            style: TextStyle(
+              color: const Color(0xFF666666),
+              fontSize: 14,
+              fontFamily: 'Afacad',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         )
       ],
     );
+  }
+
+  handleAmount() {
+
+    if(controller.selectedAmountIndex.value==0){
+      return 50.00;
+    }
+    else if(controller.selectedAmountIndex.value==1){
+      return 100.00;
+    }
+    else if(controller.selectedAmountIndex.value==2){
+      return 500.00;
+    }
+    return 0;
   }
 
 }

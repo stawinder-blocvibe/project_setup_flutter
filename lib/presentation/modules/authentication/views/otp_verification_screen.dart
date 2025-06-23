@@ -17,6 +17,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
         },
         child: Scaffold(
           backgroundColor: Colors.white,
+          resizeToAvoidBottomInset: false,
           
           body: Stack(
             alignment: Alignment.center,

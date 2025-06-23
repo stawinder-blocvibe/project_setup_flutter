@@ -37,7 +37,9 @@ class MyInfoScreen extends StatelessWidget {
 
               spacing: margin_10,
               children: [
-                myInfoText(),
+                classNameTitle(title: "My Info",onTapBack: (){
+                  Get.back();
+                }),
                 customCard(
                   child: Column(
                     spacing: margin_8,

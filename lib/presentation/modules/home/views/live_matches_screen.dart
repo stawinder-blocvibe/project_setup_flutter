@@ -17,7 +17,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
           spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            appBarWithWallet(onlyWallet:false),
+            appBarWithWallet(onlyWallet:true),
             const Text(
               'Live Matches',
               style: TextStyle(
@@ -281,8 +281,7 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 10,
-              fontFamily: 'Poltawski Nowy',
-              fontWeight: FontWeight.w400,
+               fontWeight: FontWeight.w400,
             ),
           ),
         ))

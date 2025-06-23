@@ -28,10 +28,11 @@ class MainParentScreen extends GetView<MainParentController> {
     child: Stack(
       clipBehavior: Clip.none,
       children: [
-        AssetImageWidget(appBarBgAsset,radiusAll: margin_10,).marginAll(margin_8).paddingSymmetric(vertical: margin_6,),
+        AssetImageWidget(appBarBgAsset,radiusAll: margin_10,).marginAll(margin_8).paddingSymmetric(vertical: margin_12,),
         Container(
           margin: EdgeInsets.all(margin_8),
-          padding: EdgeInsets.symmetric(vertical: margin_6),
+          padding: EdgeInsets.symmetric(vertical: margin_10),
+
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(radius_12),
             border: Border.all(color: Colors.transparent,),
@@ -75,7 +76,7 @@ class MainParentScreen extends GetView<MainParentController> {
                     label: "Home".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
-                        icon: Icons.sports_cricket,
+                        icon: myMatchAsset,
                         color: controller.bottomNavIndex.value == 1
                             ? Colors.white
                             : greyColor),
@@ -86,7 +87,7 @@ class MainParentScreen extends GetView<MainParentController> {
                 ),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
-                        icon: Icons.waterfall_chart,
+                        icon: myWinningsAsset,
                         color: controller.bottomNavIndex.value == 3
                             ? Colors.white
                             : greyColor),
@@ -186,5 +187,9 @@ class MainParentScreen extends GetView<MainParentController> {
       );*/
 
 
-  Widget _bottomIcon( {color,required IconData icon}) => Icon(icon,color: color,size: height_20,);
+  Widget _bottomIcon( {color,required icon}) =>
+      (icon is String)
+          ? AssetImageWidget(icon,imageHeight: height_20,color: color,)
+          :
+      Icon(icon,color: color,size: height_20,);
 }

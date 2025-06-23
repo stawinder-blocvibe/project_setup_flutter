@@ -36,9 +36,16 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String redBullAsset = 'assets/icons/red_bull.png';
  const String leftBullRightBallAsset = 'assets/icons/left_bull_right_ball.png';
  const String dashboardGifAsset = 'assets/icons/dashboard.gif';
+ const String emptyListGifAsset = 'assets/icons/empty_list_gif.gif';
 
  const String profileIconAsset = 'assets/icons/profile_icon.png';
  const String coinsAsset = 'assets/icons/coins.png';
+ const String matchGroundAsset = 'assets/icons/match_ground.png';
+ const String blueBallBgAsset = 'assets/icons/blue_ball_bg.png';
+ const String goldenBallBgAsset = 'assets/icons/golden_ball_bg.png';
+
+ const String myMatchAsset = 'assets/icons/my_match.png';  // 2th Tab
+ const String myWinningsAsset = 'assets/icons/my_winnings.png'; // 4th Tab
 
 
 

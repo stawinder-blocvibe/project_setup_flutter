@@ -6,8 +6,11 @@ import '../../../../app/core/values/app_assets.dart';
 import '../../../../app/core/values/app_values.dart';
 import '../controllers/profile_controller.dart';
 
-class MyWinnings extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
+class MyWinnings extends GetView<ProfileController> {
+
+  final bool needBackButton;
+  MyWinnings({required this.needBackButton, Key? key}) : super(key: key);
+   ProfileController controller = Get.put(ProfileController());
 
 
   @override
@@ -38,9 +41,10 @@ class MyWinnings extends StatelessWidget {
               spacing: margin_10,
               children: [
 //  'transaction history',
-                classNameTitle(title:   'My Winnings',onTapBack: (){
+                classNameTitle(title:   'My Winnings',onTapBack: needBackButton==true?
+                    (){
                   Get.back();
-                }),
+                }:null),
                  //'24x7 Help & Support'
 
 

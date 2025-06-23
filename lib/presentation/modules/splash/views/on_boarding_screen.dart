@@ -65,7 +65,7 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
     return SizedBox(
       width: 316,
       child: Text(
-        'Predict matches, earn rewards &\nclimb the leaderboard!',
+        'Predict matches, earn rewards & climb the leaderboard!',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,

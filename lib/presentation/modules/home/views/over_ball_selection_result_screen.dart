@@ -23,22 +23,20 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           child: Column(
             children: [
               appBarWithWallet(onlyWallet: true),
-          
-          
+
+
               Stack(
                 children: [
-                  AssetImageWidget(
-                    imageFitType: BoxFit.cover,
-                    stadiumBullBall,
-                    imageHeight: Get.height * 0.8,
-                    imageWidth: double.infinity
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: Get.height * 0.645,
-                      width: Get.width,
-                      color: const Color(0xFFEFFAF1),
+                  const AssetImageWidget(matchGroundAsset),
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(1),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.transparent, // Required for BackdropFilter to work
+                        ),
+                      ),
                     ),
                   ),
                   GestureDetector(
@@ -48,49 +46,46 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
                       }
                       );
                     },
-                    child: ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(1),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Column(
+                    child: Column(
+                      children: [
+                        matchType(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            matchType(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamAAbbr)),
-                                NetworkImageWidget(
-                                  imageUrl: "",
-                                  imageHeight: height_40,
-                                  imageWidth: height_40,
-                                  placeHolder: punjabPlaceHolderAsset,
-                                  // radiusAll: 50.r,
-                                ),
-                                vsCircleWidget().marginSymmetric(
-                                    horizontal: margin_15),
-                                NetworkImageWidget(
-                                  imageUrl: "",
-                                  imageHeight: height_40,
-                                  imageWidth: height_40,
-                                  placeHolder: cskPlaceHolderAsset,
-                                  // radiusAll: 50.r,
-                                ),
-                                Obx(()=>  scoreSection(teamName: controller.liveMatch.value?.teamBAbbr)),
-                              ],
+                            Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamAAbbr)),
+                            Obx(
+                              ()=> NetworkImageWidget(
+                                imageUrl:controller.liveMatch.value?.teamALogoUrl?? "",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: punjabPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
                             ),
+                            vsCircleWidget().marginSymmetric(
+                                horizontal: margin_15),
+                            Obx(
+                              ()=> NetworkImageWidget(
+                                imageUrl: controller.liveMatch.value?.teamBLogoUrl??"",
+                                imageHeight: height_40,
+                                imageWidth: height_40,
+                                placeHolder: cskPlaceHolderAsset,
+                                // radiusAll: 50.r,
+                              ),
+                            ),
+                            Obx(()=>  scoreSection(teamName: controller.liveMatch.value?.teamBAbbr)),
                           ],
-                        ).marginOnly(top: margin_40),
-                      ),
-                    ),
+                        ),
+                      ],
+                    ).marginOnly(top: margin_40),
                   ),
-                  playingTextWidget(),
-                  Positioned(
-                    right: 0,
-                    child: syncWidget(),
-                  ),
-                  partnershipWidget(),
+                  Obx(()=> playingTextWidget(teamNamePlaying: controller.liveMatch.value?.teamAName)),
                 ],
-              )
+              ),
+
+              partnershipWidget().marginOnly(top: margin_30),
+
+
           
             ],
           ),
@@ -191,10 +186,10 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
     );
   }
 
-  playingTextWidget() {
+ Widget playingTextWidget({teamNamePlaying}) {
     return Center(
       child: Text(
-        'CSK Is playing their Innings',
+        '$teamNamePlaying Is playing their Innings',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,
@@ -236,22 +231,21 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           selectOverBlockWidget(),
           selectBallBlockWidget(title:"Ball" ),
 
+       // actualBallOvers.value = indexBasedActualBalls(index: 0);
+          //         actualBallOvers.refresh();
+
+       // selectionBall
           Obx(
-              ()=> controller.myPredictions.isEmpty?SizedBox():
+              ()=> controller.actualBallOvers.isEmpty?
+              SizedBox():
+              resultBallBlockWidget(title: "Actual ball", ballList:controller.indexBasedActualBalls(index: controller.selectedBallIndex.value??0)
+              )
+          ),
 
-                  Column(
-                    children: controller.myPredictions.first.innings?.first.overs?.map((e)=>
-                        resultBallBlockWidget(title: "Actual ball", ballList:e.input?.map((e)=>e.toString()).toList()??[]
-                        )).toList()??[],
-                  )??
-              resultBallBlockWidget(ballList: controller.myPredictions.first.innings?.first.overs?.first.input?.map((e)=>e.toString()).toList()??[],title: "Actual Ball")
-                  ??
-              Text("${controller.myPredictions.first.innings?.first.overs?.first.input?.length}").marginOnly(left: margin_20)
-
-          )
+          // testCOlumn()
 
         ],
-      ).marginOnly(top: margin_230),
+      ).marginOnly(top: 0??margin_230),
     );
   }
 
@@ -272,6 +266,7 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
     return GestureDetector(
       onTap: onTap,
       child: Container(
+
         decoration: isOverSelected?BoxDecoration(
           border: Border.all(color: greenButtonColor),
           borderRadius: BorderRadius.circular(12.r),
@@ -279,12 +274,12 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
         child: Stack(
           alignment: Alignment.center,
           children: [
-            AssetImageWidget(overOverDefaultBgAsset, imageWidth: height_35,
+            AssetImageWidget(blueBallBgAsset, imageWidth: height_35,
               imageHeight: height_35,),
             Text(
               data ?? "02",
               style: const TextStyle(
-                color: Color(0xFF004225),
+                color: Colors.white??Color(0xFF004225),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
@@ -308,12 +303,12 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
         child: Stack(
           alignment: Alignment.center,
           children: [
-            AssetImageWidget(ballSelectionDefaultAsset, imageWidth: height_35,
+            AssetImageWidget(blueBallBgAsset, imageWidth: height_35,
               imageHeight: height_35,),
             Text(
               data ?? "02",
               style: const TextStyle(
-                color: Color(0xFF004225),
+                color: Colors.white??Color(0xFF004225),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
@@ -329,8 +324,7 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: margin_4),
-        margin: EdgeInsets.symmetric(vertical: margin_2),
+
         decoration: isBallSelected?BoxDecoration(
           border: Border.all(color: greenButtonColor),
           borderRadius: BorderRadius.circular(12.r),
@@ -339,11 +333,11 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           alignment: Alignment.center,
           children: [
             AssetImageWidget(//greenBgWithBorderAsset
-              selectedBallAsset, imageWidth: height_30, imageHeight: height_30,),
+              goldenBallBgAsset??selectedBallAsset, imageWidth: height_35, imageHeight: height_35),
             Text(
               data ?? "02",
               style: const TextStyle(
-                color: Color(0xFF004225),
+                color: Colors.black??Color(0xFF004225),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
@@ -402,13 +396,29 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
         // Space between rows
         children: List.generate(items.length, (index) {
           return
+          controller.testMyPredictedOverList.contains((index+1))?
+              selectedBall(
+                onTap: (){
+                  controller.updateBallIndex(ballValue:((index+1).toString()),index: index );
+                  controller.actualBallOvers.value = controller.indexBasedActualBalls(index: index);
+                  controller.actualBallOvers.refresh();
+                  controller.myBalls.toList().forEach((ball){
+
+                    debugPrint("myBallsmyBallsmyBalls=>${ball.toJson()}");
+                  });
+                  },
+                  data: (index+1).toString(),
+                isBallSelected: controller.selectedBallIndex.value==index
+              ):
           bgDefaultOver(
 
               data: "${index + 1}",
-              isOverSelected: controller.selectedOverIndex.value==index,
-              onTap: (){
-            // controller.updateOverIndex(index: index, overValue: "${index + 1}");
-          }
+              isOverSelected: controller.selectedBallIndex.value==index,
+            onTap: (){
+              controller.updateBallIndex(ballValue:((index+1).toString()),index: index );
+              controller.actualBallOvers.value = controller.indexBasedActualBalls(index: index);
+              controller.actualBallOvers.refresh();
+              },
           ) ;
 
         }),
@@ -428,6 +438,7 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
       // ),
       margin: EdgeInsets.only(left: margin_20, right: margin_20),
 
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 20,
@@ -435,9 +446,6 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           Row(
             children: [
               headingTextWidget(title: "Over"),
-              Spacer(),
-
-
 
             ],
           ),
@@ -445,16 +453,18 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
             alignment: Alignment.bottomRight,
             children: [
               trophyLogoWidget(width: width_150),
+
+
               Container(
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(18),
-                //   border: Border.all(color: appGreen)
-                // ),
-                // padding: EdgeInsets.all(),
                   height: Get.height * 0.18,
+                  // padding: EdgeInsets.all(margin_10),
+                  // decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20.r),
+                  //     border: Border.all(color:  Color(0xFF14A56E))
+                  // ),
                   child: overGridWidget(
                       items: List.generate(20, (index) => "$index"))),
-              trophyLogoWidget()
+              // trophyLogoWidget()
             ],
           ),
 
@@ -476,7 +486,6 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             headingTextWidget(title: title).marginOnly(left: margin_20),
-            // headingTextWidget(title: "Apply").marginOnly(left: margin_20,right: margin_20),
 
           ],
         ),
@@ -490,25 +499,13 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
             padding: EdgeInsets.only(left: margin_20, right: margin_20),
             itemCount: 6,
             itemBuilder: (context, index) {
-              return Obx(() =>
-              controller.isBallHaveValue(overIndex: controller.selectedOverIndex.value,ballIndex: index)
-                  ? selectedBall(
-                  onTap: () {
-                    // controller.updateBallIndex(
-                    //     index: index, ballValue: "${index + 1}");
-                  },
-                  data: "${controller.getBallValue(ballIndex: index,overIndex: controller.selectedOverIndex.value??0)}",
-                  isBallSelected: controller.selectedBallIndex.value == index).marginOnly(
-                  bottom: margin_10,
 
-              )
-                  : bgDefaultBall(
-                isBallSelected: controller.selectedBallIndex.value == index,
-                  data: "${index + 1}", onTap: () {
-                // controller.updateBallIndex(
-                //     index: index, ballValue: "${index + 1}");
-                  }
-              ).marginOnly(bottom: margin_10));
+              return  Obx(
+                  ()=> bgDefaultBall(
+                    isBallSelected: false,
+                    data: handleBallData(index: index, overMatch: "${index+1}")
+                ).marginOnly(bottom: margin_10),
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(width: height_10,);
@@ -559,160 +556,7 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
 
 
 
-  Widget buildCustomButtonGrid() {
-    final List<Map<String, String>> gridButtons = [
-      {'main': '0', 'sub': ''},
-      {'main': '1', 'sub': ''},
-      {'main': '2', 'sub': ''},
-      {'main': '3', 'sub': ''},
-      {'main': '4', 'sub': 'FOUR'},
-      {'main': '6', 'sub': 'SIX'},
-      {'main': 'WD', 'sub': ''},
-      {'main': 'NB', 'sub': ''},
-      {'main': 'BYE', 'sub': ''},
-    ];
 
-    final List<String> rightButtons = ['UNDO', '5, 7', 'Out', 'LB'];
-
-    return Container(
-      height: 192,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Left side: grid
-          Expanded(
-            flex: 4,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: gridButtons.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.35,
-                mainAxisSpacing: 0,
-                crossAxisSpacing: 0,
-              ),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final item = gridButtons[index];
-                return InkWell(
-                  onTap: () async {
-                    // handle grid button tap
-                    debugPrint('Tapped:111 ${item['main']}');
-
-                    await controller.setOverBallValue(
-                        overIndex: controller.selectedOverIndex.value ?? 0,
-                        ballIndex: controller.selectedBallIndex.value ?? 0,
-                        value: item['main']!);
-                    // Future.delayed(Duration(seconds: 3),(){
-                    //   handleBottomSheet();
-                    // });
-
-
-                    var isAllBallSelected = controller.isAllOverBallSelected(overIndex: controller.selectedOverIndex.value??0);
-
-                    if(isAllBallSelected)  handleBottomSheet();
-
-
-                      return;
-                    showBallActionBottomSheet(
-                      context: context,
-                      overNumber: controller.selectedOverIndex.value ?? 0,
-                      ballNumber: ((controller.selectedBallIndex.value??0)+1) ?? 0,
-                      action: item['main']!,
-                      onAccept: () async {
-                        await controller.setOverBallValue(
-                            overIndex: controller.selectedOverIndex.value ?? 0,
-                            ballIndex: controller.selectedBallIndex.value ?? 0,
-                            value: item['main']!);
-
-                        // Future.delayed(Duration(seconds: 3),(){
-                        //   handleBottomSheet();
-                        // });
-
-                      },
-                      onReject: () {
-
-                      },
-                    );
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            item['main']!,
-                            style: TextStyle(fontSize: 20, color: Colors.grey[700]),
-                          ),
-                          if (item['sub']!.isNotEmpty)
-                            Text(
-                              item['sub']!,
-                              style: TextStyle(fontSize: 10, color: Colors.grey[400]),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          // Right side: vertical list of buttons
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: rightButtons.map((text) {
-                return Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint("Tapped: $text");
-                      controller.handleRightSideButtonTap(data: text);
-                      return;
-                      controller.setOverBallValue(overIndex: controller.selectedOverIndex.value??0,
-                          ballIndex: controller.selectedBallIndex.value??0, value: "");
-
-                      // controller.handleRightSideButtonTap();
-                      return;
-                      handleBottomSheet();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        color: Colors.grey.shade100,
-                      ),
-                      child: Center(
-                        child: Text(
-                          text,
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 
 
@@ -953,351 +797,61 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
     );
   }
 
-  void handleBottomSheet() {
-    var context = Get.context!;
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) =>  confirmationBottomSheet(
-          context: context,onClose: (){
-        Get.back();
-      },
-          onJoin: (){
-            Get.back();
-            controller.hitJoinContest(
-              onSuccess: (){
 
 
-                showDialog(
-                  context: Get.context!,
-                  barrierDismissible: true,
-                  builder: (context) => Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: transactionSuccessTicketDialog((){
-                      Get.back();
-                      // Get.offAndToNamed(AppRoutes.mainParentRoute);
-                    }),
-                  ),
-                );
-              }
-            );
 
 
-          }
-      ),
-    );
+
+
+
+
+
+
+
+
+
+
+
+  String handleBallData({required int index, required String overMatch}) {
+
+    var MYOver = controller.myBalls.firstWhereOrNull((over)=>over.overNumber.toString()==((controller.selectedBallIndex.value??0)+1).toString());
+
+    if(MYOver==null){
+      return overMatch;
+    }
+
+    if(index==0){
+      return MYOver.firstBall??overMatch;
+    }
+    if(index==1){
+      return MYOver.secondBall??overMatch;
+    }
+    if(index==2){
+      return MYOver.thirdBall??overMatch;
+    }
+    if(index==3){
+      return  MYOver.fourthBall??overMatch;
+    }
+    if(index==4){
+      return MYOver.fifthBall??overMatch;
+    }
+    if(index==5){
+      return MYOver.sixthBall??overMatch;
+
+    }
+    return "";
+
   }
 
-  Widget transactionSuccessTicketDialog(Function()? onClose) {
-    return Center(
-      child: TicketWidget(
-        width: Get.width,
-        height: Get.height*0.428,
-        isCornerRounded: true,
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-        color: Colors.white,
-        child: Stack(
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 10,
-              children: [
-
-                circleBgWidget(),
-                Text(
-                  "Thank you!",
-                  style: TextStyle(
-                    color: const Color(0xFF003921),
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-             
-                Text(
-                  "Your Transaction was Successful",
-                  style: TextStyle(
-                    color: Colors.black.withValues(alpha: 128),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-           AssetImageWidget(dividerDottedAsset).marginSymmetric(vertical: margin_12),
-                dateTimeWidget(),
-
-                amountStatus(amount: "19"),
-
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Payment Method",
-                    style: TextStyle(
-                      color: Colors.black.withValues(alpha: 128),
-                      fontSize: 10,
-
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-
-                Container(
-                   padding: const EdgeInsets.all(12),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFF3F5FB),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFEBEBEB),
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      AssetImageWidget(walletIconAsset,imageHeight: height_15,color: color_black.withOpacity(0.5),)??
-                      Icon(Icons.account_balance_wallet, color: Colors.grey.shade700),
-                      const SizedBox(width: 12),
-                      Text(
-                        "Ballstreet Wallet",
-                        style: TextStyle(
-                          color: const Color(0xFF003921),
-                          fontSize: 14,
-
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-               ],
-            ),
-            Positioned(
-              right: 0,
-              top: 0,
-              child: GestureDetector(
-                onTap: onClose,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey.shade300,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    size: 20,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _infoColumn(String label, String value) {
+  testCOlumn() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade600,
-            letterSpacing: 1,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
+
+        AssetImageWidget(blueBallBgAsset, imageWidth: height_35,
+          imageHeight: height_35,),
+        AssetImageWidget(goldenBallBgAsset, imageWidth: height_35,
+          imageHeight: height_35,),
       ],
     );
   }
-
-  circleBgWidget() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        AssetImageWidget(greenBgWithBorderAsset,imageWidth: height_50,imageHeight: height_50,),
-        const Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 28,
-        )
-      ],
-    );
-  }
-
-  dateTimeWidget(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        dateTimeCell(time: DateFormat("d MMM, y").format(DateTime.now())),
-        dateTimeCell(crossAxisAlignment: CrossAxisAlignment.end,time: DateFormat("h:MM a").format(DateTime.now()),date: "Time"),
-      ],
-    );
-  }
-
-  dateTimeCell({date,time,crossAxisAlignment}) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: crossAxisAlignment??CrossAxisAlignment.start,
-        children: [
-          Text(
-            date??'Date',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black.withValues(alpha: 128),
-              fontSize: 10,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-            Text(
-            time??'20 June, 2017',
-            maxLines: 1,
-            style: const TextStyle(
-              color: Color(0xFF003921),
-              fontSize: 14,
-               fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget amountStatus({amount}){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'AMOUNT ',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black.withValues(alpha: 128),
-                fontSize: 10,
-
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Text(
-              '₹ ${amount ?? 49.00}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: const Color(0xFF003921),
-                fontSize: 16,
-
-                fontWeight: FontWeight.w500,
-              ),
-            )
-          ],
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 5, left: 5, right: 4, bottom: 5),
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                width: 0.50,
-                color: const Color(0xFFD1D1D1),
-              ),
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          child:const  Text(
-            'Completed',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: const Color(0xFF003921),
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-
-
-
-  void showBallActionBottomSheet({
-    required BuildContext context,
-    required int overNumber,
-    required int ballNumber,
-    dynamic action,
-    required VoidCallback onAccept,
-    required VoidCallback onReject,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Over ${overNumber+1} - Ball ${ballNumber} - Action ${action}",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      onAccept();
-                    },
-                    icon: Icon(Icons.check, color: Colors.white),
-                    label: Text("Accept",style: TextStyle(
-                      color: Colors.white
-                    ),),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      onReject();
-                    },
-                    icon: Icon(Icons.close, color: Colors.white),
-                    label: Text("Reject",style: TextStyle(
-                        color: Colors.white
-                    )),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-
 }

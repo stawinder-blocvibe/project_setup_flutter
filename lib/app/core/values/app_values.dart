@@ -1,11 +1,4 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
+
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -277,6 +270,7 @@ double height_115 = 115.0.h;
 double height_120 = 120.0.h;
 double height_122 = 122.0.h;
 double height_125 = 125.0.h;
+double height_128 = 128.0.h;
 double height_130 = 130.0.h;
 double height_135 = 135.0.h;
 double height_140 = 140.0.h;

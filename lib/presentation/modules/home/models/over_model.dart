@@ -1,13 +1,13 @@
 
 
 class Over {
-  final int overNumber;
-  final String firstBall;
-  final String secondBall;
-  final String thirdBall;
-  final String fourthBall;
-  final String fifthBall;
-  final String sixthBall;
+  final dynamic overNumber;
+  final dynamic firstBall;
+  final dynamic secondBall;
+  final dynamic thirdBall;
+  final dynamic fourthBall;
+  final dynamic fifthBall;
+  final dynamic sixthBall;
 
   Over({
     required this.overNumber,
@@ -19,7 +19,7 @@ class Over {
     required this.sixthBall,
   });
 
-  factory Over.fromJson(Map<String, dynamic> json) {
+  factory Over.fromJson(Map<dynamic, dynamic> json) {
     return Over(
       overNumber: json['overNumber'],
       firstBall: json['firstBall'],
@@ -31,7 +31,7 @@ class Over {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'overNumber': overNumber,
       'firstBall': firstBall,
@@ -44,13 +44,13 @@ class Over {
   }
 
   Over copyWith({
-    int? overNumber,
-    String? firstBall,
-    String? secondBall,
-    String? thirdBall,
-    String? fourthBall,
-    String? fifthBall,
-    String? sixthBall,
+    dynamic? overNumber,
+    dynamic? firstBall,
+    dynamic? secondBall,
+    dynamic? thirdBall,
+    dynamic? fourthBall,
+    dynamic? fifthBall,
+    dynamic? sixthBall,
   }) {
     return Over(
       overNumber: overNumber ?? this.overNumber,

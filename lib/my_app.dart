@@ -7,8 +7,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Safely retrieve the route arguments
 
-
-
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {

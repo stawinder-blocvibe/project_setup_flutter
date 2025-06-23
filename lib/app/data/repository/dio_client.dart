@@ -1,11 +1,4 @@
-/*
- * @copyright : ToXSL Technologies Pvt. Ltd. < www.toxsl.com >
- * @author     : Shiv Charan Panjeta < shiv@toxsl.com >
- * All Rights Reserved.
- * Proprietary and confidential :  All information contained herein is, and remains
- * the property of ToXSL Technologies Pvt. Ltd. and its partners.
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
+  
 
 import 'package:base_project/app/export.dart';
 import 'package:dio/io.dart';
@@ -81,13 +74,7 @@ class DioClient {
         var token = _preferenceManger.getAuthToken();
         debugPrint("token $token");
         if (token != null) {
-          ///old
-          /*  options = Options(headers: {
-            "Authorization": "Bearer $token",
-            'User-Agent': await getUserAgent(),
-          });*/
 
-          ///new
           options = Options(
               headers: {"Authorization": "Bearer $token", "lang": localKey});
         }
@@ -217,4 +204,6 @@ class DioClient {
         "Development/FoodApp_Customer/${packageInfo.version} (${details.deviceName} / Android version:${details.deviceVersion})");
     return "Development/FoodApp_Customer/${packageInfo.version} (${details.deviceName} / Android version:${details.deviceVersion})";
   }
+
 }
+

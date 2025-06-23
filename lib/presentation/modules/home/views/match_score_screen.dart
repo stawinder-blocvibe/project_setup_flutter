@@ -10,84 +10,146 @@ import '../controllers/upcoming_match_list_controller.dart';
 
 class MatchScoreScreen extends GetView<MatchScoreController> {
 
-
+//liveScore
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEFFAF1),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              appBarWithWallet(onlyWallet:true),
-          
-          
-              Stack(
+        child: Column(
+          children: [
+            appBarWithWallet(onlyWallet:true),
+
+
+
+            Obx(
+                ()=> Stack(
                 children: [
-                  Expanded(child: AssetImageWidget(
-                      imageFitType: BoxFit.cover,
-                      stadiumBullBall,
-                      imageHeight: Get.height*0.8,
-                      imageWidth: double.infinity
-          
-                  )),
-                  Positioned(
-                    bottom: 0,
-                     child: Container(
-                      height: Get.height*0.645,
-                      width: Get.width,
-                      color: const Color(0xFFEFFAF1),
+                  const AssetImageWidget(matchGroundAsset),
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(1),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.transparent, // Required for BackdropFilter to work
+                        ),
+                      ),
                     ),
                   ),
-          
-          
-          
-                  ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(1),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Column(
-                        children: [
-                          matchType(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamAAbbr)),
-                              NetworkImageWidget(
-                                imageUrl: controller.liveMatch.value?.teamALogoUrl??"",
-                                imageHeight: height_40,
-                                imageWidth: height_40,
-                                placeHolder: punjabPlaceHolderAsset,
-                                // radiusAll: 50.r,
-                              ),
-                              vsCircleWidget().marginSymmetric(horizontal: margin_15),
-                              NetworkImageWidget(
-                                imageUrl: controller.liveMatch.value?.teamBLogoUrl??"",
-                                imageHeight: height_40,
-                                imageWidth: height_40,
-                                placeHolder: cskPlaceHolderAsset,
-                                // radiusAll: 50.r,
-                              ),
-                              Obx(()=> scoreSection(teamName: controller.liveMatch.value?.teamBAbbr)),
-                            ],
-                          ),
-                        ],
-                      ).marginOnly(top: margin_40),
-                    ),
+                  GestureDetector(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.matchScoreScreenRoute,arguments: {
+                        "liveMatch":controller.liveMatch.value,
+                      }
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        matchType(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Obx(()=> scoreSection(
+                                teamName: controller.liveMatch.value?.teamAAbbr,
+                            over: "${controller.liveScore.value?.teamaScore?.overs}",
+                              score: controller.liveScore.value?.teamaScore?.completeScore,
+                            )),
+                            NetworkImageWidget(
+                              imageUrl: controller.liveMatch.value?.teamALogoUrl??"",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: punjabPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            vsCircleWidget().marginSymmetric(
+                                horizontal: margin_15),
+                            NetworkImageWidget(
+                              imageUrl: controller.liveMatch.value?.teamBLogoUrl??"",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: cskPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            Obx(()=>  scoreSection(teamName: controller.liveMatch.value?.teamBAbbr,
+                              over: "${controller.liveScore.value?.teambScore?.overs}",
+                              score: controller.liveScore.value?.teambScore?.completeScore,)),
+                          ],
+                        ),
+                      ],
+                    ).marginOnly(top: margin_40),
                   ),
-
-
-                  // if(controller.liveMatch.value.externalMatchId)
-                  Obx(()=> playingTextWidget(teamName: controller.liveMatch.value?.teamAAbbr)),
-                  syncWidget(),
-          
-                  partnershipWidget(),
-          
+                  playingTextWidget(teamName: controller.liveMatch.value?.teamAName),
                 ],
-              )
-          
-            ],
-          ),
+              ),
+            ),
+
+
+                // partnershipWidget(),
+
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(top: margin_20),
+                children: [
+                  Container(
+                    // height: height_200,
+                    width: Get.width,
+                    padding: EdgeInsets.only(bottom: margin_20),
+                    decoration: BoxDecoration(
+              
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: appGreen)
+                    ),
+                    margin: EdgeInsets.only(left: margin_20,right: margin_20),
+              
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 20,
+                      children: [
+                        partnershipCell(),
+              
+                        Obx(
+                              ()=> parnersDetails(
+                            centerScore: controller.liveScore.value?.teamaScore?.completeScore,
+                            firstPlayerName: controller.liveScore.value?.batsman?.first.name,
+                            firstPlayerScore: "${controller.liveScore.value?.batsman?.first.runs}(${controller.liveScore.value?.batsman?.first.balls})",
+                            secondPlayerName: controller.liveScore.value?.batsman?.last.name,
+                            secondPlayerScore:"${controller.liveScore.value?.batsman?.last.runs}(${controller.liveScore.value?.batsman?.last.balls})",
+                          ),
+                        ),
+                        overBallDetails(),
+                        loremTextWidget(),
+                      ],
+                    ),
+                  ),
+                  Obx(
+                        ()=> battingStatsCard(
+                      firstPlayerName: controller.liveScore.value?.batsman?.first.name,
+                      first_b: controller.liveScore.value?.batsman?.first.balls.toString(),
+                      firstPlayerChaukaCount: controller.liveScore.value?.batsman?.first.fours.toString(),
+                      firstPlayerShakkaCount: controller.liveScore.value?.batsman?.first.sixes.toString(),
+                      secondPlayerName: controller.liveScore.value?.batsman?.last.name,
+                      second_b: controller.liveScore.value?.batsman?.last.balls.toString(),
+                      secondPlayerChaukaCount: controller.liveScore.value?.batsman?.last.fours.toString(),
+                      secondPlayerShakkaCount: controller.liveScore.value?.batsman?.last.sixes.toString(),
+              
+                    ),
+                  ),
+                  Obx(
+                        ()=> ballingStatsCard(
+                      ballerName: controller.liveScore.value?.bowler?.name.toString(),
+                      // missedCount: controller.liveScore.value?.bowler?.,
+                      overCount: controller.liveScore.value?.bowler?.overs.toString(),
+                      runsCount: controller.liveScore.value?.bowler?.runs.toString(),
+                      wideCount: controller.liveScore.value?.bowler?.wickets.toString(),
+                    ),
+                  )
+                ],
+              ),
+            )
+
+
+          ],
         ),
       ),
     );
@@ -107,7 +169,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
       ),
     );
   }
-  Widget scoreSection({teamName}){
+  Widget scoreSection({teamName,score='0' ,over='0.0'}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +196,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
             spacing: 2,
             children: [
               Text(
-                '226 - 8',
+                '$score',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
@@ -145,7 +207,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
               SizedBox(
                 width: 47,
                 child: Text(
-                  '18.9 ov',
+                  '$over ov',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -205,9 +267,9 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
   }
 
   Widget partnershipWidget(){
-    return Container(
+    return Expanded(
       // color: Colors.red,
-      height: Get.height*0.90,
+
       child: ListView(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
@@ -228,49 +290,84 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
               spacing: 20,
               children: [
                 partnershipCell(),
-                parnersDetails(),
+
+                Obx(
+                    ()=> parnersDetails(
+                    centerScore: controller.liveScore.value?.teamaScore?.completeScore,
+                     firstPlayerName: controller.liveScore.value?.batsman?.first.name,
+                    firstPlayerScore: "${controller.liveScore.value?.batsman?.first.runs}(${controller.liveScore.value?.batsman?.first.balls})",
+                     secondPlayerName: controller.liveScore.value?.batsman?.last.name,
+                    secondPlayerScore:"${controller.liveScore.value?.batsman?.last.runs}(${controller.liveScore.value?.batsman?.last.balls})",
+                  ),
+                ),
                 overBallDetails(),
                 loremTextWidget(),
               ],
             ),
           ),
-          battingStatsCard(),
-          ballingStatsCard()
+          Obx(
+            ()=> battingStatsCard(
+              firstPlayerName: controller.liveScore.value?.batsman?.first.name,
+              first_b: controller.liveScore.value?.batsman?.first.balls.toString(),
+              firstPlayerChaukaCount: controller.liveScore.value?.batsman?.first.fours.toString(),
+              firstPlayerShakkaCount: controller.liveScore.value?.batsman?.first.sixes.toString(),
+              secondPlayerName: controller.liveScore.value?.batsman?.last.name,
+              second_b: controller.liveScore.value?.batsman?.last.balls.toString(),
+              secondPlayerChaukaCount: controller.liveScore.value?.batsman?.last.fours.toString(),
+              secondPlayerShakkaCount: controller.liveScore.value?.batsman?.last.sixes.toString(),
+
+            ),
+          ),
+          Obx(
+              ()=> ballingStatsCard(
+              ballerName: controller.liveScore.value?.bowler?.name.toString(),
+              // missedCount: controller.liveScore.value?.bowler?.,
+              overCount: controller.liveScore.value?.bowler?.overs.toString(),
+              runsCount: controller.liveScore.value?.bowler?.runs.toString(),
+              wideCount: controller.liveScore.value?.bowler?.wickets.toString(),
+            ),
+          )
         ],
-      ).marginOnly(top: margin_230),
+      ).marginOnly(top: margin_20),
     );
   }
 
   partnershipCell(){
-    return Container(
-      height: height_25,
-      width: width_100,
+    return GestureDetector(
+      onTap: (){
+        debugPrint("Partnership Cell Clicked");
+        // repository.testApi();
+      },
+      child: Container(
+        height: height_25,
+        width: width_100,
 
-      alignment: Alignment.center,
+        alignment: Alignment.center,
 
-      margin: const EdgeInsets.only(top: 20),
-      decoration: ShapeDecoration(
-        color: const Color(0xFFDD2727),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(8),
-            bottomRight: Radius.circular(8),
+        margin: const EdgeInsets.only(top: 20),
+        decoration: ShapeDecoration(
+          color: const Color(0xFFDD2727),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            ),
           ),
         ),
-      ),
-      child:  Text(
-        'Partnership',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
+        child:  Text(
+          'Partnership',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
 
-          fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );
   }
 
-  Widget parnersDetails(){
+  Widget parnersDetails({ firstPlayerName, secondPlayerName,firstPlayerScore, secondPlayerScore,centerScore,firstPlayerImage, secondPlayerImage}) {
     return Container(
       width: double.infinity,
       alignment: Alignment.center,
@@ -303,12 +400,11 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                         spacing: 1,
                         children: [
                           Text(
-                            'Kl Rahul',
+                            firstPlayerName??'Kl Rahul',
                             style: TextStyle(
                               color: const Color(0xFF003921),
-                              fontSize: 12,
-                              fontFamily: 'Maleah',
-                              fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                               fontWeight: FontWeight.w700,
                             ),
                           ),
                          ],
@@ -327,7 +423,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                       ),
                     ),
                     Text(
-                      '12(27)',
+                      firstPlayerScore??'12(27)',
                       style: TextStyle(
                         color: const Color(0xFF003921),
                         fontSize: 14,
@@ -339,12 +435,12 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                   ],
                 ),
               ),
-              profileWithGreenBg(imageAsset:klRahulProfileAsset),
+              profileWithGreenBg(imageAsset:firstPlayerImage??klRahulProfileAsset),
 
             ],
           ),
           Text(
-            '12(27)',
+            centerScore??'12(27)',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: const Color(0xFF003921),
@@ -359,7 +455,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 6,
             children: [
-              profileWithGreenBg(imageAsset:rjJadegaProfileAsset),
+              profileWithGreenBg(imageAsset:secondPlayerImage??rjJadegaProfileAsset),
               Container(
                 width: 50,
                 child: Column(
@@ -377,12 +473,11 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                         spacing: 1,
                         children: [
                           Text(
-                            'R Jadeja',
+                            secondPlayerName??'R Jadeja',
                             style: TextStyle(
                               color: const Color(0xFF003921),
-                              fontSize: 12,
-                              fontFamily: 'Maleah',
-                              fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           Container(
@@ -401,7 +496,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                       ),
                     ),
                     Text(
-                      '12(27)',
+                      secondPlayerScore??'12(27)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFF003921),
@@ -432,8 +527,9 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
             imageHeight: height_40,
             imageWidth: height_40,
           ),
-          AssetImageWidget(
-            imageAsset??rjJadegaProfileAsset,
+          NetworkImageWidget(
+            imageUrl: imageAsset,
+            placeHolder: imageAsset,
             imageHeight: height_30,
             imageWidth: height_30,
             imageFitType: BoxFit.cover,
@@ -509,7 +605,16 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
 
 
 
-  Widget battingStatsCard() {
+  Widget battingStatsCard({
+    firstPlayerName,
+    secondPlayerName,
+    first_b,
+    firstPlayerChaukaCount,
+    firstPlayerShakkaCount,
+    second_b,
+    secondPlayerChaukaCount,
+    secondPlayerShakkaCount
+  }) {
     return Container(
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(16),
@@ -523,6 +628,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
         children: [
           // Header Row
           Row(
+
             children: [
               const Text(
                 'Batsman',
@@ -532,6 +638,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                 ),
               ),
               const SizedBox(width: 8),
+              if(false)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
@@ -557,49 +664,61 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
               const Text("6’s", style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-          const Divider(thickness: 1, height: 25),
+          const Divider(thickness: 1, height: 25,color:Colors.grey),
           // Row 1: KL Rahul
           Row(
             children: [
-              const Text(
-                'Kl Rahul',
-                style: TextStyle(fontSize: 16),
+                Text(
+                firstPlayerName??'Kl Rahul',
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(width: 6),
               const Icon(Icons.circle, size: 8, color: Colors.red),
               const Spacer(),
               const Text('S'),
               const SizedBox(width: 30),
-              const Text('5'),
+                Text(first_b??'5'),
               const SizedBox(width: 30),
-              const Text("4’s"),
+                Text(firstPlayerShakkaCount??"4’s"),
               const SizedBox(width: 30),
-              const Text("6’s"),
+                Text(firstPlayerShakkaCount??"6’s"),
+              SizedBox(
+                width: 12,
+              )
             ],
           ),
           const SizedBox(height: 12),
           // Row 2: R Jadeja
           Row(
-            children: const [
+            children:  [
               Text(
-                'R Jadeja',
+                secondPlayerName??'R Jadeja',
                 style: TextStyle(fontSize: 16),
               ),
               Spacer(),
               Text('S'),
               SizedBox(width: 30),
-              Text('5'),
+              Text(second_b??'5'),
               SizedBox(width: 30),
-              Text("4’s"),
+              Text(secondPlayerChaukaCount??"4’s"),
               SizedBox(width: 30),
-              Text("6’s"),
+              Text(secondPlayerShakkaCount??"6’s"),
+              SizedBox(
+                width: 12,
+              )
             ],
           ),
         ],
       ),
     );
   }
-  Widget ballingStatsCard() {
+  Widget ballingStatsCard({
+    ballerName ,
+    overCount ,
+    missedCount,
+    runsCount ,
+    wideCount
+}) {
     return Container(
       margin: const EdgeInsets.all(20).copyWith(top: 0),
       padding: const EdgeInsets.all(16),
@@ -615,13 +734,14 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
           Row(
             children: [
               const Text(
-                'Batsman',
+                'Baller ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               const SizedBox(width: 8),
+              if(false)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
@@ -647,24 +767,24 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
               const Text("W", style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-          const Divider(thickness: 1, height: 25),
+          const Divider(thickness: 1, height: 25,color:Colors.grey),
           // Row 1: KL Rahul
           Row(
             children: [
-              const Text(
-                'Lasith Malinga',
+               Text(
+                 ballerName??'Lasith Malinga',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(width: 6),
               const Icon(Icons.circle, size: 8, color: Colors.red),
               const Spacer(),
-              const Text('5'),
+                Text(overCount??'5'),
               const SizedBox(width: 30),
               const Text('B'),
               const SizedBox(width: 30),
-              const Text("26"),
+                Text(runsCount??"26"),
               const SizedBox(width: 30),
-              const Text("2"),
+                Text(wideCount??"2"),
             ],
           ),
 

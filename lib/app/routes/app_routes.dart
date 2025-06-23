@@ -6,6 +6,7 @@ abstract class AppRoutes {
   static const liveMatchesScreenRoute = "/liveMatchesScreenRoute";
   static const upcomingMatchesScreenRoute = "/upcomingMatchesScreenRoute";
   static const overBallSelectionScreenRoute = "/overBallSelectionScreenRoute";
+  static const harOverBallSelectionRoute = "/harOverBallSelectionRoute";
   static const overBallSelectionResultScreenRoute = "/overBallSelectionResultScreenRoute";
   static const matchScoreScreenRoute = "/matchScoreScreenRoute";
   static const loginRoute = '/loginRoute';
@@ -169,5 +170,7 @@ abstract class AppRoutes {
   static const trackOrderScreen = "/trackOrderScreen";
   static const aboutUsMobileView = "/aboutUsMobileView";
   static const supportChatScreen = '/supportChatScreen';
+  static const testPageRoute = '/testPageRoute';
+  static const myContestResultCardRoute = '/myContestResultCardRoute';
 
 }

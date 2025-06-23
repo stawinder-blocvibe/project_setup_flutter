@@ -4,7 +4,10 @@ import 'package:base_project/presentation/modules/home/models/home_api_response.
 import 'package:base_project/presentation/modules/home/models/pool_model.dart';
 import 'package:base_project/presentation/modules/home/models/save_prediction_model.dart';
 
+import 'package:base_project/presentation/modules/home/models/match_prediction_model.dart'as match_prediction;
+
 import '../../../../app/export.dart';
+
 import '../models/over_model.dart';
 import '../views/bottom_sheets.dart';
 
@@ -316,29 +319,104 @@ class OverBallSelectionResultController extends GetxController {
      debugPrint("user=====>${user.value?.toJson()}");
 
 
-       hitAllPredictionApi();
+
+       // hitAllPredictionApi()
+
+     hitApisMatch(poolId: pool.value?.poolId,matchId: liveMatch.value?.matchId??pool.value?.matchId,userId: user.value?.id);
+
    });
 
   }
 
 
-  RxList<SavePredictionModel> myPredictions = RxList();
-  Future hitAllPredictionApi()async {
-    repository.allPredictionApi(userId: user.value?.id).then((value){
 
-      debugPrint("ddddddd====>${(value['data'][0]['overPrediction'])}");
-      if(value!=null && value['data']!=null){
-        var list = value['data'] as List;
-        myPredictions.clear();
-        list.forEach((element){
-         var overPrediction =  element['overPrediction'];
-         myPredictions.add(SavePredictionModel.fromJson(overPrediction));
+
+  Rx<match_prediction.MatchPredictionModel?> myPrediction = Rxn();
+  Rx<match_prediction.MatchPredictionModel?> finalPrediction = Rxn();
+
+
+
+
+
+  List<String> myPredictOvers(){
+    if(myPrediction.value?.overPrediction?.innings?.first?.overs?.isEmpty==true) return [];
+    var list = <String>[];
+
+    myPrediction.value?.overPrediction?.innings?.first?.overs?.forEach((over){
+       list.add(over.over.toString());
+     });
+     return list;
+  }
+  hitApisMatch({userId,matchId,poolId}) async {
+
+    debugPrint("MATCH_PAYLOAD______=>userId:$userId\nmatchId:$matchId\npoolId:${poolId}");
+    repository.getUsersMatchPredictionApi(userId: userId,matchId: matchId,poolId: poolId,needKuruk: false).then((value){
+      if(value is match_prediction.MatchPredictionModel){
+        myPrediction.value = value;
+        myPrediction.refresh();
+
+        myBalls.clear();
+        testMyPredictedOverList.clear();
+
+        myPrediction.value?.overPrediction?.innings?.first.overs?.forEach((overCell){
+          testMyPredictedOverList.add(overCell.over!);
+          myBalls.add( Over(
+              overNumber: overCell.over,
+              firstBall: overCell.input?[0].toString(),
+              secondBall: overCell.input?[1].toString(),
+              thirdBall: overCell.input?[2].toString(),
+              fourthBall: overCell.input?[3].toString(),
+              fifthBall: overCell.input?[4].toString(),
+              sixthBall: overCell.input?[5].toString()
+          ));
         });
-        myPredictions.refresh();
-
-
-        debugPrint("myPredictionsmyPredictionsmyPredictions=>${myPredictions.length}");
+        myBalls.refresh();
+        testMyPredictedOverList.refresh();
+        debugPrint("OVERS_COUNT=>${myPrediction.value?.overPrediction?.innings?.first.overs}");
       }
+      debugPrint("myPredictionmyPrediction=>${myPrediction.value?.overPrediction?.innings?.first?.overs?.length}");
+      debugPrint("valuevaluevalue=>${value}");
+    });
+    repository.getMatchResultApi(matchId: matchId).then((value){
+        if( value is List<Over>){
+        finalResult.value = (value.reversed.toList());
+        finalResult.refresh();
+        actualBallOvers.value = indexBasedActualBalls(index: 0);
+        actualBallOvers.refresh();
+      }
+      debugPrint("myPredictionmyPrediction=>${finalPrediction.value?.overPrediction?.innings?.first?.overs?.length}");
+      debugPrint("valuevaluevalue=>${value}");
     });
   }
+
+
+  RxList<dynamic> testMyPredictedOverList = RxList(
+      [1,12,14,17,3]
+  );
+
+  RxList<dynamic> actualBallOvers = RxList(
+      [
+        4,4,5,6,0,1
+      ]
+  );
+
+
+
+
+  RxList<Over> finalResult = RxList();
+
+  List<String> indexBasedActualBalls({required int index}) {
+    if(finalResult.isEmpty) return [];
+    return [
+      finalResult[index].firstBall.toString(),
+      finalResult[index].secondBall.toString(),
+      finalResult[index].thirdBall.toString(),
+      finalResult[index].fourthBall.toString(),
+      finalResult[index].fifthBall.toString(),
+      finalResult[index].sixthBall.toString(),
+    ];
+  }
+
+  RxList<Over> myBalls = RxList();
+
 }

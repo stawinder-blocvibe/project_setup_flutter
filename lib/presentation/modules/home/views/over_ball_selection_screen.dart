@@ -82,7 +82,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                       ),
                     ),
                   ),
-                  playingTextWidget(),
+                  Obx(()=>
+                  playingTextWidget(teamName:controller.liveMatch.value?.teamAAbbr)),
                   Positioned(
                     right: 0,
                     child: SizedBox()??syncWidget(),
@@ -192,10 +193,10 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     );
   }
 
-  playingTextWidget() {
+  playingTextWidget({teamName}) {
     return Center(
       child: Text(
-        'CSK Is playing their Innings',
+        '${teamName??"CSK"} Is playing their Innings',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.white,
@@ -237,8 +238,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           selectOverBlockWidget(),
           selectBallBlockWidget(title:"Select Ball" ),
 
-          buildCustomButtonGrid()
-           ,
+          buildCustomButtonGrid(),
 
 
         ],
@@ -378,35 +378,33 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
 
 // Function to create a dynamic GridView with 7 items per row
   Widget overGridWidget({required List<String> items}) {
-    return Obx(
-      ()=> GridView.count(
-        padding: EdgeInsets.zero,
-        crossAxisCount: 7,
-        // 7 items per row
-        shrinkWrap: true,
-        // Makes height dynamic
-        physics: const NeverScrollableScrollPhysics(),
-        // Disables scrolling
-        crossAxisSpacing: 8,
-        // Space between columns
-        mainAxisSpacing: 8,
-        // Space between rows
-        children: List.generate(items.length, (index) {
-          return controller.isOverHaveBall(overIndex: index)?
-          selectedOver(data: "${index + 1}",  isOverSelected: controller.selectedOverIndex.value==index,
-              onTap: (){
-                controller.updateOverIndex(index: index, overValue: "${index + 1}");
-              }):
-          bgDefaultOver(
+    return GridView.count(
+      padding: EdgeInsets.zero,
+      crossAxisCount: 7,
+      // 7 items per row
+      shrinkWrap: true,
+      // Makes height dynamic
+      physics: const NeverScrollableScrollPhysics(),
+      // Disables scrolling
+      crossAxisSpacing: 8,
+      // Space between columns
+      mainAxisSpacing: 8,
+      // Space between rows
+      children: List.generate(items.length, (index) {
+        return controller.isOverHaveBall(overIndex: index)?
+        selectedOver(data: "${index + 1}",  isOverSelected: controller.selectedOverIndex.value==index,
+            onTap: (){
+              controller.updateOverIndex(index: index, overValue: "${index + 1}");
+            }):
+        bgDefaultOver(
 
-              data: "${index + 1}",
-              isOverSelected: controller.selectedOverIndex.value==index,
-              onTap: (){
-            controller.updateOverIndex(index: index, overValue: "${index + 1}");
-          }
-          )  ;
-        }),
-      ),
+            data: "${index + 1}",
+            isOverSelected: controller.selectedOverIndex.value==index,
+            onTap: (){
+              controller.updateOverIndex(index: index, overValue: "${index + 1}");
+            }
+        )  ;
+      }),
     );
   }
 
@@ -432,8 +430,9 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
               Spacer(),
 
 
-              Obx(()=> headingTextWidget(title: controller.inningSwitch.value?"Second inning":"First inning").marginOnly(left: margin_5)),
+              innigWidget().marginOnly(left: margin_5),
 
+              if(false)
               Obx(
                   ()=> Switch(
                       inactiveTrackColor: Colors.grey,
@@ -446,22 +445,25 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
 
             ],
           ),
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              trophyLogoWidget(width: width_150),
-              Container(
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(18),
-                //   border: Border.all(color: appGreen)
-                // ),
-                // padding: EdgeInsets.all(),
-                  height: Get.height * 0.18,
-                  child: overGridWidget(
-                      items: List.generate(20, (index) => "$index"))),
-              // trophyLogoWidget()
-            ],
-          ),
+          Obx(()=>
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  trophyLogoWidget(width: width_150),
+                  Container(
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(18),
+                    //   border: Border.all(color: appGreen)
+                    // ),
+                    // padding: EdgeInsets.all(),
+                      height: Get.height * 0.18,
+                      child: overGridWidget(
+                          items: List.generate(20, (index) => "$index"))),
+                  // trophyLogoWidget()
+                ],
+              ),
+          )
+
 
         ],
       ),
@@ -580,7 +582,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     final List<String> rightButtons = ['UNDO', '5, 7', 'Out', 'LB'];
 
     return Container(
-      height: 192,
+      height: height_150,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -627,7 +629,13 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
 
                     var isAllBallSelected = controller.isAllOverBallSelected(overIndex: controller.selectedOverIndex.value??0);
 
-                    if(isAllBallSelected)  handleBottomSheet();
+                    if(isAllBallSelected) {
+
+                      walletBalance.value>19?
+                      handleBottomSheet()
+                          :
+                      showAddMoneyBottomSheet();
+                    }
 
 
                       return;
@@ -972,8 +980,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
             Get.back();
             controller.hitJoinContest(
               onSuccess: (){
-
-
+                walletBalance.value = walletBalance.value -19;
+                walletBalance.refresh();
                 showDialog(
                   context: Get.context!,
                   barrierDismissible: true,
@@ -998,7 +1006,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     return Center(
       child: TicketWidget(
         width: Get.width,
-        height: Get.height*0.428,
+        height: Get.height*0.485,
         isCornerRounded: true,
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
         color: Colors.white,
@@ -1046,33 +1054,40 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   ),
                 ),
 
-                Container(
-                   padding: const EdgeInsets.all(12),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFF3F5FB),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFEBEBEB),
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      AssetImageWidget(walletIconAsset,imageHeight: height_15,color: color_black.withOpacity(0.5),)??
-                      Icon(Icons.account_balance_wallet, color: Colors.grey.shade700),
-                      const SizedBox(width: 12),
-                      Text(
-                        "Ballstreet Wallet",
-                        style: TextStyle(
-                          color: const Color(0xFF003921),
-                          fontSize: 14,
 
-                          fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap:(){
+                    Get.back();
+                    Get.toNamed(AppRoutes.addAmountWalletRoute);
+                  },
+                  child: Container(
+                     padding: const EdgeInsets.all(12),
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF3F5FB),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          color: const Color(0xFFEBEBEB),
                         ),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                    ],
+                    ),
+                    child: Row(
+                      children: [
+                        AssetImageWidget(walletIconAsset,imageHeight: height_15,color: color_black.withOpacity(0.5),)??
+                        Icon(Icons.account_balance_wallet, color: Colors.grey.shade700),
+                        const SizedBox(width: 12),
+                        Text(
+                          "Ballstreet Wallet",
+                          style: TextStyle(
+                            color: const Color(0xFF003921),
+                            fontSize: 14,
+
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                ],
@@ -1301,6 +1316,40 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           ),
         );
       },
+    );
+  }
+
+  Widget innigWidget({title}){
+    return Container(
+      padding: const EdgeInsets.all(8).copyWith(left:margin_12,right:margin_15),
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: const Color(0xFF003921),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1,
+            color: Colors.white.withValues(alpha: 77),
+          ),
+          borderRadius: BorderRadius.circular(60),
+        ),
+      ),
+      child:Row(
+          spacing:15,
+          children:[
+        AssetImageWidget(
+            overOverDefaultBgAsset,
+          imageHeight:height_15
+        ),
+        Text(
+          'INNING',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+             fontWeight: FontWeight.w500,
+          ),
+        ),
+      ])
     );
   }
 

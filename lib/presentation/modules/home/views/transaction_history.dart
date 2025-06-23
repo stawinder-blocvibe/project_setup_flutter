@@ -1,15 +1,19 @@
+import 'package:base_project/app/core/utils/helper_function.dart';
 import 'package:base_project/app/core/widget/asset_image.dart';
 import 'package:base_project/app/export.dart';
+import 'package:base_project/presentation/modules/home/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../app/core/values/app_assets.dart';
 import '../../../../app/core/values/app_values.dart';
 import '../controllers/profile_controller.dart';
-
-class TransactionHistory extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
+import '../controllers/transaction_history_controller.dart';
 
 
+class TransactionHistory extends GetView<TransactionHistoryController> {
+  final  controller = Get.put(TransactionHistoryController());
+
+//transactionDetailApi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +39,7 @@ class TransactionHistory extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
 
+
               spacing: margin_10,
               children: [
 //  'transaction history',
@@ -44,10 +49,20 @@ class TransactionHistory extends StatelessWidget {
                  //'24x7 Help & Support'
 
 
-                Column(
+                Obx(()=>
+                controller.transactionList.isEmpty?
+                Container(
 
-                  children: List.generate(12, (index)=>index%2==1? addAmountCell()
-                      :deductAmountCell()).toList(),
+                  height: Get.height*0.8,
+                  // color: Colors.red,
+                    alignment: Alignment.center,
+                    child: AssetImageWidget(
+                      emptyListGifAsset,imageFitType: BoxFit.cover,).marginAll(margin_100)):
+                    Column(
+                    children: List.generate(controller.transactionList.length, (index)=>controller.transactionList[index].type!="deduct" ?
+                    addAmountCell(transaction:controller.transactionList[index])
+                        :deductAmountCell(transaction:controller.transactionList[index])).toList(),
+                  ),
                 )
 
 
@@ -78,7 +93,7 @@ class TransactionHistory extends StatelessWidget {
     );
   }
 
-  Widget addAmountCell(){
+  Widget addAmountCell({required TransactionModel transaction}){
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
@@ -103,19 +118,17 @@ class TransactionHistory extends StatelessWidget {
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: 14,
-                    fontFamily: 'Afacad',
-                    fontWeight: FontWeight.w400,
+                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 Spacer(),
                 Text(
-                  '+ ₹5000.00',
+                  '+ ₹${transaction.amount}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: 13.47,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500,
+                     fontWeight: FontWeight.w500,
                   ),
                 )
               ],
@@ -123,7 +136,7 @@ class TransactionHistory extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '01 may, 10:28 PM',
+                  '01 Jun, 10:28 PM',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 9,
@@ -148,7 +161,7 @@ class TransactionHistory extends StatelessWidget {
       ),
     );
   }
-  Widget deductAmountCell(){
+  Widget deductAmountCell({required TransactionModel transaction}){
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
@@ -178,7 +191,7 @@ class TransactionHistory extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  '- ₹19',
+                  '- ₹${transaction.amount}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red.withOpacity(0.8),
@@ -191,12 +204,11 @@ class TransactionHistory extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '01 may, 10:28 PM',
+                  "18 Jun, 10:28 PM"??HelperFunction.formatDateTime( dateTimeString: transaction.createdAt!),
                   style: TextStyle(
                     color:Colors.red.withOpacity(0.7),
                     fontSize: 9,
-                    fontFamily: 'Afacad',
-                    fontWeight: FontWeight.w400,
+                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 Spacer(),
@@ -205,8 +217,7 @@ class TransactionHistory extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.red.withOpacity(0.7),
                     fontSize: 9,
-                    fontFamily: 'Afacad',
-                    fontWeight: FontWeight.w400,
+                     fontWeight: FontWeight.w400,
                   ),
                 )
               ],
@@ -216,5 +227,6 @@ class TransactionHistory extends StatelessWidget {
       ),
     );
   }
+
 
 }
