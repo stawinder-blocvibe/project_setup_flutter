@@ -42,8 +42,9 @@ class LoginScreen extends GetView<LoginController> {
     return Column(
       spacing: 8,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+       const Text(
           'Verify your phone number',
           style: TextStyle(
             color: Colors.white,
@@ -53,7 +54,7 @@ class LoginScreen extends GetView<LoginController> {
 
           ),
         ),
-        Text(
+        const Text(
           'We have send you an One Time Password(OTP) on this mobile Number',
           style: TextStyle(
             color: Colors.white,

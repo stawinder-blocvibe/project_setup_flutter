@@ -88,27 +88,42 @@ Widget appButton({ String? buttonText,  Widget? child, Function()? onTap}) {
   );
 }
 
-Widget appBarWithWallet({ isHomeScreen = false,bool onlyWallet = false,onTapBack}){
+Widget appBarWithWallet({
+  onTapGenius,
+  isHomeScreen = false,
+  bool onlyWallet = false,
+  onTapBack,gradient
+}){
   return Container(
     height: height_60,
     width: Get.width,
+
     child: Stack(
       alignment: Alignment.center,
       children: [
+        gradient!=null?
+        Container(
+          height: height_60,
+          width: Get.width,
+          decoration: BoxDecoration(
+            gradient: gradient
+          ),
+        ):
         AssetImageWidget(appBarBgAsset,imageHeight: height_60,imageFitType: BoxFit.cover,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // AssetImageWidget(ballStreetHorizontalLogo,imageHeight: height_20,imageWidth: height_140,).marginOnly(left: margin_20)
 
-            isHomeScreen==true?AssetImageWidget(leftBullRightBallAsset).marginAll(margin_10):
+            isHomeScreen==true?
+            AssetImageWidget(ballStreetLogo,imageHeight: height_30,).marginAll(margin_10):
             GestureDetector(
                 onTap: onTapBack??(){
                   Get.back();
                 },
                 child: Icon(CupertinoIcons.chevron_back,color: Colors.white,).marginOnly(left: margin_15)),
             Spacer(),
-            geniusButton(onTap:(){}).marginOnly(right: margin_10),
+            geniusButton(onTap:onTapGenius).marginOnly(right: margin_10),
             onlyWallet?
             GestureDetector(
               onTap: (){
@@ -171,6 +186,35 @@ Widget appBarWithWallet({ isHomeScreen = false,bool onlyWallet = false,onTapBack
 
 }
 
+Widget normalAppBar({title,onBackPress}){
+  return SizedBox(
+    height: height_60,
+    width: Get.width,
+    child: Stack(
+      children: [
+        AssetImageWidget(appBarBgAsset,imageHeight: height_60,imageFitType: BoxFit.cover,),
+
+        Center(
+          child: Text(
+            title??'Withdraw Cash',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+               fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if(onBackPress!=null)
+        Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            onTap: onBackPress,
+              child: Icon(CupertinoIcons.back,color:Colors.white)),
+        ).marginOnly(left: margin_15)
+      ],
+    ),
+  );
+}
 handleWalletBalance() {
   //HelperFunction.isWalletBalanceZero()
   if (walletBalance.value) {
@@ -181,24 +225,51 @@ handleWalletBalance() {
   return "Add Cash";
 }
 
-Widget geniusButton({required  Function() onTap}) {
-  return Chip(
-    shape: StadiumBorder(
-      side: BorderSide(color: Colors.white24), // Optional outline
-    ),
-    backgroundColor: Color(0xFF237E53), // Custom green
-    avatar: AssetImageWidget(premiumIconAsset,imageFitType: BoxFit.cover,imageHeight: height_20,imageWidth: height_20,),
-    label: Text(
-      'Genius',
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
+Widget geniusButton({onTap}) {
+  return Obx(
+    ()=> GestureDetector(
+      onTap: onTap,
+      child:
+      !isGenius.value?
+      Container(
+        padding: const EdgeInsets.all(10),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: const Color(0xFF454545),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 1, color: Colors.white),
+            borderRadius: BorderRadius.circular(60),
+          ),
+        ),
+        child:
+        Text(
+          'Become Genius',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: const Color(0xFFFFE467),
+            fontSize: 12,
+             fontWeight: FontWeight.w500,
+          ),
+        ).marginSymmetric(horizontal: margin_5),
+      ):Chip(
+        shape: StadiumBorder(
+          side: BorderSide(color: Colors.white24), // Optional outline
+        ),
+        backgroundColor: Color(0xFF237E53), // Custom green
+        avatar: AssetImageWidget(premiumIconAsset,imageFitType: BoxFit.cover,imageHeight: height_20,imageWidth: height_20,),
+        label: Text(
+          'Genius',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 11, vertical: 6),
       ),
     ),
-    padding: EdgeInsets.symmetric(horizontal: 11, vertical: 6),
   );
 }
-Widget cricketCategoryCard({title,subTitle,description,margin,onTap,gradient,borderColor}) {
+Widget cricketCategoryCard({title,titleFont,subTitle,description,margin,onTap,gradient,borderColor,scale}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -230,16 +301,16 @@ Widget cricketCategoryCard({title,subTitle,description,margin,onTap,gradient,bor
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:  [
                         Text(
-                          title??'Har Over\nCrorepati',
-                          style: const TextStyle(
-                            fontSize: 19 ,
+                          title??'Har Over\nCrorepati'.toUpperCase(),
+                          style:  TextStyle(
+                            fontSize: titleFont??font_22 ,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ).marginOnly(top: margin_10),
                         const  SizedBox(height: 8),
                         Text(
-                          maxLines: 3,
+                          maxLines: 4,
                           subTitle??'Lorem ipsum is a dummy or placeholder text commonly used. lorem ipsum is a dummy or placeholder text commonly used.',
                           style: const TextStyle(
 
@@ -251,7 +322,9 @@ Widget cricketCategoryCard({title,subTitle,description,margin,onTap,gradient,bor
                     ),
                   ),
 
-                   AssetImageWidget(ballBullWicketAsset,imageHeight: height_100,imageWidth: height_90,)
+                   Transform.scale(
+                       scale: scale??1.5,
+                       child: AssetImageWidget(ballBullWicketAsset,imageHeight: height_100,imageWidth: height_90,)).marginOnly(bottom: margin_25,right:margin_25 )
                 ],
               ).marginOnly(left: 16.r),
 
@@ -866,24 +939,27 @@ Widget customCard({required Widget child}){
     child: child,
   );
 }
-Widget item({needNextButton=false,title,asset,onTap}){
+Widget item({needNextButton=false,title,asset,onTap,titleStyle,iconSize,iconColor}){
   return GestureDetector(
     onTap: onTap,
     child: Row(
       spacing: margin_8,
       children: [
         (asset is IconData)?
-        Icon(asset,color: Colors.black,size: 20):
+        Icon(asset,color: iconColor??Colors.black,size: iconSize??20):
         AssetImageWidget(
           asset??profileIconAsset,imageFitType: BoxFit.cover,imageHeight: height_24,imageWidth: height_24,),
 
-        Text(
-          title??'Satwinder Shergill',
-          style: TextStyle(
-            color: const Color(0xFF003921),
-            fontSize: 14,
-            fontFamily: 'Afacad',
-            fontWeight: FontWeight.w400,
+        SizedBox(
+          width: Get.width*0.56,
+          child: Text(
+            maxLines: 2,
+            title??'Satwinder Shergill',
+            style: titleStyle??TextStyle(
+              color: const Color(0xFF003921),
+              fontSize: 14,
+               fontWeight: FontWeight.w400,
+            ),
           ),
         ),
         Spacer(),
@@ -893,26 +969,27 @@ Widget item({needNextButton=false,title,asset,onTap}){
     ),
   );
 }
-Widget appDivider(){
+Widget appDivider({color}){
   return Container(
     width: double.infinity,
     height: 1,
     padding: const EdgeInsets.all(10),
     clipBehavior: Clip.antiAlias,
-    decoration: BoxDecoration(color: const Color(0x19003921)),
+    decoration: BoxDecoration(color: color??const Color(0x19003921)),
   );
 }
-Widget classNameTitle({title,onTapBack,onTapClose}) {
+Widget classNameTitle({title,onTapBack,onTapClose,prefix}) {
   return Stack(
     children: [
+      if(prefix!=null)
+        prefix,
       Center(
         child: Text(
           title??'My profile',
-          style: TextStyle(
-            color: const Color(0xFF003921),
+          style: const TextStyle(
+            color:  Color(0xFF003921),
             fontSize: 18,
-            fontFamily: 'Ancizar Serif',
-            fontWeight: FontWeight.w500,
+             fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -944,6 +1021,8 @@ Widget classNameTitle({title,onTapBack,onTapClose}) {
                 child: Icon(Icons.arrow_back_ios_rounded, size: 15)),
           ),
         ),
+
+
     ],
   );
 }
@@ -1017,6 +1096,29 @@ void showAddMoneyBottomSheet() {
         ),
       );
     },
+  );
+
+
+}
+Widget companyDitails(){
+  return Text(
+    'Effective Date: 24/06/2025\nCompany Name: Ball Street PVT. LTD.\nApp Name: BALL STREET\nWebsite: www.ballstreet.club',
+    style: TextStyle(
+      color: const Color(0xFF666666),
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+    ),
+  );
+}
+Widget termsText(){
+  return   Text(
+    '1. Acceptance of Terms\nBy downloading, registering, or using the App/Website, you agree to these Terms and Conditions. If you do not agree, you must not use the platform.\n\n2. Eligibility\nYou must be 18 years or older to participate.\n\nYou are not allowed to use the app if you are a resident of the following states: Andhra Pradesh, Assam, Odisha, Sikkim, Nagaland, Telangana, Tamil Nadu or any other state where fantasy sports are prohibited.\n\nThe app reserves the right to block users from such states based on IP address or self-declaration.\n\n3. Game of Skill Declaration\nAll contests on the platform are games of skill as per applicable Indian laws. Success depends primarily on knowledge of cricket, decision-making, and strategy, not chance.\n\n4. Account Registration\nYou must provide accurate personal and banking details.\n\nYou are responsible for maintaining the confidentiality of your login information.\n\nThe company reserves the right to verify your identity at any point.\n\n5. Deposits and Withdrawals\nDeposits can be made via UPI, Net Banking, Debit/Credit Cards, or Wallets.\n\nWithdrawals are subject to KYC verification and may take up to 7 working days.\n\nA minimum withdrawal amount of ₹ 50 may apply.\n\nThe company reserves the right to charge processing fees and deduct applicable TDS.\n\n6. Contest Rules\nEntry fees, prize pools, scoring systems, and rules will be clearly displayed for each contest.\n\nThe company is not liable for any errors due to third-party data feeds (e.g., live match stats).\n\nOnce a contest is joined, the entry fee is non-refundable.\n\n7. Fair Play & Responsible Gaming\nMultiple accounts per user are strictly prohibited.\n\nUsers engaging in fraudulent, unfair, or suspicious activities may be suspended or permanently banned.\n\nPlay responsibly. If you feel addicted, contact support or self-exclude via your profile settings.\n\n8. Taxes and Compliance\nUsers are responsible for any taxes (including TDS on winnings above ₹10,000) as per Indian tax laws.\n\nThe company will issue appropriate TDS certificates (Form 16A) where applicable.\n\n9. Intellectual Property\nAll content, design, logos, and trademarks on the app are the property of BALL STREET PVT. LTD. You may not copy, distribute, or modify them without permission.\n\n10. Termination and Suspension\nThe company reserves the right to:\n\nSuspend accounts for any breach of terms\n\nCancel or modify contests if technical or legal issues arise\n\nForfeit winnings if rules are violated\n\n11. Limitation of Liability\nThe company is not liable for:\n\nLosses due to technical failures\n\nDelays in payment processing due to bank/payment gateway issues\n\nUser actions or third-party content\n\n12. Governing Law\nThese terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Kalyani, West Bengal.\n\n13. Contact Us\nFor any queries or concerns, please contact:\n\nEmail: support@ballstreet.club\nPhone: 8100201919\nAddress: B-10/128 Kalyani , Nadia West Bengal (741235)\n\n14. Disclaimer\nThis game involves an element of financial risk and may be addictive. Please play responsibly. Users below 18 years of age or from restricted states are not permitted to participate.\n     \n🧩 15. KYC & Identity Verification\nTo ensure compliance with legal and financial regulations:\n\nYou agree to provide valid KYC documents (PAN, Aadhaar, Bank details) before withdrawing any winnings.\n\nThe company reserves the right to withhold or cancel winnings until successful verification.\n\nUsers providing false documents may be permanently banned.\n\n📱 16. Use of Wallets\nThe app may offer three wallet types: Deposit Wallet, Winning Wallet, Bonus Wallet.\n\nFunds in the Bonus Wallet (earned via promotions/referrals) cannot be withdrawn or transferred.\n\nWallet balances are non-refundable, except as required by law.\n\n🎁 17. Referral Program Terms\nUsers can refer others to earn bonus rewards, subject to fair use.\n\nReferrals must be genuine users; creating fake accounts or abusing the system will lead to disqualification.\n\nReferral bonuses are platform credits unless specified otherwise.\n\n🚫 18. Prohibited Activities\nYou agree NOT to:\n\nUse VPNs or masking tools to access the app from restricted states.\n\nUse bots, scripts, or automation to join contests.\n\nExploit bugs, errors, or loopholes in the platform.\n\nHarass, threaten, or abuse other users.\n\n🔄 19. Changes to the Terms\nThe company reserves the right to update or change these terms at any time.\n\nContinued use of the platform after changes means you accept the new terms.\n\nIt is your responsibility to regularly check the latest version.\n\n🔐 20. Data Privacy & Security\nYour data is stored securely in compliance with Indian data protection laws.\n\nWe do not sell your personal data to third parties.\n\nFor more details, refer to our [Privacy Policy].\n\n⚖️ 21. Dispute Resolution\nFor any disputes, you must first contact support at support@ballstreet.club\n\nIf not resolved, disputes will be settled by arbitration in accordance with the Arbitration and Conciliation Act, 1996.\n\nArbitration will be held in [West Bengal, India] in English.\n\n🌐 22. Third-Party Services\nWe may use third-party APIs, data feeds, payment gateways, and analytics tools.\n\nWe are not liable for the accuracy or behavior of these services.\n     \n--------------------------------------------\n\nPrivacy Policy\nEffective Date: 24/06/2025\nCompany Name: Ball Street PVT. LTD.\nApp Name: BALL STREET\nWebsite: www.ballstreet.club\nWe value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share your information when you use our services.\n\n1. Information We Collect\na. Personal Information\nFull name\n\nMobile number\n\nEmail address\n\nDate of birth\n\nPAN and Aadhaar (for KYC)\n\nBank account or UPI ID (for withdrawals)\n\nb. Device & Usage Information\nIP address\n\nDevice type, OS, and browser type\n\nApp usage behavior\n\nLocation (for compliance with restricted states)\n\nc. Payment Information\nTransaction details (via Razorpay, Paytm, Cashfree, etc.)\n\nNo payment details like CVV or full card numbers are stored on our servers.\n\n2. Why We Collect Your Data\nWe use your data to:\n\nCreate and manage your account\n\nVerify your identity (KYC)\n\nProcess deposits and withdrawals\n\nMonitor fair play and detect fraud\n\nImprove our app’s performance and user experience\n\nComply with legal and tax obligations\n\n3. Data Sharing & Disclosure\nWe do not sell your data to third parties.\n\nWe may share your data with:\n\nParty	Purpose\nPayment gateways	For secure transactions\nKYC providers	For identity verification\nLegal authorities	If required by law or to prevent fraud\nAnalytics platforms (Google/Firebase)	To improve user experience\n\nAll third-party services are contractually obligated to protect your data.\n\n4. Cookies & Tracking\nWe use cookies, mobile SDKs, and tracking tools to:\n\nSave your login preferences\n\nUnderstand how you use the app\n\nShow personalized content and promotions\n\nYou can disable cookies via your device/browser settings, but this may affect app functionality.\n\n5. Data Retention\nWe retain your data:\n\nAs long as your account is active\n\nFor at least 5 years after closure to comply with tax and legal obligations\n\n6. User Rights\nYou can:\n\nRequest access to your personal data\n\nRequest correction or deletion (unless legally restricted)\n\nWithdraw consent to marketing/promotions\n\nPermanently close your account\n\nTo make a request, contact: privacy@ballstreet.club\n\n7. Children’s Privacy\nThis platform is intended only for users aged 18 and above. If we become aware that a user is under 18, we will delete their account and data immediately.\n\n8. Data Security\nWe implement industry-standard security measures, including:\n\nHTTPS encryption\n\nSecure servers\n\nLimited access protocols\n\nTwo-factor authentication (2FA) for internal staff\n\nHowever, no system is 100% secure. Users are responsible for keeping login details confidential.\n\n9. Changes to This Policy\nWe may update this Privacy Policy at any time. All changes will be posted with the "Effective Date". Continued use of the platform indicates acceptance of the revised policy.\n\n10. Contact Us\nIf you have any questions or complaints about this Privacy Policy, contact us at:\n\nEmail: privacy@ballstreet.club\nPhone: 8100201919\nAddress: C-30 Sector 63, Noida. (201301)\n     \n⚠️ Legal Disclaimer\nThis app is not available to users in restricted jurisdictions. Usage from banned states may result in data deletion without notice.\n',
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 15,
+      fontFamily: 'Clash Grotesk Variable',
+      fontWeight: FontWeight.w400,
+    ),
   );
 }
 

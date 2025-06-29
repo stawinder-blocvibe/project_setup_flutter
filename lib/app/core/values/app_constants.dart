@@ -107,3 +107,4 @@ const TYPE_WALLET_PAYMENT = 3;
 
 
 var fontFamily = "TanoheSans";
+var rupee = "₹ ";

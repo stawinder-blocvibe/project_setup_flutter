@@ -33,6 +33,8 @@ class ContestListScreenController extends GetxController {
   }
 
   Rx<UserDataModel?> user = Rxn();
+
+
   handleUserData() async {
     preferenceManger.getSavedLoginData().then((value) {
       user.value = value;

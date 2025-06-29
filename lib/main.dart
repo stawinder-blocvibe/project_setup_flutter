@@ -12,6 +12,7 @@ bool isOrder = false;
 var localKey;
 Rx<UserResponseModel> currentUserDataModel = UserResponseModel().obs;
 Rx<dynamic> walletBalance = Rxn(50000);
+Rx<dynamic> isGenius = Rxn(false);
 
 
 main() async {

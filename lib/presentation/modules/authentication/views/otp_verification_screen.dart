@@ -52,7 +52,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
         SizedBox(
           width: 316,
           child: Text(
-            'Enter the code from the sms we sent \nto ${controller.phone}',
+            'Enter the code from the sms we sent \nto ${controller.phone.toString()[0]}${controller.phone.toString()[1]}XXXXXXXX',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -223,7 +223,7 @@ class OtpVerificationScreen extends GetView<OtpVerificationController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Don't receive the OTP?",
+          "Didn't get a code?",
         textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,

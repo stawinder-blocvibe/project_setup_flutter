@@ -102,3 +102,11 @@ Color pinputBorderColor = Color(0xFFD27D08);
 Color appGreen = Color(0xFF004225);
 
 Color bottomBgColor =Color(0xFF003921);
+LinearGradient gradientHarOver = const LinearGradient(colors: [
+  Color(0xFFFA6162),
+  Color(0xFFFE2224),
+]);
+LinearGradient gradientKuruk = const LinearGradient(colors: [
+  Color(0xFF875CF2),
+  Color(0xFF381C7D),
+]);

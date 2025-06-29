@@ -118,6 +118,7 @@ class MatchScoreScreen extends GetView<MatchScoreController> {
                           ),
                         ),
                         overBallDetails(),
+                        if(false)
                         loremTextWidget(),
                       ],
                     ),

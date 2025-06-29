@@ -18,12 +18,12 @@ class HelpAndSupport extends StatelessWidget {
         child: Container(
           height: Get.height,
           margin: EdgeInsets.only(top: margin_10,right: margin_30),
-          decoration: ShapeDecoration(
-            color: const Color(0xFFFDFDFD),
+          decoration: const ShapeDecoration(
+            color: Color(0xFFFDFDFD),
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 width: 0.50,
-                color: const Color(0xFF14A56E),
+                color: Color(0xFF14A56E),
               ),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12),
@@ -33,21 +33,22 @@ class HelpAndSupport extends StatelessWidget {
           ),
           padding:  EdgeInsets.all(margin_20),
           child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             child: Column(
 
               spacing: margin_10,
               children: [
 
-                classNameTitle(title:   '24x7 Help & Support',onTapBack: (){
+                classNameTitle(title:   '24*7 Help & Support',onTapBack: (){
                   Get.back();
                 }),
-                 //'24x7 Help & Support'
+                 //'24*7 Help & Support'
                 customCard(
                   child: Column(
                     spacing: margin_8,
                     children: [
                       Text(
-                        'No recent activity yet to show',
+                        '24*7 Help & Support - BALL STREET  ',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: const Color(0xFF003921),
@@ -57,14 +58,14 @@ class HelpAndSupport extends StatelessWidget {
                       ),
 
                       Text(
-                        'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ',
-                        textAlign: TextAlign.center,
+                        "Welcome to BALL STREET support, we are here for your 24*7, because the game never stops, and neither do we.",
+                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: const Color(0xFF666666),
                           fontSize: 10,
                            fontWeight: FontWeight.w400,
                         ),
-                      ),
+                      ).marginSymmetric(horizontal: margin_10),
                     ],
                   )
                 ),
@@ -74,7 +75,7 @@ class HelpAndSupport extends StatelessWidget {
                       spacing: margin_5,
                       crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      mostAskQuestion(),
+                    /*  mostAskQuestion(),
                       appDivider(),
                       titleText(),
                       appDivider(),
@@ -85,7 +86,56 @@ class HelpAndSupport extends StatelessWidget {
                       titleText(title: "Lorem Ipput is simply dummy text ?"),
                       appDivider(),
                       titleText(title: "It is a long established fact that a reader will be distracted by the readable content ?"),
+                     */
+                    Text(
+                    'Need help?',
+                    style: TextStyle(
+                        color: const Color(0xFF003921),
+                  fontSize: 14,
+                   fontWeight: FontWeight.w400,
+                ),
+          ),
                       appDivider(),
+                      Text(
+                        'Choose any option below - we are active 24 hours a day, 7 days a Week. PHONE SUPPORT',
+                        style: TextStyle(
+                          color: const Color(0xFF666666),
+                          fontSize: 13,
+                          fontFamily: 'Afacad',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      // appDivider(),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: ' ',
+                              style: TextStyle(
+                                color: const Color(0xFF666666),
+                                fontSize: 14,
+                                 fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '(10 AM - 4 PM)',
+                              style: TextStyle(
+                                color: const Color(0xFF003921),
+                                fontSize: 14,
+                                 fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            TextSpan(
+                              text:'  (Monday - Friday)',
+                              style: TextStyle(
+                                color: Colors.black.withValues(alpha: 128),
+                                fontSize: 12,
+                                 fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
 
                     ],
                 )),
@@ -93,18 +143,51 @@ class HelpAndSupport extends StatelessWidget {
 
                 customCard(
                     child: Column(
-                      spacing: margin_5,
+                      spacing: margin_12,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        mostAskQuestion(title: "Contacts"),
+                        mostAskQuestion(title: "Contact Us".toUpperCase(),style: TextStyle(
+                          color:  Color(0xFF003921),
+                          fontSize: 14,
+                           fontWeight: FontWeight.w400,
+                        ),),
+                        // appDivider(),
+                        item(title: "+91 8100201919",asset: mobileAsset,titleStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        )),
                         appDivider(),
-                        item(title: "bull@street.info",),
+                        mostAskQuestion(title: "Whatsapp Help Desk",
+                          style: TextStyle(
+                          color:  Color(0xFF003921),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),),
+                        item(title: "https://ballstreet.in/help-desk",
+                            asset: phoneAsset
+                        ),
+
                         appDivider(),
-                        item(title: "+91 9898989898",),
-                        appDivider(),
-                        item(title: "0591 - 261000",),
-                        appDivider(),
-                        item(title: "A- 126, Block A, Shivalik Colony,\n Malviya Nagar,New Delhi\n Delhi 110017, India",),
+
+                        mostAskQuestion(title: "EMAIL Support",
+                          style: TextStyle(
+                            color:  Color(0xFF003921),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),),
+                        item(
+                            title: "support@ballstreet.club",
+                            asset: mailIconAsset,
+                          iconSize: 28.0,
+                          iconColor: Colors.black.withOpacity(0.5)
+
+
+                        ),
+                         appDivider(),
+                        item(
+                          asset: addressIconAsset,
+                          title: "Address : C-30 (F/04) first floor , sec -63 Noida -201301 (U.P)",),
 
                       ],
                     ))
@@ -137,10 +220,10 @@ class HelpAndSupport extends StatelessWidget {
 
 
 
-  Widget mostAskQuestion ({title}){
+  Widget mostAskQuestion ({title,style}){
     return Text(
       title??'Most Asked Qutions',
-      style: TextStyle(
+      style: style??TextStyle(
         color: const Color(0xFF003921),
         fontSize: 14,
         fontWeight: FontWeight.w400,

@@ -172,5 +172,7 @@ abstract class AppRoutes {
   static const supportChatScreen = '/supportChatScreen';
   static const testPageRoute = '/testPageRoute';
   static const myContestResultCardRoute = '/myContestResultCardRoute';
+  static const rulesAndRegulationsRoute = '/rulesAndRegulationsRoute';
+  static const howToPlayRoute = '/howToPlayRoute';
 
 }

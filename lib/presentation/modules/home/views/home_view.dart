@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 
 import '../controllers/home_controller.dart';
+import '../genius_dailog.dart';
 
 class HomeScreen extends GetView<HomeController> {
   final controller = Get.put(HomeController());
@@ -16,7 +17,15 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: const Color(0xFFEFFAF1),
       body: Column(
         children: [
-          appBarWithWallet(onlyWallet: true,isHomeScreen: true),
+          appBarWithWallet(onlyWallet: true,isHomeScreen: true,onTapGenius: (){
+            debugPrint("onTapGenius===>");
+
+
+            showDialog(
+              context: context,
+              builder: (context) => const GeniusSubscriptionModal(),
+            );
+          }),
           Expanded(
             child: Stack(
               children: [
@@ -111,50 +120,63 @@ class HomeScreen extends GetView<HomeController> {
             )
           ],
         ),
-        SizedBox(
-          child: Column(
-            children: [
-              matchCarouselList(),
-              _carouselIndicator(),
-            ],
-          ),
-        ),
+        // Fix: Use a Column with no Expanded/SizedBox to avoid RenderFlex error
+        matchCarouselList(),
+        _carouselIndicator(),
       ],
-    );
+    ).marginOnly(top: margin_10);
   }
 
   Widget matchCarouselList() => Obx(
-      ()=> SizedBox(
-        height:height_128,
-          child: CarouselSlider.builder(
-            options: CarouselOptions(
-              onPageChanged: (value, r) {
-                controller.carousalIndex.value = value;
-                controller.update();
-                debugPrint("Carousel Index: \\${controller.carousalIndex.value}");
-              },
-              viewportFraction: 1.0,
-              height: Get.height*0.21,
-              autoPlay: true,
-              enableInfiniteScroll: false,
-              reverse: false,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              enlargeCenterPage: false,
-            ),
-            itemCount: controller.homeApiResponse.value?.liveMatches?.length??0,
-            itemBuilder: (BuildContext context, int index, int realIndex) {
-              var liveMatch = controller.homeApiResponse.value?.liveMatches?[index];
-              return InkWell(
+    () {
+      final itemCount = controller.homeApiResponse.value?.liveMatches?.length ?? 0;
+      if (itemCount == 0) {
+        return const SizedBox.shrink();
+      }
+      // Calculate the height based on the card content, but avoid extra spacing
+      double cardHeight = 0;
+      // Estimate the card height based on its content (topWidget + centerWidget + bottomWidget + paddings)
+      cardHeight = 20 + 10 + // topWidget height + margin
+                   40 + 12 + // centerWidget (team logo) + spacing
+                   40 + // bottomWidget (approx)
+                   32; // paddings/margins
+      // Use a minimum and maximum height for safety
+      double dynamicHeight = cardHeight.clamp(140.0, 220.0);
+      return SizedBox(
+        height: dynamicHeight,
+        child: CarouselSlider.builder(
+          options: CarouselOptions(
+            onPageChanged: (value, r) {
+              controller.carousalIndex.value = value;
+              controller.update();
+            },
+            viewportFraction: 1.0,
+            height: dynamicHeight,
+            autoPlay: true,
+            enableInfiniteScroll: false,
+            reverse: false,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            enlargeCenterPage: false,
+            padEnds: false,
+          ),
+          itemCount: itemCount,
+          itemBuilder: (BuildContext context, int index, int realIndex) {
+            var liveMatch = controller.homeApiResponse.value?.liveMatches?[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              child: InkWell(
                 onTap: () {
-                  // Get.toNamed(AppRoutes.matchScoreScreenRoute);
-                  Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute,arguments: {
+                  Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute, arguments: {
                     'liveMatch': liveMatch,
                   });
                 },
                 child: _cardView(liveMatch: liveMatch!),
-              );
-            },
-        )),
+              ),
+            );
+          },
+        ),
+      );
+    },
   );
 
   Widget bannerCarousel() => Obx(
@@ -163,41 +185,44 @@ class HomeScreen extends GetView<HomeController> {
       if (banners == null || banners.isEmpty) {
         return Container(color: Colors.red, height: height_50);
       }
-      return SizedBox(
-        height: Get.height * 0.11,
-        child: CarouselSlider.builder(
-          options: CarouselOptions(
-            onPageChanged: (value, r) {
-              controller.carousalBannerImageIndex.value = value;
-              controller.update();
-              debugPrint("carousalBannerImageIndex Index: ${controller.carousalBannerImageIndex.value}");
-            },
-            viewportFraction: 1.0,
-            height: Get.height * 0.11,
-            autoPlay: true,
-            enableInfiniteScroll: false,
-            reverse: false,
-            enlargeStrategy: CenterPageEnlargeStrategy.height,
-            enlargeCenterPage: false,
-          ),
-          itemCount: banners.length,
-          itemBuilder: (BuildContext context, int index, int realIndex) {
-            // final imageUrl = banners[index] ?? "";
-            debugPrint("Banner Index: $index, Real Index: $realIndex, ");
-            return NetworkImageWidget(
-              imageUrl: "",
-              placeHolder: leaderBoardAsset,
-              imageHeight: Get.height * 0.2,
-              imageWidth: Get.width,
-              imageFitType: BoxFit.cover,
-              radiusAll: 10.r,
+      return Transform.scale(
+        scale: 1.1,
+        child: SizedBox(
+          height: Get.height * 0.11,
+          child: CarouselSlider.builder(
+            options: CarouselOptions(
+              onPageChanged: (value, r) {
+                controller.carousalBannerImageIndex.value = value;
+                controller.update();
+                debugPrint("carousalBannerImageIndex Index: ${controller.carousalBannerImageIndex.value}");
+              },
+              viewportFraction: 1.0,
+              height: Get.height * 0.11,
+              autoPlay: true,
+              enableInfiniteScroll: false,
+              reverse: false,
+              enlargeStrategy: CenterPageEnlargeStrategy.height,
+              enlargeCenterPage: false,
+            ),
+            itemCount: banners.length,
+            itemBuilder: (BuildContext context, int index, int realIndex) {
+              // final imageUrl = banners[index] ?? "";
+              debugPrint("Banner Index: $index, Real Index: $realIndex, ");
+              return NetworkImageWidget(
+                imageUrl: "",
+                placeHolder: leaderBoardAsset,
+                imageHeight: Get.height * 0.2,
+                imageWidth: Get.width,
+                imageFitType: BoxFit.cover,
+                radiusAll: 10.r,
 
-              color: greenButtonColor,
-              // Add caching and fade effect if supported by NetworkImageWidget
-              // Example: fadeInDuration: Duration(milliseconds: 300),
-              // cache: true,
-            ).marginSymmetric(horizontal: margin_10);
-          },
+                color: greenButtonColor,
+                // Add caching and fade effect if supported by NetworkImageWidget
+                // Example: fadeInDuration: Duration(milliseconds: 300),
+                // cache: true,
+              ).marginSymmetric(horizontal: margin_10);
+            },
+          ),
         ),
       );
     },
@@ -211,15 +236,24 @@ class HomeScreen extends GetView<HomeController> {
         borderRadius: BorderRadius.circular(10.r),
         border: Border.all(color: greenButtonColor),
       ),
-      child: Column(
-           spacing: 12,
+      child: Stack(
+        alignment: Alignment.bottomRight,
         children: [
+          trophyLogoWidget(
+            width: height_100,
+            height: height_100
+          ),
+          Column(
+               spacing: 12,
+            children: [
 
-          topWidget(liveMatch:liveMatch),
+              topWidget(liveMatch:liveMatch),
 
-          centerWidget(liveMatch:liveMatch),
+              centerWidget(liveMatch:liveMatch),
 
-          bottomWidget(liveMatch:liveMatch),
+              bottomWidget(liveMatch:liveMatch),
+            ],
+          ),
         ],
       ),
     );
@@ -498,7 +532,8 @@ class HomeScreen extends GetView<HomeController> {
               return upcomingMatchCell(
                   upcomingMatch:upcomingMatch,
                   onTap: (){
-                Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
+                    showInSnackBar(message: "Undevelopment !");
+                // Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
               });
             },
             itemCount: min(4, controller.homeApiResponse.value?.upcomingMatches?.length??0),
@@ -514,4 +549,3 @@ class HomeScreen extends GetView<HomeController> {
 
 
 }
-

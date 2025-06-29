@@ -4,6 +4,7 @@ import 'package:base_project/presentation/modules/home/views/my_winnings.dart';
 
 import '../../../../app/export.dart';
 import '../../authentication/models/data_model/user_data_model.dart';
+import '../../home/controllers/transaction_history_controller.dart';
 import '../../home/views/home_view.dart';
 import '../../home/views/my_matches_screen.dart';
 import '../../home/views/transaction_history.dart';
@@ -45,10 +46,13 @@ class MainParentController extends GetxController {
   updateBottomNavIndex(int index) {
     bottomNavIndex.value = index;
     if (index == 0) {} else if (index == 1) {
-      Get.find<MyMatchesController>().hitMyMatchesApi(
-
-      );
-    } else if (index == 2) {} else if (index == 3) {}
+      Get.find<MyMatchesController>().hitMyMatchesApi();
+    } else if (index == 2) {}
+    else if (index == 3) {
+      Get.find<TransactionHistoryController>().hitTransactionApi();
+    } else if (index == 4) {
+      // Get.find<MyMatchesController>().hitMyMatchesApi();
+    }
   }
 
   @override

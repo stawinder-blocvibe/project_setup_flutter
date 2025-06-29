@@ -1,8 +1,9 @@
 
 
 
-
 const String splashScreen = 'assets/icons/logo_screen.png';
+const String splashGifAsset = 'assets/icons/splash_gif.gif';
+const String onBoardingGifAsset = "assets/icons/on_boarding_screen.png"??'assets/icons/onboarding_gif.gif';
 const String onboardingScreenBackground = 'assets/icons/onboarding_bg.png';
 const String ballStreetLogo = 'assets/icons/ball_street_logo.png';
 const String yellowButtonBg = 'assets/icons/yellow_button_bg.png';
@@ -44,15 +45,22 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String blueBallBgAsset = 'assets/icons/blue_ball_bg.png';
  const String goldenBallBgAsset = 'assets/icons/golden_ball_bg.png';
 
- const String myMatchAsset = 'assets/icons/my_match.png';  // 2th Tab
+ const String myMatchAsset = "assets/icons/match_trophy.png"??'assets/icons/my_match.png';  // 2th Tab
  const String myWinningsAsset = 'assets/icons/my_winnings.png'; // 4th Tab
 
+ const String ballFirstAsset = 'assets/icons/ball_first.png';
+ const String ballSecondAsset = 'assets/icons/ball_second.png';
+ const String ballThirdAsset = overOverDefaultBgAsset;
+ const String ballFourAsset = 'assets/icons/ball_third.png';
+ const String ballFifthAsset = blueBallBgAsset;
+ const String ballSixthAsset = greenBgWithBorderAsset;
 
-
-
-
-
-
+ const String cardOnPaymentAsset = "assets/icons/over_card.png";
+ const String mobileAsset = "assets/icons/mobile.png";
+ const String phoneAsset = "assets/icons/mobile_icon.png";
+ const String mailIconAsset = "assets/icons/mail_icon.png";
+ const String addressIconAsset = "assets/icons/address_icon.png";
+ const String calendarIconAsset = "assets/icons/calendar_icon.png";
 
 
 ///  SVG Assets

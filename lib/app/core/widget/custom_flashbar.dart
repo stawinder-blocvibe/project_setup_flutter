@@ -10,6 +10,6 @@ showInSnackBar({required String message}) {
       backgroundColor: toastColor,
       snackPosition: SnackPosition.TOP,
       colorText: Colors.black,
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 2500),
       margin: EdgeInsets.symmetric(horizontal: margin_10, vertical: margin_20));
 }

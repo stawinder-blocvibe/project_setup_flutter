@@ -52,18 +52,18 @@ class MainParentScreen extends GetView<MainParentController> {
                   fontSize: font_12,
 
                   fontWeight: FontWeight.w500,
-                  color: Colors.transparent),
+                  color: Colors.white),
               unselectedLabelStyle: textStyleBody1().copyWith(
                   fontSize: font_12,
                   fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade400),
+                  color: Colors.purpleAccent),
               onTap: (index) {
                 if (index != 2) {
                   controller.updateBottomNavIndex(index);
                 }
               },
               selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.grey.shade400,
+              unselectedItemColor: Colors.purpleAccent,
               selectedIconTheme: IconThemeData(color: appColor),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
@@ -71,7 +71,7 @@ class MainParentScreen extends GetView<MainParentController> {
                         icon: CupertinoIcons.home,
                         color: controller.bottomNavIndex.value == 0
                             ? Colors.white
-                            : greyColor),
+                            : Colors.purpleAccent),
 
                     label: "Home".tr),
                 BottomNavigationBarItem(
@@ -79,7 +79,7 @@ class MainParentScreen extends GetView<MainParentController> {
                         icon: myMatchAsset,
                         color: controller.bottomNavIndex.value == 1
                             ? Colors.white
-                            : greyColor),
+                            : Colors.purpleAccent),
                     label: "My Match's".tr),
                 BottomNavigationBarItem(
                   icon: SizedBox.shrink(), // Reserved space for Predict
@@ -90,14 +90,14 @@ class MainParentScreen extends GetView<MainParentController> {
                         icon: myWinningsAsset,
                         color: controller.bottomNavIndex.value == 3
                             ? Colors.white
-                            : greyColor),
+                            : Colors.purpleAccent),
                     label: "My Winnings".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.profile_circled,
                         color: controller.bottomNavIndex.value == 4
                             ? Colors.white
-                            : greyColor),
+                            : Colors.purpleAccent),
                     label: "Profile".tr),
               ],
             ),
@@ -106,14 +106,14 @@ class MainParentScreen extends GetView<MainParentController> {
 
         /// Custom Predict Button
         Positioned.fill(
-          top: 25,
+          // top: 25,
           child: Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: GestureDetector(
               onTap: () => controller.updateBottomNavIndex(2),
               child:
-              AssetImageWidget(redBullAsset,imageWidth: height_25,
-                imageHeight: height_25,imageFitType: BoxFit.cover,)??
+              AssetImageWidget(premiumIconAsset??redBullAsset,imageWidth: height_30,
+                imageHeight: height_30,imageFitType: BoxFit.cover,)??
               Container(
                 width: 80,
                 height: 80,

@@ -19,6 +19,7 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
       child: Scaffold(
         backgroundColor: const Color(0xFFEFFAF1),
         body: ListView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             appBarWithWallet(onlyWallet:true),
 
@@ -84,6 +85,8 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
               ),
             ),
             partnershipWidget(),
+
+
             if(false)
             Stack(
               children: [
@@ -281,26 +284,41 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
-          cricketCategoryCard(onTap: (){
+          cricketCategoryCard(
+              titleFont:20.0,
+            subTitle: "Call a complete OVER right, 1 Massive prize, 1 CRORE\n\n",
+              onTap: (){
+
+            /*
+              Get.toNamed(AppRoutes.harOverBallSelectionRoute,arguments: {
+              "liveMatch":controller.liveMatch.value,
+            });*/
+
             Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
               "liveMatch":controller.liveMatch.value,
             });
-          }),
+          }).marginOnly(top: margin_20),
+
           cricketCategoryCard
+
             (
+            // scale: ,
+            subTitle: "120 balls , your call, Most accurate wins 1 CRORE (Winner According to LEADERBOARD)",
             onTap: (){
               debugPrint("liveMatch.value===>${controller.liveMatch.value?.toJson()}");
               Get.toNamed(AppRoutes.contestListScreenRoute,arguments: {
                 "liveMatch":controller.liveMatch.value,
+
               });
             },
               gradient: const LinearGradient(colors: [
                 Color(0xFF875CF2),
                 Color(0xFF381C7D),
               ]),
+              titleFont:20.0,
               borderColor: Color(0xFF3A266D),
-              title: "Kurukshetra\n(120 balls)",
-              margin: EdgeInsets.all(margin_16,).copyWith(top: 0))
+              title: "Kurukshetra\n(120 balls)".toUpperCase(),
+              margin: EdgeInsets.all(margin_16,).copyWith(top: 0)).marginOnly(top: margin_20)
         ],
       ),
     );

@@ -35,47 +35,55 @@ class MyWinnings extends GetView<ProfileController> {
             ),
           ),
           padding:  EdgeInsets.all(margin_20),
-          child: SingleChildScrollView(
-            child: Column(
-
-              spacing: margin_10,
-              children: [
-//  'transaction history',
-                classNameTitle(title:   'My Winnings',onTapBack: needBackButton==true?
-                    (){
-                  Get.back();
-                }:null),
-                 //'24x7 Help & Support'
-
-
-                Column(
-
-                  children: List.generate(12, (index)=>index%2==1? addAmountCell()
-                      :deductAmountCell()).toList(),
-                )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ],
-            ),
+          child: Column(
+            children: [
+              classNameTitle(title:   'My Winnings',onTapBack: needBackButton==true?
+                  (){
+                Get.back();
+              }:null),
+              SizedBox(height: margin_10,),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                
+                    spacing: margin_10,
+                    children: [
+                 
+                     
+                       //'24x7 Help & Support'
+                
+                
+                      Column(
+                
+                        children: List.generate(12, (index)=>index%2==1? addAmountCell()
+                            :deductAmountCell()).toList(),
+                      )
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       )

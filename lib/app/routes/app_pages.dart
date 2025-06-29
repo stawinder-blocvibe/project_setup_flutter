@@ -17,7 +17,9 @@ import '../../presentation/modules/authentication/views/register_screen.dart';
 import '../../presentation/modules/home/views/about_us.dart';
 import '../../presentation/modules/home/views/add_amount_wallet.dart';
 import '../../presentation/modules/home/views/contest_list_screen.dart';
+import '../../presentation/modules/home/views/har_over_ball_selection_screen.dart';
 import '../../presentation/modules/home/views/help_and_support.dart';
+import '../../presentation/modules/home/views/how_to_play.dart';
 import '../../presentation/modules/home/views/live_matches_screen.dart';
 import '../../presentation/modules/home/views/match_detail_category_screen.dart';
 import '../../presentation/modules/home/views/my_contest_result_card.dart';
@@ -25,6 +27,7 @@ import '../../presentation/modules/home/views/my_info_screen.dart';
 import '../../presentation/modules/home/views/my_winnings.dart';
 import '../../presentation/modules/home/views/over_ball_selection_result_screen.dart';
 import '../../presentation/modules/home/views/over_ball_selection_screen.dart';
+import '../../presentation/modules/home/views/rules_and_regulations.dart';
 import '../../presentation/modules/home/views/transaction_history.dart';
 import '../../presentation/modules/home/views/upcoming_matches_screen.dart';
 import '../../presentation/modules/splash/bindings/on_boarding_binding.dart';
@@ -36,6 +39,7 @@ import 'app_routes.dart';
 
 class AppPages {
   static const INITIAL = AppRoutes.splashRoute;
+  // static const INITIAL = AppRoutes.harOverBallSelectionRoute;
 
   static final routes = [
     GetPage(
@@ -86,9 +90,10 @@ class AppPages {
 
     GetPage(
       name: AppRoutes.harOverBallSelectionRoute,
-      page: () => OverBallSelectionScreen(),
+      page: () => HarOverBallSelectionScreen(),
       bindings: [HomeBinding()],
     ),
+
 
     GetPage(
       name: AppRoutes.overBallSelectionScreenRoute,
@@ -174,6 +179,16 @@ class AppPages {
     GetPage(
       name: AppRoutes.myContestResultCardRoute,
       page: () => MyContestResultCard(),
+      bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.rulesAndRegulationsRoute,
+      page: () => RulesAndRegulations(),
+      bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.howToPlayRoute,
+      page: () => HowToPlay(),
       bindings: [HomeBinding()],
     ),
 

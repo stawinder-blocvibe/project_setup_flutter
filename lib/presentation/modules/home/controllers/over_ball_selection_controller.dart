@@ -9,7 +9,9 @@ import '../views/bottom_sheets.dart';
 import 'package:base_project/presentation/modules/home/models/save_prediction_model.dart' as save_prediction;
 
 class OverBallSelectionController extends GetxController {
+  RxBool isHarOver = true.obs;
   Rx<UserDataModel?> user = Rxn();
+
 
   List<String> ballList = ["W", "6", "4", "6", "NB", "0", "NB", "0"];
 
@@ -69,16 +71,22 @@ class OverBallSelectionController extends GetxController {
   Rx<PoolModel?> pool = Rxn();
   void handleArguments() {
     var args = Get.arguments;
-    if (args != null && args['liveMatch'] != null) {
+    if(args==null) return;
+    if (args['liveMatch'] != null) {
       liveMatch.value = args['liveMatch'];
       liveMatch.refresh();
 
       debugPrint("liveMatches.value===>${liveMatch.value?.toJson()}");
     }
 
-    if (args != null && args['pool'] != null) {
+    if (args['pool'] != null) {
       pool.value = args['pool'];
       pool.refresh();
+    }
+
+    if(args['isHarOver']!=null){
+      isHarOver.value = args['isHarOver'];
+      isHarOver.refresh();
     }
   }
 
@@ -155,7 +163,7 @@ class OverBallSelectionController extends GetxController {
     debugPrint(
       "check===>${data.toString().contains("5")} >>${(selectedBallIndex.value ?? 0) + 1}",
     );
-    if (data.toString().contains("5")) {
+    if (data.toString().contains("5")&& !data.toString().toLowerCase().contains("WKT".toLowerCase())) {
       showBallValueSelectorBottomSheet(
         context: Get.context!,
         ballNumber: (selectedBallIndex.value ?? 0) + 1,
@@ -166,6 +174,7 @@ class OverBallSelectionController extends GetxController {
             ballIndex: selectedBallIndex.value ?? 0,
             value: value,
           );
+          jumpNextBall();
         },
         overNumber: selectedOverIndex.value ?? 0,
       );
@@ -175,19 +184,34 @@ class OverBallSelectionController extends GetxController {
         ballIndex: ((selectedBallIndex.value) ?? 0),
         value: "",
       );
+      jumpNextBall();
     } else if (data.toString().toLowerCase().contains('Out'.toLowerCase())) {
       setOverBallValue(
         overIndex: selectedOverIndex.value ?? 0,
         ballIndex: selectedBallIndex.value ?? 0,
         value: "OUT",
       );
-    } else {
+      jumpNextBall();
+    } else if(
+    data.toString().toLowerCase().contains('WD'.toLowerCase()) ||
+        data.toString().toLowerCase().contains('NB'.toLowerCase())||
+        data.toString().toLowerCase().contains('WKT'.toLowerCase())
+    ){
+      setOverBallValue(
+        overIndex: selectedOverIndex.value ?? 0,
+        ballIndex: selectedBallIndex.value ?? 0,
+        value: data.toString().toUpperCase(),
+      );
+      jumpNextBall();
+    }
+    else {
       //LB
       setOverBallValue(
         overIndex: selectedOverIndex.value ?? 0,
         ballIndex: selectedBallIndex.value ?? 0,
         value: "LB",
       );
+      jumpNextBall();
     }
   }
 
@@ -235,7 +259,7 @@ class OverBallSelectionController extends GetxController {
     repository
         .completeTransactionApi(
           userId: user.value?.id,
-          amount: amount ?? 19,
+          amount: isHarOver.value?19:pool.value?.joiningPrice??19,
           matchId: liveMatch.value?.matchId,
           type: "deduct",
         )
@@ -292,6 +316,16 @@ class OverBallSelectionController extends GetxController {
       debugPrint("user=====>${user.value?.toJson()}");
 
      });
+  }
+
+  jumpNextBall(){
+    if( selectedBallIndex.value!=6 && selectedBallIndex.value!=null ){
+      selectedBallIndex.value = (selectedBallIndex.value??0)+1;
+      selectedBallIndex.refresh();
+    }else{
+      selectedBallIndex.value = 0;
+      selectedBallIndex.refresh();
+    }
   }
 
 

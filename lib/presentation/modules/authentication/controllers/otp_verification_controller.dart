@@ -131,7 +131,7 @@ class OtpVerificationController extends GetxController {
         debugPrint('tokenBhej---->${value['token']??"satta_token" }');
         preferenceManger.saveAuthToken(value["token"] ?? "satta_token");
         await preferenceManger.saveRegisterData(UserDataModel.fromJson(value["user"]));
-        Get.toNamed(AppRoutes.mainParentRoute);
+        Get.offAndToNamed(AppRoutes.mainParentRoute);
 
       }
 

@@ -36,57 +36,43 @@ class TransactionHistory extends GetView<TransactionHistoryController> {
             ),
           ),
           padding:  EdgeInsets.all(margin_20),
-          child: SingleChildScrollView(
-            child: Column(
-
-
-              spacing: margin_10,
-              children: [
-//  'transaction history',
-                classNameTitle(title:   'Transaction History',onTapBack: (){
-                  Get.back();
-                }),
-                 //'24x7 Help & Support'
-
-
-                Obx(()=>
-                controller.transactionList.isEmpty?
-                Container(
-
-                  height: Get.height*0.8,
-                  // color: Colors.red,
-                    alignment: Alignment.center,
-                    child: AssetImageWidget(
-                      emptyListGifAsset,imageFitType: BoxFit.cover,).marginAll(margin_100)):
-                    Column(
-                    children: List.generate(controller.transactionList.length, (index)=>controller.transactionList[index].type!="deduct" ?
-                    addAmountCell(transaction:controller.transactionList[index])
-                        :deductAmountCell(transaction:controller.transactionList[index])).toList(),
+          child: Column(
+            children: [
+              // Stick the header at the top
+              classNameTitle(title: 'Transaction History', onTapBack: () {
+                Get.back();
+              }),
+              SizedBox(height: margin_10),
+              // Make the rest of the content scrollable
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    spacing: margin_10,
+                    children: [
+                      Obx(() =>
+                        controller.transactionList.isEmpty
+                          ? Container(
+                              height: Get.height * 0.8,
+                              alignment: Alignment.center,
+                              child: AssetImageWidget(
+                                emptyListGifAsset,
+                                imageFitType: BoxFit.cover,
+                              ).marginAll(margin_100),
+                            )
+                          : Column(
+                              children: List.generate(
+                                controller.transactionList.length,
+                                (index) => controller.transactionList[index].type != "deduct"
+                                    ? addAmountCell(transaction: controller.transactionList[index])
+                                    : deductAmountCell(transaction: controller.transactionList[index]),
+                              ),
+                            ),
+                      ),
+                    ],
                   ),
-                )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         ),
       )
@@ -166,47 +152,50 @@ class TransactionHistory extends GetView<TransactionHistoryController> {
       padding: const EdgeInsets.all(8),
       child: Container(
         padding: const EdgeInsets.all(12),
-
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(0.00, 0.50),
-            end: Alignment(1.00, 0.50),
-            colors: [const Color(0xFFFFF0F0), const Color(0xFFFFF0F0)],
-          ),
+          color: Colors.teal.withOpacity(0.1),
           borderRadius: BorderRadiusGeometry.circular(8),
-          border: Border.all(color: Colors.red)
+          border: Border.all(color: Colors.grey)
         ),
         child: Column(
           spacing: margin_8,
           children: [
-            Row(
+            // Fixed header at the top of the cell, not scrollable
+            Column(
               children: [
-                Text(
-                  'Match entry Charge',
-                  style: TextStyle(
-                    color: Colors.red.withOpacity(0.8),
-                    fontSize: 14,
-                     fontWeight: FontWeight.w400,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'Match entry Charge',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      '- ₹${transaction.amount}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontSize: 13.47,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
                 ),
-                Spacer(),
-                Text(
-                  '- ₹${transaction.amount}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.red.withOpacity(0.8),
-                    fontSize: 13.47,
-                     fontWeight: FontWeight.w500,
-                  ),
-                )
+                // appDivider().marginOnly(top: margin_8),
               ],
             ),
+            // The rest of the content is scrollable if needed
             Row(
               children: [
                 Text(
                   "18 Jun, 10:28 PM"??HelperFunction.formatDateTime( dateTimeString: transaction.createdAt!),
                   style: TextStyle(
-                    color:Colors.red.withOpacity(0.7),
+                    // color:Colors.red.withOpacity(0.7),
+                    color:Colors.black.withOpacity(0.7),
                     fontSize: 9,
                      fontWeight: FontWeight.w400,
                   ),
@@ -215,7 +204,8 @@ class TransactionHistory extends GetView<TransactionHistoryController> {
                 Text(
                   'successful',
                   style: TextStyle(
-                    color: Colors.red.withOpacity(0.7),
+                    // color: Colors.grey.withOpacity(0.7),
+                    color: Colors.black.withOpacity(0.7),
                     fontSize: 9,
                      fontWeight: FontWeight.w400,
                   ),

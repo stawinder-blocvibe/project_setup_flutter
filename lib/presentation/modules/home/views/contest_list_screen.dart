@@ -22,70 +22,78 @@ class ContestListScreen extends GetView<ContestListScreenController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              appBarWithWallet(onlyWallet: true),
+              appBarWithWallet(onlyWallet: true, gradient:gradientKuruk),
           
           
-              Stack(
-                children: [
-                  AssetImageWidget(
-                    imageFitType: BoxFit.cover,
-                    stadiumBullBall,
-                    imageHeight: Get.height * 0.8,
-                    imageWidth: double.infinity
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: Get.height * 0.645,
-                      width: Get.width,
-                      color: const Color(0xFFEFFAF1),
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.matchScoreScreenRoute,arguments: {
+                    "liveMatch":controller.liveMatch.value,
+                  }
+                  );
+                },
+                child: Stack(
+                  children: [
+                    AssetImageWidget(
+                      imageFitType: BoxFit.cover,
+                      stadiumBullBall,
+                      imageHeight: Get.height * 0.8,
+                      imageWidth: double.infinity
                     ),
-                  ),
-          
-          
-                  ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(1),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Column(
-                        children: [
-                          matchType(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              scoreSection(),
-                              NetworkImageWidget(
-                                imageUrl: "",
-                                imageHeight: height_40,
-                                imageWidth: height_40,
-                                placeHolder: punjabPlaceHolderAsset,
-                                // radiusAll: 50.r,
-                              ),
-                              vsCircleWidget().marginSymmetric(
-                                  horizontal: margin_15),
-                              NetworkImageWidget(
-                                imageUrl: "",
-                                imageHeight: height_40,
-                                imageWidth: height_40,
-                                placeHolder: cskPlaceHolderAsset,
-                                // radiusAll: 50.r,
-                              ),
-                              scoreSection(teamName: "CSK"),
-                            ],
-                          ),
-                        ],
-                      ).marginOnly(top: margin_40),
+                    Positioned(
+                      bottom: 0,
+                      child: Container(
+                        height: Get.height * 0.645,
+                        width: Get.width,
+                        color: const Color(0xFFEFFAF1),
+                      ),
                     ),
-                  ),
-          
-                  playingTextWidget(),
-                  Positioned(
-                    right: 0,
-                    child: syncWidget(),
-                  ),
-                  partnershipWidget(),
-          
-                ],
+
+
+                    ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(1),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Column(
+                          children: [
+                            matchType(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                scoreSection(),
+                                NetworkImageWidget(
+                                  imageUrl: "",
+                                  imageHeight: height_40,
+                                  imageWidth: height_40,
+                                  placeHolder: punjabPlaceHolderAsset,
+                                  // radiusAll: 50.r,
+                                ),
+                                vsCircleWidget().marginSymmetric(
+                                    horizontal: margin_15),
+                                NetworkImageWidget(
+                                  imageUrl: "",
+                                  imageHeight: height_40,
+                                  imageWidth: height_40,
+                                  placeHolder: cskPlaceHolderAsset,
+                                  // radiusAll: 50.r,
+                                ),
+                                scoreSection(teamName: "CSK"),
+                              ],
+                            ),
+                          ],
+                        ).marginOnly(top: margin_40),
+                      ),
+                    ),
+
+                    playingTextWidget(),
+                    Positioned(
+                      right: 0,
+                      child: syncWidget(),
+                    ),
+                    partnershipWidget(),
+
+                  ],
+                ),
               )
           
             ],

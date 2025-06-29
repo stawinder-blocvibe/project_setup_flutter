@@ -18,7 +18,7 @@ class LeaderboardWinningResultScreen
       body: SafeArea(
         child: Column(
           children: [
-            appBarWithWallet(onlyWallet: true),
+            appBarWithWallet(onlyWallet: true,gradient: gradientKuruk),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 10,
@@ -38,6 +38,8 @@ class LeaderboardWinningResultScreen
                       arguments: {
                         "liveMatch": controller.liveMatch.value,
                         "pool": controller.pool.value,
+                        "isHarOver":false,
+
                       },
                     );
                   },
@@ -167,6 +169,8 @@ class LeaderboardWinningResultScreen
         labelColor: const Color(0xFF003921),
         unselectedLabelColor: Colors.grey,
         indicatorColor: const Color(0xFF003921),
+        dividerColor: Colors.transparent,
+
         tabs: const [
           Tab(text: 'Leaderboard'),
           Tab(text: 'Winning'),
@@ -188,7 +192,8 @@ class LeaderboardWinningResultScreen
             // Winning Tab
             winingWidget(),
             // Result Tab
-            resultWidget().marginOnly(right: margin_10),
+            // resultWidget().marginOnly(right: margin_10),
+            Center(child: Text("Result not found!"),)
           ],
         ),
       ),

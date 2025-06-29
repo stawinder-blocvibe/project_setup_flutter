@@ -32,67 +32,78 @@ class TermAndCondition extends StatelessWidget {
             ),
           ),
           padding:  EdgeInsets.all(margin_20),
-          child: SingleChildScrollView(
-            child: Column(
-
-              spacing: margin_10,
-              children: [
-//  'transaction history',
-                classNameTitle(title:   'Term & Conditions',onTapBack: (){
-                  Get.back();
-                }),
-                 //'24x7 Help & Support'
-                customCard(
+          child: Column(
+            children: [
+              classNameTitle(title:   'Term & Conditions',onTapBack: (){
+                Get.back();
+              }),
+                SizedBox(height: margin_10),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: margin_12,
+                    spacing: margin_10,
                     children: [
-                      headingText(),
-                      subHeading(),
 
 
-                      // headingText(),
-                      // subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+                      companyDitails(),
+                      termsText(),
+                       //'24x7 Help & Support'
+                      if(false)
+                      customCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: margin_12,
+                          children: [
+                            headingText(),
+                            subHeading(),
+
+
+                            // headingText(),
+                            // subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
 
 
 
-                      headingText(),
-                      subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "),
+                            headingText(),
+                            subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "),
 
 
-                      headingText(title: "Privacy policy"),
-                      subHeading(title: "Lorem Ipsu is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "),
+                            headingText(title: "Privacy policy"),
+                            subHeading(title: "Lorem Ipsu is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "),
 
 
-                      headingText(title:"Terms"),
-                      subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+                            headingText(title:"Terms"),
+                            subHeading(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+
+                          ],
+                        )
+                      ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     ],
-                  )
+                  ),
                 ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       )

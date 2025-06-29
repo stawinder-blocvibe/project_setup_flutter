@@ -50,9 +50,23 @@ class AboutUs extends StatelessWidget {
                           imageWidth: height_140,
                         ).marginOnly(left: margin_20),
                       ),
+                      SizedBox(height: 10,),
+                      if(false)
                       ourVisionText(),
-                      capitalLargeText(),
+                      capitalLargeText(
+                        title: "Welcome to Ball street"
+                      ),
 
+
+                      Text(
+                        'India’s premier 6 balls fantasy cricket battleground where skill meets reward, and champions win ₹1 Crore every OVER.\nBuilt by sports lovers for sports lovers, our platform brings the thrill of real-time matches, smart strategy, and competitive spirit right to your fingertips.',
+                        style: TextStyle(
+                          color: const Color(0xFF666666),
+                          fontSize: 15,
+                          fontFamily: 'Afacad',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )??
                       appSpanText(),
 
                       AssetImageWidget(
@@ -62,7 +76,20 @@ class AboutUs extends StatelessWidget {
                         // color:Colors.grey,
                       ).marginOnly(left: margin_20),
 
+                      Text(
+                        'Whether you re a seasoned fantasy league pro or just getting started, our user-friendly interface, real-time analytics, and rewarding gameplay make it easy and exciting to call for the balls  and compete for glory.',
+
+                        style: TextStyle(
+                          color: const Color(0xFF666666),
+                          fontSize: 15,
+                          fontFamily: 'Afacad',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+
+                      if(false)
                       capitalLargeText(),
+                      if(false)
                       subHeading(
                         title:
                             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard “ dummy text ever since the 1500s, when an unknown ” - printer took a galley of type and scrambled it to make a type specimen book. ",
@@ -115,9 +142,9 @@ class AboutUs extends StatelessWidget {
     );
   }
 
-  Widget capitalLargeText() {
+  Widget capitalLargeText({title}) {
     return Text(
-      'LOREM IPSUM IS SIMPLY',
+      title??'LOREM IPSUM IS SIMPLY',
       style: TextStyle(
         color: const Color(0xFF003921),
         fontSize: 20,
