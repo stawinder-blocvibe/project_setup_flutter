@@ -2,6 +2,7 @@
 import '../../../../app/export.dart';
 import '../controllers/live_match_list_controller.dart';
 import '../controllers/upcoming_match_list_controller.dart';
+import '../models/home_api_response.dart';
 
 class UpcomingMatchesScreen extends GetView<UpcomingMatchListController> {
   final controller = Get.put(UpcomingMatchListController());
@@ -37,6 +38,28 @@ class UpcomingMatchesScreen extends GetView<UpcomingMatchListController> {
                     return upcomingMatchCell(
                         upcomingMatch:upcomingMatch,
                         onTap: (){
+                          Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute, arguments: {
+                          'liveMatch': LiveMatches(
+                          date: upcomingMatch.date,
+                          title: upcomingMatch.title,
+                          teamALogoUrl: upcomingMatch?.teamALogoUrl,
+                          teamBLogoUrl: upcomingMatch?.teamBLogoUrl,
+                          type: upcomingMatch?.type,
+                          venue: upcomingMatch?.venue,
+                          startDatetime: upcomingMatch?.startDatetime,
+                          matchId: upcomingMatch?.matchId,
+                          teamBName: upcomingMatch?.teamBName,
+                          teamBAbbr: upcomingMatch?.teamBAbbr,
+                          teamAName: upcomingMatch?.teamAName,
+                          teamAAbbr: upcomingMatch?.teamAAbbr,
+                          status: upcomingMatch?.status,
+                          externalMatchId: upcomingMatch?.externalMatchId,
+                          time: upcomingMatch?.time,
+
+                          ),});
+
+
+return;
                           Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
                         });
                   },

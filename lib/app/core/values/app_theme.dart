@@ -20,6 +20,7 @@ class ThemeConfig {
   }) {
     final textColor = brightness == Brightness.dark ? Colors.white : primaryText;
     return ThemeData(
+
       brightness: brightness,
       canvasColor: background,
       cardColor: cardBackground ?? background,
@@ -225,7 +226,6 @@ class ThemeConfig {
     }
     return MaterialColor(color.value, swatch);
   }
-
 
   static ThemeData get lightTheme => createTheme(
         brightness: Brightness.light,

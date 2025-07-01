@@ -35,7 +35,11 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
                     shrinkWrap: true,
                     itemBuilder: (context,index){
                     var liveMatch = controller.liveMatches[index];
-                  return liveMatchCell(liveMatch:liveMatch).marginOnly(bottom: margin_10);
+                  return liveMatchCell(liveMatch:liveMatch,onTap: (){
+                    Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute, arguments: {
+                      'liveMatch': liveMatch,
+                    });
+                  }).marginOnly(bottom: margin_10);
                 }),
               ),
             )
@@ -47,24 +51,27 @@ class LiveMatchesScreen extends GetView<LiveMatchListController> {
 
 
 
-  Widget liveMatchCell({required LiveMatches liveMatch}) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFFAF1),
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: greenButtonColor),
-      ),
-      child: Column(
-        spacing: 12,
-        children: [
+  Widget liveMatchCell({required LiveMatches liveMatch,onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFFAF1),
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(color: greenButtonColor),
+        ),
+        child: Column(
+          spacing: 12,
+          children: [
 
-          topWidget(liveMatch:liveMatch),
+            topWidget(liveMatch:liveMatch),
 
-          centerWidget(liveMatch:liveMatch),
+            centerWidget(liveMatch:liveMatch),
 
-          bottomWidget(liveMatch:liveMatch),
-        ],
+            bottomWidget(liveMatch:liveMatch),
+          ],
+        ),
       ),
     );
   }

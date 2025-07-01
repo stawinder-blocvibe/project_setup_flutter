@@ -13,37 +13,41 @@ class HomeScreen extends GetView<HomeController> {
   final controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFFAF1),
-      body: Column(
-        children: [
-          appBarWithWallet(onlyWallet: true,isHomeScreen: true,onTapGenius: (){
-            debugPrint("onTapGenius===>");
+    return PopScope(
+      canPop: false,
+
+      child: Scaffold(
+        backgroundColor: const Color(0xFFEFFAF1),
+        body: Column(
+          children: [
+            appBarWithWallet(onlyWallet: true,isHomeScreen: true,onTapGenius: (){
+              debugPrint("onTapGenius===>");
 
 
-            showDialog(
-              context: context,
-              builder: (context) => const GeniusSubscriptionModal(),
-            );
-          }),
-          Expanded(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: AssetImageWidget(
-                    imageHeight: Get.height * 0.4,
-                    imageWidth: Get.width * 0.7,
-                    greenCupTrophy,
+              showDialog(
+                context: context,
+                builder: (context) => const GeniusSubscriptionModal(),
+              );
+            }),
+            Expanded(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: AssetImageWidget(
+                      imageHeight: Get.height * 0.4,
+                      imageWidth: Get.width * 0.7,
+                      greenCupTrophy,
+                    ),
+                  ).marginOnly(top: margin_100),
+                  SingleChildScrollView(
+                    child: homeWidgets(),
                   ),
-                ).marginOnly(top: margin_100),
-                SingleChildScrollView(
-                  child: homeWidgets(),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -122,7 +126,7 @@ class HomeScreen extends GetView<HomeController> {
         ),
         // Fix: Use a Column with no Expanded/SizedBox to avoid RenderFlex error
         matchCarouselList(),
-        _carouselIndicator(),
+        _carouselIndicator(stateCarousel: controller.carousalIndex),
       ],
     ).marginOnly(top: margin_10);
   }
@@ -185,45 +189,50 @@ class HomeScreen extends GetView<HomeController> {
       if (banners == null || banners.isEmpty) {
         return Container(color: Colors.red, height: height_50);
       }
-      return Transform.scale(
-        scale: 1.1,
-        child: SizedBox(
-          height: Get.height * 0.11,
-          child: CarouselSlider.builder(
-            options: CarouselOptions(
-              onPageChanged: (value, r) {
-                controller.carousalBannerImageIndex.value = value;
-                controller.update();
-                debugPrint("carousalBannerImageIndex Index: ${controller.carousalBannerImageIndex.value}");
-              },
-              viewportFraction: 1.0,
+      return Column(
+        children: [
+          Transform.scale(
+            scale: 1.1,
+            child: SizedBox(
               height: Get.height * 0.11,
-              autoPlay: true,
-              enableInfiniteScroll: false,
-              reverse: false,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              enlargeCenterPage: false,
-            ),
-            itemCount: banners.length,
-            itemBuilder: (BuildContext context, int index, int realIndex) {
-              // final imageUrl = banners[index] ?? "";
-              debugPrint("Banner Index: $index, Real Index: $realIndex, ");
-              return NetworkImageWidget(
-                imageUrl: "",
-                placeHolder: leaderBoardAsset,
-                imageHeight: Get.height * 0.2,
-                imageWidth: Get.width,
-                imageFitType: BoxFit.cover,
-                radiusAll: 10.r,
+              child: CarouselSlider.builder(
+                options: CarouselOptions(
+                  onPageChanged: (value, r) {
+                    controller.carousalBannerImageIndex.value = value;
+                    controller.update();
+                    debugPrint("carousalBannerImageIndex Index: ${controller.carousalBannerImageIndex.value}");
+                  },
+                  viewportFraction: 1.0,
+                  height: Get.height * 0.11,
+                  autoPlay: true,
+                  enableInfiniteScroll: false,
+                  reverse: false,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  enlargeCenterPage: false,
+                ),
+                itemCount: banners.length,
+                itemBuilder: (BuildContext context, int index, int realIndex) {
+                  final imageUrl = banners[index] ?? "";
+                  debugPrint("Banner Index: $index, Real Index: $realIndex, ");
+                  return NetworkImageWidget(
+                    imageUrl: imageUrl??"",
+                    placeHolder: leaderBoardAsset,
+                    imageHeight: Get.height * 0.2,
+                    imageWidth: Get.width,
+                    imageFitType: BoxFit.cover,
+                    radiusAll: 10.r,
 
-                color: greenButtonColor,
-                // Add caching and fade effect if supported by NetworkImageWidget
-                // Example: fadeInDuration: Duration(milliseconds: 300),
-                // cache: true,
-              ).marginSymmetric(horizontal: margin_10);
-            },
+                    color: greenButtonColor,
+                    // Add caching and fade effect if supported by NetworkImageWidget
+                    // Example: fadeInDuration: Duration(milliseconds: 300),
+                    // cache: true,
+                  ).marginSymmetric(horizontal: margin_10);
+                },
+              ),
+            ),
           ),
-        ),
+          _carouselIndicator(stateCarousel: controller.carousalBannerImageIndex),
+        ],
       );
     },
   );
@@ -259,7 +268,7 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget _carouselIndicator() => Container(
+  Widget _carouselIndicator({stateCarousel}) => Container(
         height: height_18,
         alignment: Alignment.center,
         width: Get.width,
@@ -276,7 +285,7 @@ class HomeScreen extends GetView<HomeController> {
                   width: height_8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: controller.carousalIndex.value == index
+                    color: stateCarousel.value == index
                         ? Colors.grey
                         : Colors.grey.shade300,
                   ),
@@ -532,7 +541,27 @@ class HomeScreen extends GetView<HomeController> {
               return upcomingMatchCell(
                   upcomingMatch:upcomingMatch,
                   onTap: (){
-                    showInSnackBar(message: "Undevelopment !");
+                    Get.toNamed(AppRoutes.matchDetailCategoryScreenRoute, arguments: {
+                      'liveMatch': LiveMatches(
+                         date: upcomingMatch?.date,
+                        title: upcomingMatch?.title,
+                        teamALogoUrl: upcomingMatch?.teamALogoUrl,
+                        teamBLogoUrl: upcomingMatch?.teamBLogoUrl,
+                        type: upcomingMatch?.type,
+                        venue: upcomingMatch?.venue,
+                        startDatetime: upcomingMatch?.startDatetime,
+                        matchId: upcomingMatch?.matchId,
+                        teamBName: upcomingMatch?.teamBName,
+                        teamBAbbr: upcomingMatch?.teamBAbbr,
+                        teamAName: upcomingMatch?.teamAName,
+                        teamAAbbr: upcomingMatch?.teamAAbbr,
+                        status: upcomingMatch?.status,
+                        externalMatchId: upcomingMatch?.externalMatchId,
+                        time: upcomingMatch?.time,
+
+                      ),
+                    });
+                    // showInSnackBar(message: "Undevelopment !");
                 // Get.toNamed(AppRoutes.overBallSelectionScreenRoute);
               });
             },

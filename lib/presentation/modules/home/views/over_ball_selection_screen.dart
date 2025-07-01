@@ -17,6 +17,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false, // Prevents screen from resizing and scrolling when keyboard appears
       backgroundColor: const Color(0xFFEFFAF1),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -28,7 +29,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                     controller.isHarOver.value?
                     gradientHarOver:gradientKuruk),//controller.isHarOver.value
               ),
-
+          
               // partnershipWidget()
               GestureDetector(
                 onTap: (){
@@ -38,9 +39,18 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   );
                 },
                 child: Stack(
-                  children: [
 
-                    ImageFiltered(imageFilter: ImageFilter.blur(sigmaX: 4,sigmaY:  4),child:  const AssetImageWidget(matchGroundAsset),),
+                  children: [
+          
+          
+
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                        child: ImageFiltered(imageFilter: ImageFilter.blur(sigmaX: 4,sigmaY:  4),child:   AssetImageWidget(matchGroundAsset,imageWidth: Get.width,imageFitType: BoxFit.cover,imageHeight: height_100,),)),
+                     // AssetImageWidget(matchGroundAsset,imageWidth: Get.width,imageFitType: BoxFit.cover,imageHeight: height_100,),
                     GestureDetector(
                       onTap: (){
                         Get.toNamed(AppRoutes.matchScoreScreenRoute,arguments: {
@@ -78,7 +88,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                           ],
                         ),
                       ],)
-                    ).marginOnly(top: margin_60),
+                    ).marginOnly(top: margin_35),
+          
                     Obx(()=>
                     playingTextWidget(teamName:controller.liveMatch.value?.teamAAbbr)),
                   ],
@@ -196,7 +207,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           fontWeight: FontWeight.w700,
         ),
       ),
-    ).marginOnly(top: margin_160);
+    ).marginOnly(top: margin_130,bottom: margin_20);
   }
 
   Widget syncWidget() {
@@ -222,7 +233,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
   Widget partnershipWidget() {
     return Container(
       // color: Colors.red,
-      height: Get.height * 0.89,
+      // height: Get.height * 0.89,
       child: Column(
         // padding: EdgeInsets.zero,
         // shrinkWrap: true,
@@ -231,6 +242,11 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           selectBallBlockWidget(title:"Select Ball" ),
 
           // Spacer(),
+
+          if(false)
+          SizedBox(
+            height: 30,
+            child: Text("${MediaQuery.of(Get.context!).size.height}- ${MediaQuery.of(Get.context!).size.aspectRatio}"),),
           buildCustomButtonGrid(),
 
 
@@ -294,8 +310,9 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           children: [
             AssetImageWidget(handleSelectBallBg(index: index)??ballSelectionDefaultAsset, imageWidth: height_35,
               imageHeight: height_35,),
+
             Text(
-              data ?? "02",
+              "-"??data ?? "02",
               style:  TextStyle(
                 color: handleTextColor(index:index),
                 fontSize: 12,
@@ -585,7 +602,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
       {'main': 'BYE', 'sub': ''},*/
     ];
 
-    final List<String> rightButtons = ['UNDO', '5',"Wicket" ];//7', 'Out', 'LB'
+    final List<String> rightButtons = ['UNDO', '5,7',"Out" ];//7', 'Out', 'LB'
 
     return Column(
       children: [
@@ -713,8 +730,6 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
               ],
             ),
           ),
-
-
         Obx(
         ()=>(!controller.isHarOver.value)?SizedBox(): SizedBox(
             height: height_45,
@@ -1446,13 +1461,13 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                       borderRadius: BorderRadius.circular(5.r)
 
                             ),
-                    child: Icon(CupertinoIcons.add,color: Colors.white,size: 10,),
+                    child: const Icon(CupertinoIcons.add,color: Colors.white,size: 10,),
                   ),
                 ),
                 Text(
-                  'add more over'.toUpperCase(),
+                  'add more entries'.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
                     fontWeight: FontWeight.w500,

@@ -29,8 +29,12 @@ class ProfileScreen extends StatelessWidget {
               Column(
                 children: [
                   classNameTitle(
-                      title: "My profile",
-                      prefix: const Icon(CupertinoIcons.profile_circled,color: Colors.black,)),
+                      title: "My Profile",
+                      prefix: GestureDetector(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.myInfoRoute);
+                        },
+                          child: const Icon(CupertinoIcons.profile_circled,color: Colors.black,))),
                   appDivider().marginOnly(top: margin_15)
                 ],
               ),
@@ -64,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                       customCard(
                         child: Column(
                           spacing: margin_8,
-                          children: [item(title: "Ballstreet wallet",onTap: (){
+                          children: [item(title: "Ball Street Wallet",onTap: (){
                             Get.toNamed(AppRoutes.addAmountWalletRoute);
                           })],
                         ),
@@ -152,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                       customCard(
                         child: Column(
                           spacing: margin_8,
-                          children: [item(title: "Transaction history",onTap: (){
+                          children: [item(title: "Transaction History",onTap: (){
                             Get.toNamed(AppRoutes.transactionHistoryRoute);
                           })],
                         ),
@@ -161,7 +165,7 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           spacing: margin_8,
                           children: [
-                            item(title: "My winnings",onTap: (){
+                            item(title: "My Winnings",onTap: (){
                               Get.toNamed(AppRoutes.myWinningsRoute);
                             }),
                             appDivider(),
@@ -191,13 +195,19 @@ class ProfileScreen extends StatelessWidget {
                             }),
                             appDivider(),
                   
-                            item(title: "About us",onTap: (){
+                            item(title: "About US",onTap: (){
                               Get.toNamed(AppRoutes.aboutUsRoute);
                             }),
                             appDivider(),
-                            item(title: "Rules and regulations",onTap: (){
+                            item(title: "Rules and Regulations",onTap: (){
                               Get.toNamed(AppRoutes.rulesAndRegulationsRoute);
-                            }),
+                            })
+                            ,
+                              appDivider(),
+                              item(title: "Privacy & Policy",onTap: (){
+                                Get.toNamed(AppRoutes.privacyAndPolicyRoute);
+                              }
+                            ),
                   
                           ],
                         ),

@@ -189,6 +189,8 @@ class HelpAndSupport extends StatelessWidget {
                           asset: addressIconAsset,
                           title: "Address : C-30 (F/04) first floor , sec -63 Noida -201301 (U.P)",),
 
+                        SizedBox(height: 50,)
+
                       ],
                     ))
 

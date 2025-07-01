@@ -12,6 +12,7 @@ import '../../home/views/profile_screen.dart';
 
 class MainParentController extends GetxController {
   RxInt bottomNavIndex = 0.obs;
+  RxBool isDoubleBackPressed = false.obs;
 
   RxList<Widget> homeList = <Widget>[
     HomeScreen(),

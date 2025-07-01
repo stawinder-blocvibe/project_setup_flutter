@@ -132,12 +132,11 @@ class TransactionHistory extends GetView<TransactionHistoryController> {
                 ),
                 Spacer(),
                 Text(
-                  'successful',
+                  'Successful',
                   style: TextStyle(
                     color: const Color(0xFF666666),
                     fontSize: 9,
-                    fontFamily: 'Afacad',
-                    fontWeight: FontWeight.w400,
+                     fontWeight: FontWeight.w400,
                   ),
                 )
               ],
@@ -200,9 +199,9 @@ class TransactionHistory extends GetView<TransactionHistoryController> {
                      fontWeight: FontWeight.w400,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  'successful',
+                  'Successful',
                   style: TextStyle(
                     // color: Colors.grey.withOpacity(0.7),
                     color: Colors.black.withOpacity(0.7),

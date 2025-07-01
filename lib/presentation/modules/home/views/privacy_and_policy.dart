@@ -6,7 +6,7 @@ import '../../../../app/core/values/app_assets.dart';
 import '../../../../app/core/values/app_values.dart';
 import '../controllers/profile_controller.dart';
 
-class AboutUs extends StatelessWidget {
+class PrivacyAndPolicy extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
 
   @override
@@ -30,7 +30,7 @@ class AboutUs extends StatelessWidget {
           child: Column(
             children: [
               classNameTitle(
-                title: 'About Us',
+                title: 'Privacy & Policy',
                 onTapBack: () {
                   Get.back();
                 },
@@ -50,61 +50,28 @@ class AboutUs extends StatelessWidget {
                           children: [
                             Center(
                               child: AssetImageWidget(
+                                color: Colors.grey,
                                 ballStreetHorizontalLogo,
                                 imageHeight: height_20,
                                 imageWidth: height_140,
                               ).marginOnly(left: margin_20),
                             ),
                             SizedBox(height: 10,),
-                            if(false)
-                            ourVisionText(),
-                            capitalLargeText(
-                              title: "Welcome to Ball Street"
-                            ),
+
                 
                 
                             Text(
-                              'India’s premier 6 balls fantasy cricket battleground where skill meets reward, and champions win ₹1 Crore every OVER.\nBuilt by sports lovers for sports lovers, our platform brings the thrill of real-time matches, smart strategy, and competitive spirit right to your fingertips.',
-                              style: TextStyle(
-                                color: const Color(0xFF666666),
-                                fontSize: 15,
-                                fontFamily: 'Afacad',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )??
-                            appSpanText(),
-                
-                            Container(
-                              // color: Colors.red,
-                              alignment: Alignment.centerLeft,
-                              child: AssetImageWidget(
-                                // color: greyColor.withOpacity(0.9),
-                                colorBlendMode: BlendMode.srcOver,
-                                bullWicketPitchBallAsset,
-                                imageHeight: height_180,
-                                // imageWidth: Get.width,
-                                // color:Colors.grey,
-                              ).marginOnly(left: margin_0),
-                            ),
-                
-                            Text(
-                              aboutUs?? 'Whether you re a seasoned fantasy league pro or just getting started, our user-friendly interface, real-time analytics, and rewarding gameplay make it easy and exciting to call for the balls  and compete for glory.Whether you re a seasoned fantasy league pro or just getting started, our user-friendly interface, real-time analytics, and rewarding gameplay make it easy and exciting to call for the balls  and compete for glory.',
-                
+                              privacyPolicy??'India’s premier 6 balls fantasy cricket battleground where skill meets reward, and champions win ₹1 Crore every OVER.\nBuilt by sports lovers for sports lovers, our platform brings the thrill of real-time matches, smart strategy, and competitive spirit right to your fingertips.',
                               style: TextStyle(
                                 color: const Color(0xFF666666),
                                 fontSize: 15,
                                  fontWeight: FontWeight.w400,
                               ),
-                            ),
+                            )
+
                 
-                            if(false)
-                            capitalLargeText(),
-                            if(false)
-                            subHeading(
-                              title:
-                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard “ dummy text ever since the 1500s, when an unknown ” - printer took a galley of type and scrambled it to make a type specimen book. ",
-                            ),
-                
+
+
                 
                 
                           ],

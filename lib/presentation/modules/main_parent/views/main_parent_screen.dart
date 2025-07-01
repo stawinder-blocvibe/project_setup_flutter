@@ -1,4 +1,3 @@
-
 import 'package:base_project/presentation/modules/main_parent/controllers/main_parent_controller.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -8,15 +7,18 @@ class MainParentScreen extends GetView<MainParentController> {
   final controller = Get.find<MainParentController>();
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => DoubleBack(
-        child: SafeArea(
-          child: Scaffold(
-            extendBody: true,
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            backgroundColor: Colors.transparent,
-            body: controller.homeList[controller.bottomNavIndex.value],
-            bottomNavigationBar: _bottomNav(),
+    return PopScope(
+      canPop: false,
+      child: Obx(
+        () => DoubleBack(
+          child: SafeArea(
+            child: Scaffold(
+              extendBody: true,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              backgroundColor: Colors.transparent,
+              body: controller.homeList[controller.bottomNavIndex.value],
+              bottomNavigationBar: _bottomNav(),
+            ),
           ),
         ),
       ),
@@ -52,34 +54,34 @@ class MainParentScreen extends GetView<MainParentController> {
                   fontSize: font_12,
 
                   fontWeight: FontWeight.w500,
-                  color: Colors.white),
+                  color: Colors.tealAccent),
               unselectedLabelStyle: textStyleBody1().copyWith(
                   fontSize: font_12,
                   fontWeight: FontWeight.w500,
-                  color: Colors.purpleAccent),
+                  color: Colors.white),
               onTap: (index) {
                 if (index != 2) {
                   controller.updateBottomNavIndex(index);
                 }
               },
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.purpleAccent,
+              selectedItemColor: Colors.tealAccent,
+              unselectedItemColor: Colors.white,
               selectedIconTheme: IconThemeData(color: appColor),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.home,
                         color: controller.bottomNavIndex.value == 0
-                            ? Colors.white
-                            : Colors.purpleAccent),
+                            ? Colors.tealAccent
+                            : Colors.white),
 
                     label: "Home".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: myMatchAsset,
                         color: controller.bottomNavIndex.value == 1
-                            ? Colors.white
-                            : Colors.purpleAccent),
+                            ? Colors.tealAccent
+                            : Colors.white),
                     label: "My Match's".tr),
                 BottomNavigationBarItem(
                   icon: SizedBox.shrink(), // Reserved space for Predict
@@ -89,15 +91,15 @@ class MainParentScreen extends GetView<MainParentController> {
                     icon: _bottomIcon(
                         icon: myWinningsAsset,
                         color: controller.bottomNavIndex.value == 3
-                            ? Colors.white
-                            : Colors.purpleAccent),
+                            ? Colors.tealAccent
+                            : Colors.white),
                     label: "My Winnings".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.profile_circled,
                         color: controller.bottomNavIndex.value == 4
-                            ? Colors.white
-                            : Colors.purpleAccent),
+                            ? Colors.tealAccent
+                            : Colors.white),
                     label: "Profile".tr),
               ],
             ),

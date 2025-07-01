@@ -53,7 +53,8 @@ class AddAmountWallet extends GetView<AddAmountController> {
                           child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                       hellowText(name: "Crorepati "),
           
-          
+
+                      if(false)
                       Text(
                          'Would you like to be a crorepati today',
                         style: TextStyle(

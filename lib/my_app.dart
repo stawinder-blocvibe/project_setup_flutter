@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
           logWriterCallback: LoggerX.write,
           builder: EasyLoading.init(),
           defaultTransition: Transition.cupertino,
+
           // translations: TranslationService(),
           locale: Get.deviceLocale,
           fallbackLocale: Locale(localKey),

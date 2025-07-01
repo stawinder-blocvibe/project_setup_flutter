@@ -21,12 +21,12 @@ class LoginScreen extends GetView<LoginController> {
           return Future.value(true);
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           resizeToAvoidBottomInset: false,
           body: Stack(
             alignment: Alignment.center,
             children: [
-              AssetImageWidget(stadiumBullBall,imageWidth: Get.width,imageHeight: Get.height,imageFitType: BoxFit.cover,),
+              AssetImageWidget(stadiumBgAsset??stadiumBullBall,imageWidth: Get.width,imageHeight: Get.height,imageFitType: BoxFit.cover,),
               Positioned(
                   top: height_30,
                   child: AssetImageWidget(ballStreetLogo,imageWidth: Get.width*0.7,imageHeight: Get.height*0.15).marginOnly(top: height_50)),
@@ -44,21 +44,21 @@ class LoginScreen extends GetView<LoginController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       const Text(
+        Text(
           'Verify your phone number',
           style: TextStyle(
             color: Colors.white,
-            fontSize:25,
+            fontSize:font_22,
             fontWeight: FontWeight.w600,
             height: 1.0,
 
           ),
         ),
-        const Text(
+         Text(
           'We have send you an One Time Password(OTP) on this mobile Number',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 14,
+            fontSize:font_12point5,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -82,16 +82,17 @@ class LoginScreen extends GetView<LoginController> {
 
             // Get.toNamed(AppRoutes.otpVerificationRoute);
           },
-          child:const Text(
+          child: Text(
           'GET OTP',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: const Color(0xFF004225),
-            fontSize: 18,
+            fontSize: font_16,
             fontWeight: FontWeight.w800,
             letterSpacing: 2,
           ),
         ),).marginOnly(top: margin_15),
+        if(false)
         registerNow().marginOnly(top: margin_5),
       ],
     );

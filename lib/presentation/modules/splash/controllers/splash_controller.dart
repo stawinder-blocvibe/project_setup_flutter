@@ -16,16 +16,27 @@ class SplashController extends GetxController {
       Get.snackbar('No Internet', 'Please check your connection.');
       return;
     }
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     handleRouting();
     // Get.offAllNamed(AppRoutes.onBoardingRoute);
   }
 }
 
-handleRouting() async  {
+/*handleRouting() async  {
 
-  Get.off(OnboardingGifScreen());
+  // Get.off(OnboardingGifScreen());
+  // Get.offAllNamed(
+  //   AppRoutes.onboardingGifScreenRoute,
+  //   transition: Transition.fadeIn,
+  // );
+  Get.offAll(
+     OnboardingGifScreen(),
+    transition: Transition.fadeIn,
+    duration: const Duration(milliseconds: 10),
+  );
+
   return;
+
   var token = await preferenceManger.getAuthToken();
   bool? isFirstLaunched = await preferenceManger.getStatusFirstLaunch();
   debugPrint("isFirstLaunched--->$token>>$isFirstLaunched");
@@ -39,4 +50,20 @@ handleRouting() async  {
   } else {
     Get.offAllNamed(AppRoutes.onBoardingRoute);
   }
+}*/
+
+handleRouting() async  {
+  var token = await preferenceManger.getAuthToken();
+  bool? isFirstLaunched = await preferenceManger.getStatusFirstLaunch();
+  debugPrint("isFirstLaunched--->$token>>$isFirstLaunched");
+  // if (isFirstLaunched != null && isFirstLaunched) {
+  if (token != null) {
+    Get.offAllNamed(AppRoutes.mainParentRoute);
+  } else {
+    Get.offAllNamed(AppRoutes.loginRoute);
+  }
+  // } else {
+  //   Get.offAllNamed(AppRoutes.loginRoute);
+  //   // Get.offAllNamed(AppRoutes.onBoardingRoute);
+  // }
 }

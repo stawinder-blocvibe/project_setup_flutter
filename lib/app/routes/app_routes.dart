@@ -174,5 +174,11 @@ abstract class AppRoutes {
   static const myContestResultCardRoute = '/myContestResultCardRoute';
   static const rulesAndRegulationsRoute = '/rulesAndRegulationsRoute';
   static const howToPlayRoute = '/howToPlayRoute';
+  static const onboardingGifScreenRoute = '/onboardingGifScreenRoute';
+  static const privacyAndPolicyRoute = '/privacyAndPolicyRoute';
+
+
+
+
 
 }

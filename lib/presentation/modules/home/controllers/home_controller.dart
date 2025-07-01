@@ -7,6 +7,7 @@ class HomeController extends GetxController {
   RxString title = 'Home'.obs;
 
   RxInt carousalIndex = 0.obs;
+
   RxInt carousalBannerImageIndex = 0.obs;
 
   List<String> liveMatchesList= [

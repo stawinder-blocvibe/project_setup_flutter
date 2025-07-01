@@ -122,7 +122,7 @@ class OtpVerificationController extends GetxController {
       debugPrint("Send Otp Response: $value");
 
       if(value["message"]!=null)
-        showInSnackBar(message: value['message']);
+        // showInSnackBar(message: value['message']);
       if(value["user"]!=null){
         // UserDataModel
 

@@ -286,7 +286,8 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         children: [
           cricketCategoryCard(
               titleFont:20.0,
-            subTitle: "Call a complete OVER right, 1 Massive prize, 1 CRORE\n\n",
+            title: "Har over\ncrorepati",
+            subTitle: "Call a complete OVER right, 1 Massive prize, 1 CRORE*\n\n",
               onTap: (){
 
             /*
@@ -303,7 +304,7 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
 
             (
             // scale: ,
-            subTitle: "120 balls , your call, Most accurate wins 1 CRORE (Winner According to LEADERBOARD)",
+            subTitle: "120 balls , your call, Most accurate wins 1 CRORE* (Winner According to LEADERBOARD)",
             onTap: (){
               debugPrint("liveMatch.value===>${controller.liveMatch.value?.toJson()}");
               Get.toNamed(AppRoutes.contestListScreenRoute,arguments: {
@@ -317,7 +318,7 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
               ]),
               titleFont:20.0,
               borderColor: Color(0xFF3A266D),
-              title: "Kurukshetra\n(120 balls)".toUpperCase(),
+              title: "Har inning crorepati\n(120 balls)".toUpperCase(),
               margin: EdgeInsets.all(margin_16,).copyWith(top: 0)).marginOnly(top: margin_20)
         ],
       ),
