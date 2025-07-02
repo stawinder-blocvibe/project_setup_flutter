@@ -40,6 +40,10 @@ class MyInfoScreen extends StatelessWidget {
                 classNameTitle(title: "My Info",onTapBack: (){
                   Get.back();
                 }),
+
+                Center(child: Hero(
+                    tag: "profile",
+                    child: Icon(Icons.account_circle,size: height_60,color: const Color(0xFF003921),)),),
                 customCard(
                   child: Column(
                     spacing: margin_8,

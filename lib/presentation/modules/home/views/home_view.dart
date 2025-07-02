@@ -210,12 +210,12 @@ class HomeScreen extends GetView<HomeController> {
                   enlargeStrategy: CenterPageEnlargeStrategy.height,
                   enlargeCenterPage: false,
                 ),
-                itemCount: banners.length,
+                itemCount: 5??banners.length,
                 itemBuilder: (BuildContext context, int index, int realIndex) {
-                  final imageUrl = banners[index] ?? "";
+                  // final imageUrl = banners[index] ?? "";
                   debugPrint("Banner Index: $index, Real Index: $realIndex, ");
                   return NetworkImageWidget(
-                    imageUrl: imageUrl??"",
+                    imageUrl: "",
                     placeHolder: leaderBoardAsset,
                     imageHeight: Get.height * 0.2,
                     imageWidth: Get.width,
@@ -231,6 +231,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
+          SizedBox(height: height_5,),
           _carouselIndicator(stateCarousel: controller.carousalBannerImageIndex),
         ],
       );
@@ -277,7 +278,7 @@ class HomeScreen extends GetView<HomeController> {
           () => Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              controller.homeApiResponse.value?.liveMatches?.length??3,
+              /*controller.homeApiResponse.value?.liveMatches?.length??*/5,
               (index) {
 
                 return Container(

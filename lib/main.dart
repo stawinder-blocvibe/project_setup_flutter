@@ -58,14 +58,15 @@ initApp() async {
 orientation() {
 
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // Set to any color
     statusBarIconBrightness: Brightness.dark, // or Brightness.light
     statusBarBrightness: Brightness.light, // For iOS (light = dark icons)
   ));
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent,
+  //     statusBarIconBrightness: Brightness.light));
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

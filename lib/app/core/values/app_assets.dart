@@ -63,6 +63,7 @@ const String ballBullWicketAsset = 'assets/icons/ball_bull_wicket.png';
  const String mailIconAsset = "assets/icons/mail_icon.png";
  const String addressIconAsset = "assets/icons/address_icon.png";
  const String calendarIconAsset = "assets/icons/calendar_icon.png";
+ const String walletAddAmountBgAsset = "assets/icons/wallet_add_amount_bg.png";
 
 
 ///  SVG Assets

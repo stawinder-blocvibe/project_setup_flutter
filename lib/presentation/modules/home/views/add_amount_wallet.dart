@@ -35,12 +35,17 @@ class AddAmountWallet extends GetView<AddAmountController> {
                   width: Get.width,
           
                   clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF14A56E),
-          
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: AssetImage(walletAddAmountBgAsset),
+                      fit: BoxFit.cover, // or BoxFit.fill / BoxFit.contain
                     ),
+                   /* gradient: RadialGradient(
+                      // center: Alignment(0.50, 0.50),
+                      radius: 4,
+                      colors: [const Color(0xFF14A56E), const Color(0x0014A56E)],
+                    ),*/
                   ),
                   child: Column(
                     spacing: margin_10,
@@ -49,8 +54,8 @@ class AddAmountWallet extends GetView<AddAmountController> {
                       GestureDetector(
                           onTap:(){
                             Get.back();
-          },
-                          child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
+                          },
+                          child: const Icon(Icons.arrow_back_ios,color: Colors.white,)),
                       hellowText(name: "Crorepati "),
           
 
@@ -221,10 +226,10 @@ class AddAmountWallet extends GetView<AddAmountController> {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         decoration: ShapeDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment(0.00, 0.50),
             end: Alignment(1.00, 0.50),
-            colors: [Colors.white, const Color(0xFFECFFEB)],
+            colors:  [Colors.white, Color(0xFFECFFEB)],
           ),
           shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -236,8 +241,8 @@ class AddAmountWallet extends GetView<AddAmountController> {
         ),
         child: Text(
           prize ?? '50.00',
-          style: TextStyle(
-            color: const Color(0xFF003921),
+          style: const TextStyle(
+            color: Color(0xFF003921),
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -250,11 +255,19 @@ class AddAmountWallet extends GetView<AddAmountController> {
   Widget introductionCard(){
     return Container(
       padding: EdgeInsets.all(margin_12),
-      decoration: ShapeDecoration(
-        color:const Color(0xFF14A56E),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+      decoration: BoxDecoration(
+        // color:const Color(0xFF14A56E),
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          image: AssetImage(walletAddAmountBgAsset),
+          fit: BoxFit.cover, // or BoxFit.fill / BoxFit.contain
         ),
+       /* gradient: RadialGradient(
+          // center: Alignment(0.50, 0.50),
+          radius: 4,
+          colors: [const Color(0xFF14A56E), const Color(0x0014A56E)],
+        ),*/
+
       ),
       child: Row(
         children: [

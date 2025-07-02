@@ -34,7 +34,9 @@ class ProfileScreen extends StatelessWidget {
                         onTap: (){
                           Get.toNamed(AppRoutes.myInfoRoute);
                         },
-                          child: const Icon(CupertinoIcons.profile_circled,color: Colors.black,))),
+                          child: const Hero(
+                              tag: 'profile',
+                              child:  Icon(CupertinoIcons.profile_circled,color: Colors.black,)))),
                   appDivider().marginOnly(top: margin_15)
                 ],
               ),
