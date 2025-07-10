@@ -23,8 +23,6 @@ class OverBallSelectionResultScreen extends GetView<OverBallSelectionResultContr
           child: Column(
             children: [
               appBarWithWallet(onlyWallet: true),
-
-
               Stack(
                 children: [
                   const AssetImageWidget(matchGroundAsset),

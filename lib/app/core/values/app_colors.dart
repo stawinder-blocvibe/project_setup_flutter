@@ -14,7 +14,7 @@ const Color color_black = Color.fromRGBO(0, 0, 0, 1.0);
 const Color colorTextBlack = Color(0xFF666666);
 const Color colorRed = Color(0xFFFF7043);
 const Color colorHintGrey = Color(0xFFA1A5B1);
-Color toastColor = Colors.purple??Color(0xFF3A266D)??Color.fromRGBO(245, 208, 183, 1.0);
+Color toastColor = Color(0xFF003921)??Color(0xFF875CF2)??Color(0xFF3A266D)??Color.fromRGBO(245, 208, 183, 1.0);
 Color blueColor = Color.fromRGBO(0, 83, 160, 1.0);
 Color darkGreyColor = Color.fromRGBO(84, 84, 84, 1.0);
 Color colorAppColor = Color.fromRGBO(252, 147, 2, 1.0);
@@ -110,3 +110,6 @@ LinearGradient gradientKuruk = const LinearGradient(colors: [
   Color(0xFF875CF2),
   Color(0xFF381C7D),
 ]);
+
+
+

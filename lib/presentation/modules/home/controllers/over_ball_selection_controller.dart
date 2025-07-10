@@ -15,12 +15,12 @@ class OverBallSelectionController extends GetxController {
 
   List<String> ballList = ["W", "6", "4", "6", "NB", "0", "NB", "0"];
 
-  Rx<int?> selectedBallIndex = Rx(null);
-  Rx<int?> selectedOverIndex = Rx(null);
+  Rx<int?> selectedBallIndex = Rx(0);
+  Rx<int?> selectedOverIndex = Rx(0);
 
   void updateBallIndex({required int index, required String ballValue}) {
     if (selectedBallIndex.value == index) {
-      selectedBallIndex.value = null; // Deselect if already selected
+      // selectedBallIndex.value = null; // Deselect if already selected
     } else {
       selectedBallIndex.value = index; // Select the new index
     }
@@ -105,7 +105,7 @@ class OverBallSelectionController extends GetxController {
 
   void updateOverIndex({required int index, required String overValue}) {
     if (selectedOverIndex.value == index) {
-      selectedOverIndex.value = null; // Deselect if already selected
+      // selectedOverIndex.value = null; // Deselect if already selected
     } else {
       selectedOverIndex.value = index; // Select the new index
     }
@@ -117,7 +117,8 @@ class OverBallSelectionController extends GetxController {
     required int overIndex,
     required int ballIndex,
     required String value,
-  }) {
+  })
+  {
     debugPrint(
       "setOverBallValue: Over Index: $overIndex, Ball Index: $ballIndex, Value: $value",
     );
@@ -125,6 +126,10 @@ class OverBallSelectionController extends GetxController {
     if (overList.value.isEmpty || overList.value == null) {
       return;
     }
+
+
+
+
     if (ballIndex == 0) {
       overList[overIndex] = overList[overIndex].copyWith(firstBall: value);
     } else if (ballIndex == 1) {
@@ -140,6 +145,30 @@ class OverBallSelectionController extends GetxController {
     }
 
     overList.refresh();
+
+    final over = overList[overIndex];
+      final first = over.firstBall;
+
+
+      debugPrint("first===>$first>>${over.secondBall}>>${over.thirdBall}>>${over.fourthBall}>>${over.fifthBall}>>${over.sixthBall} >>${first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall}");
+      if (first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall
+      ) {
+        overList[overIndex] = overList[overIndex].copyWith(
+            sixthBall: ''
+        );
+        return;
+      }
+
+
+
   }
 
   String getBallValue({required int overIndex, required int ballIndex}) {

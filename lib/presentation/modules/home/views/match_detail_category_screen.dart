@@ -31,7 +31,7 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(1),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                         child: Container(
                           color: Colors.transparent, // Required for BackdropFilter to work
                         ),
@@ -284,20 +284,20 @@ class MatchDetailCategoryScreen extends GetView<MatchDetailCategoryController> {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         children: [
-          cricketCategoryCard(
+          cricketCategoryCard
+            (
               titleFont:20.0,
             title: "Har over\ncrorepati",
             subTitle: "Call a complete OVER right, 1 Massive prize, 1 CRORE*\n\n",
               onTap: (){
 
-            /*
               Get.toNamed(AppRoutes.harOverBallSelectionRoute,arguments: {
               "liveMatch":controller.liveMatch.value,
-            });*/
-
-            Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
-              "liveMatch":controller.liveMatch.value,
             });
+
+            // Get.toNamed(AppRoutes.overBallSelectionScreenRoute,arguments: {
+            //   "liveMatch":controller.liveMatch.value,
+            // });
           }).marginOnly(top: margin_20),
 
           cricketCategoryCard

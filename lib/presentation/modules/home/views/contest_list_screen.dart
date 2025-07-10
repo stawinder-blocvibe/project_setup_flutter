@@ -34,9 +34,11 @@ class ContestListScreen extends GetView<ContestListScreenController> {
                 },
                 child: Stack(
                   children: [
+
                     AssetImageWidget(
                       imageFitType: BoxFit.cover,
-                      stadiumBullBall,
+                        matchGroundAsset??
+                        stadiumBullBall,
                       imageHeight: Get.height * 0.8,
                       imageWidth: double.infinity
                     ),
@@ -53,7 +55,7 @@ class ContestListScreen extends GetView<ContestListScreenController> {
                     ClipRRect(
                       borderRadius: BorderRadiusGeometry.circular(1),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                         child: Column(
                           children: [
                             matchType(),
@@ -86,6 +88,7 @@ class ContestListScreen extends GetView<ContestListScreenController> {
                     ),
 
                     playingTextWidget(),
+                    if(false)
                     Positioned(
                       right: 0,
                       child: syncWidget(),
@@ -233,26 +236,56 @@ class ContestListScreen extends GetView<ContestListScreenController> {
     return Container(
       // color: Colors.red,
       margin: EdgeInsets.symmetric(horizontal: margin_20),
-      height: Get.height * 0.90,
-      child: ListView(
-        padding: EdgeInsets.zero,
+      height: Get.height * 0.91,
+      child: CustomScrollView(
         shrinkWrap: true,
-        children: [
-          contestTextWidget(),
-
-          Obx(
-              ()=> Column(
-              children: List.generate(controller.poolList.length, (e)=>contestCellWidget(
-                  pool:controller.poolList[e],
-                  onTap: (){
-                Get.toNamed(AppRoutes.leaderboardWinningResultScreenRoute,arguments: {
-                  "liveMatch":controller.liveMatch.value,
-                  "pool":controller.poolList.value[e]
-
-                });
-              }).marginOnly(bottom: margin_10)),
+        slivers: [
+          // SliverToBoxAdapter(child: contestTextWidget()),
+          // SliverToBoxAdapter(child: SizedBox(height: 10)),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverTabBarDelegate(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEFFAF1),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    contestTextWidget(),
+                    SizedBox(height: 10,),
+                    customTabBar(),
+                  ],
+                ),
+              ),
             ),
-          )
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+          Obx(
+                () => SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, e) => contestCellWidget(
+                  pool: controller.selectedTabIndex.value == 1
+                      ? controller.poolList[e]
+                      : controller.poolList2[e],
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.leaderboardWinningResultScreenRoute,
+                      arguments: {
+                        "liveMatch": controller.liveMatch.value,
+                        "pool": controller.selectedTabIndex.value == 1
+                            ? controller.poolList[e]
+                            : controller.poolList2[e]
+                      },
+                    );
+                  },
+                ).marginOnly(bottom: margin_10),
+                childCount: controller.selectedTabIndex.value == 1
+                    ? controller.poolList.length
+                    : controller.poolList2.length,
+              ),
+            ),
+          ),
         ],
       ).marginOnly(top: margin_230),
     );
@@ -338,8 +371,7 @@ class ContestListScreen extends GetView<ContestListScreenController> {
       style: TextStyle(
         color: const Color(0xFF003921),
         fontSize: 24,
-        fontFamily: 'Ancizar Serif',
-        fontWeight: FontWeight.w800,
+         fontWeight: FontWeight.w700,
       ),
     );
   }
@@ -347,18 +379,71 @@ class ContestListScreen extends GetView<ContestListScreenController> {
 
 
 
+  Widget customTabBar() {
+    return Container(
+      padding: EdgeInsets.all(margin_10),
+      decoration: BoxDecoration(
 
+        color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20.r),
+        // border: Border.all(color: Colors.greenAccent,width: 2)
+      ),
+      child: Obx(
+        ()=> Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            tabCell(id:1,title: 'Inning 1'),
+            SizedBox(width: 10),
+            tabCell(id:2,title: "Inning 2"),
+          ],
+        ),
+      ),
+    );
+  }
 
+  tabCell({required int id,title}) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: (){
+          controller.selectedTabIndex.value = id;
+        },
+        child: Container(
+          height: height_40,
+          alignment: Alignment.center,
+          child: Text(title??"",style: TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          )),
 
+          decoration: BoxDecoration(
+            color: (id==controller.selectedTabIndex.value)?Colors.white:Colors.transparent,
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(
+                width: 2,
+                color: (id==controller.selectedTabIndex.value)?Colors.white:Colors.grey.shade400)
 
+            )
+        ),
+      ),
+    );
+  }
+}
 
+class _SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  _SliverTabBarDelegate({required this.child});
 
+  @override
+  double get minExtent =>130;
+  @override
+  double get maxExtent => 130;
 
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
 
-
-
-
-
-
-
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }

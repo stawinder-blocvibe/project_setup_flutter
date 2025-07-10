@@ -14,7 +14,10 @@ class MyMatchModel {
       this.date, 
       this.time, 
       this.status, 
-      this.venue,});
+      this.venue,
+      this.isPredictHarOverMatch,
+      this.isPredictHarInningMatch,
+  });
 
   MyMatchModel.fromJson(dynamic json) {
     matchId = json['matchId'];
@@ -32,6 +35,8 @@ class MyMatchModel {
     time = json['time'];
     status = json['status'];
     venue = json['venue'];
+    isPredictHarOverMatch = json['isPredictHarOverMatch'];
+    isPredictHarInningMatch = json['isPredictHarInningMatch'];
   }
   String? matchId;
   int? externalMatchId;
@@ -48,6 +53,8 @@ class MyMatchModel {
   String? time;
   String? status;
   String? venue;
+  bool? isPredictHarOverMatch;
+  bool? isPredictHarInningMatch;
 MyMatchModel copyWith({  String? matchId,
   int? externalMatchId,
   String? teamAName,
@@ -63,6 +70,8 @@ MyMatchModel copyWith({  String? matchId,
   String? time,
   String? status,
   String? venue,
+  bool? isPredictHarOverMatch,
+  bool? isPredictHarInningMatch,
 }) => MyMatchModel(  matchId: matchId ?? this.matchId,
   externalMatchId: externalMatchId ?? this.externalMatchId,
   teamAName: teamAName ?? this.teamAName,
@@ -78,6 +87,8 @@ MyMatchModel copyWith({  String? matchId,
   time: time ?? this.time,
   status: status ?? this.status,
   venue: venue ?? this.venue,
+  isPredictHarOverMatch: isPredictHarOverMatch ?? this.isPredictHarOverMatch,
+  isPredictHarInningMatch: isPredictHarInningMatch ?? this.isPredictHarInningMatch,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -96,6 +107,8 @@ MyMatchModel copyWith({  String? matchId,
     map['time'] = time;
     map['status'] = status;
     map['venue'] = venue;
+    map['isPredictHarOverMatch'] = isPredictHarOverMatch;
+    map['isPredictHarInningMatch'] = isPredictHarInningMatch;
     return map;
   }
 

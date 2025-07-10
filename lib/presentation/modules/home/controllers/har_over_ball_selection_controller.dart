@@ -10,17 +10,18 @@ import '../views/bottom_sheets.dart';
 import 'package:base_project/presentation/modules/home/models/save_prediction_model.dart' as save_prediction;
 
 class HarOverBallSelectionController extends GetxController {
+  RxBool isHarOver = true.obs;
   Rx<UserDataModel?> user = Rxn();
 
   List<String> ballList = ["W", "6", "4", "6", "NB", "0", "NB", "0"];
 
-  Rx<int?> selectedBallIndex = Rx(null);
-  Rx<int?> selectedOverIndex = Rx(null);
-  Rx<int?> selectedPredictIndex = Rx(null);
+  Rx<int?> selectedBallIndex = Rx(0);
+  Rx<int?> selectedOverIndex = Rx(0);
+  Rx<int?> selectedPredictIndex = Rx(0);
 
   void updateBallIndex({required int index, required String ballValue, required int predictIndex}) {
     if (selectedPredictIndex.value == predictIndex && selectedBallIndex.value == index) {
-      selectedPredictIndex.value = null; // Deselect if already selected
+      // selectedPredictIndex.value = null; // Deselect if already selected
     } else {
       selectedPredictIndex.value = predictIndex; // Select the new index
       selectedBallIndex.value = index;
@@ -34,7 +35,7 @@ class HarOverBallSelectionController extends GetxController {
     if (overIndex == null || ballIndex == null) {
       return false;
     }
-//satta
+
     if (ballIndex == 0) {
       return overList[overIndex].predictedList?[predictIndex].firstBall != "";
     } else if (ballIndex == 1) {
@@ -88,6 +89,11 @@ class HarOverBallSelectionController extends GetxController {
       pool.value = args['pool'];
       pool.refresh();
     }
+
+    if(args['isHarOver']!=null){
+      isHarOver.value = args['isHarOver'];
+      isHarOver.refresh();
+    }
   }
 
   RxList<OverNew> overList = RxList();
@@ -107,12 +113,21 @@ class HarOverBallSelectionController extends GetxController {
 
   void updateOverIndex({required int index, required String overValue}) {
     if (selectedOverIndex.value == index) {
-      selectedOverIndex.value = null; // Deselect if already selected
+      // selectedOverIndex.value = null; // Deselect if already selected
     } else {
       selectedOverIndex.value = index; // Select the new index
     }
     selectedOverIndex.refresh();
     debugPrint("Selected OverNew: $overValue at index: $index");
+  }
+  jumpNextBall(){
+    if( selectedBallIndex.value!=6 && selectedBallIndex.value!=null ){
+      selectedBallIndex.value = (selectedBallIndex.value??0)+1;
+      selectedBallIndex.refresh();
+    }else{
+      selectedBallIndex.value = 0;
+      selectedBallIndex.refresh();
+    }
   }
 
   setOverBallValue({
@@ -120,7 +135,8 @@ class HarOverBallSelectionController extends GetxController {
     required int ballIndex,
     required int predictIndex,
     required String value,
-  }) {
+  })
+  {
     debugPrint(
       "setOverBallValue: OverNew Index: $overIndex, Ball Index: $ballIndex, Value: $value",
     );
@@ -130,6 +146,12 @@ class HarOverBallSelectionController extends GetxController {
      ||overList[overIndex].predictedList?.isEmpty==true) {
       return;
     }
+
+
+
+
+
+
     if (ballIndex == 0) {
       overList[overIndex].predictedList![predictIndex] = overList[overIndex].predictedList![predictIndex].copyWith(
         firstBall: value
@@ -159,6 +181,31 @@ class HarOverBallSelectionController extends GetxController {
            }
 
     overList.refresh();
+
+    final predictedList = overList[overIndex].predictedList;
+    if (predictedList != null && predictIndex < predictedList.length) {
+      final over = predictedList[predictIndex];
+
+      final first = over.firstBall;
+
+
+      debugPrint("first===>${first}>>${over.secondBall}>>${over.thirdBall}>>${over.fourthBall}>>${over.fifthBall}>>${over.sixthBall} >>1${predictIndex}>${first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall}");
+      if (first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall
+         ) {
+        overList[overIndex].predictedList?[predictIndex] = overList[overIndex].predictedList![predictIndex].copyWith(
+            sixthBall: ''
+        );
+        return;
+      }
+    }
   }
 
   String getBallValue({required int overIndex, required int ballIndex, required int predictIndex}) {
@@ -180,9 +227,9 @@ class HarOverBallSelectionController extends GetxController {
 
   void handleRightSideButtonTap({data}) {
     debugPrint(
-      "check===>${data.toString().contains("5")} >>${(selectedBallIndex.value ?? 0) + 1}",
+      "check===>${data.toString().contains("5,7")} >>${(selectedBallIndex.value ?? 0) + 1}",
     );
-    if (data.toString().contains("5")) {
+    if (data.toString().contains("5,7")&& !data.toString().toLowerCase().contains("WKT".toLowerCase())) {
       showBallValueSelectorBottomSheet(
         context: Get.context!,
         ballNumber: (selectedBallIndex.value ?? 0) + 1,
@@ -192,8 +239,10 @@ class HarOverBallSelectionController extends GetxController {
             overIndex: selectedOverIndex.value ?? 0,
             ballIndex: selectedBallIndex.value ?? 0,
             value: value,
-            predictIndex: selectedPredictIndex.value??0
+            predictIndex: selectedPredictIndex.value ?? 0,
+
           );
+          jumpNextBall();
         },
         overNumber: selectedOverIndex.value ?? 0,
       );
@@ -202,23 +251,57 @@ class HarOverBallSelectionController extends GetxController {
         overIndex: selectedOverIndex.value ?? 0,
         ballIndex: ((selectedBallIndex.value) ?? 0),
         value: "",
-          predictIndex: selectedPredictIndex.value??0
+        predictIndex: selectedPredictIndex.value ?? 0,
       );
+      jumpNextBall();
     } else if (data.toString().toLowerCase().contains('Out'.toLowerCase())) {
       setOverBallValue(
         overIndex: selectedOverIndex.value ?? 0,
         ballIndex: selectedBallIndex.value ?? 0,
         value: "OUT",
-          predictIndex: selectedPredictIndex.value??0
+        predictIndex: selectedPredictIndex.value ?? 0,
       );
-    } else {
+      jumpNextBall();
+    } else if(
+    data.toString().toLowerCase().contains('WD'.toLowerCase()) ||
+        data.toString().toLowerCase().contains('NB'.toLowerCase()))
+    {
+       var isOverFilled =  isOverCompleted(over:overList[(selectedOverIndex.value ?? 0)].predictedList?[(selectedPredictIndex.value??0)]);
+
+
+       setOverBallValue(
+        overIndex: selectedOverIndex.value ?? 0,
+        ballIndex: selectedBallIndex.value ?? 0,
+        value: data.toString().toUpperCase(),
+        predictIndex: selectedPredictIndex.value ?? 0,
+      );
+       // if(!isOverFilled.value && overBallLength().value<6){
+       //   // return ;
+       //   showInSnackBar(
+       //       message: "Please fill all balls of over before adding extra ball");
+       // }
+       // debugPrint("isOverFilled===>${overBallLength(over:overList[(selectedOverIndex.value ?? 0)].predictedList?[(selectedPredictIndex.value??0)])}");
+
+       jumpNextBall();
+    }else if(data.toString().toLowerCase().contains('WKT'.toLowerCase())){
+    setOverBallValue(
+    overIndex: selectedOverIndex.value ?? 0,
+    ballIndex: selectedBallIndex.value ?? 0,
+    value: data.toString().toUpperCase(),
+    predictIndex: selectedPredictIndex.value ?? 0,
+    );
+    jumpNextBall();
+
+    }
+    else {
       //LB
       setOverBallValue(
         overIndex: selectedOverIndex.value ?? 0,
         ballIndex: selectedBallIndex.value ?? 0,
         value: "LB",
-          predictIndex: selectedPredictIndex.value??0
+        predictIndex: selectedPredictIndex.value ?? 0,
       );
+      jumpNextBall();
     }
   }
 
@@ -266,18 +349,18 @@ class HarOverBallSelectionController extends GetxController {
   hitAddPaymentApi({amount, required Function() onPaymentDone}) {
     repository
         .completeTransactionApi(
-          userId: user.value?.id,
-          amount: amount ?? 19,
-          matchId: liveMatch.value?.matchId,
-          type: "deduct",
-        )
+      userId: user.value?.id,
+      amount: isHarOver.value?19:pool.value?.joiningPrice??19,
+      matchId: liveMatch.value?.matchId,
+      type: "deduct",
+    )
         .then((value) {
-          debugPrint("hitAddPaymentApi===>$value}");
+      debugPrint("hitAddPaymentApi===>$value}");
 
-          if (value != null && value['message'] != null) {
-            onPaymentDone();
-          } else {}
-        });
+      if (value != null && value['message'] != null) {
+        onPaymentDone();
+      } else {}
+    });
   }
 
   RxBool inningSwitch = true.obs;
@@ -288,17 +371,21 @@ class HarOverBallSelectionController extends GetxController {
     selectedBallAddSubState.refresh();
   }
   jsonHandleDataPayload() {
-    var listOver = overList.value
-        .where(
-          (over) =>
-              (over.predictedList?.last.firstBall?.isNotEmpty==true) &&
-              (over.predictedList?.last.secondBall?.isNotEmpty==true) &&
-              (over.predictedList?.last.thirdBall?.isNotEmpty==true) &&
-              (over.predictedList?.last.fourthBall?.isNotEmpty==true) &&
-              (over.predictedList?.last.fifthBall?.isNotEmpty==true) &&
-              (over.predictedList?.last.sixthBall?.isNotEmpty==true)
-        )
-        .toList();
+    var listOver = overList.value.where(
+          (over) {
+        // Find if any predicted over in this list is "fully filled"
+        final completedPrediction = over.predictedList?.any((predicted) =>
+        (predicted.firstBall?.isNotEmpty ?? false) &&
+            (predicted.secondBall?.isNotEmpty ?? false) &&
+            (predicted.thirdBall?.isNotEmpty ?? false) &&
+            (predicted.fourthBall?.isNotEmpty ?? false) &&
+            (predicted.fifthBall?.isNotEmpty ?? false) &&
+            (predicted.sixthBall?.isNotEmpty ?? false)
+        );
+
+        return completedPrediction == true;
+      },
+    ).toList();
 
     return save_prediction.SavePredictionModel(
       innings: [
@@ -307,8 +394,17 @@ class HarOverBallSelectionController extends GetxController {
           overs: List.generate(
             listOver.length,
             (index) => save_prediction.Overs(
-              over: ((listOver[index].overNumber??0) + 1),
-              input: [
+              over: (listOver[index].overNumber??0),
+              input:
+              listOver[index].predictedList?.map((predict)=>[
+                 predict.firstBall??"",
+                 predict.secondBall??"",
+                 predict.thirdBall??"",
+                 predict.fourthBall??"",
+                 predict.fifthBall??"",
+                 predict.sixthBall??"",
+              ]).toList()??
+              [
                 listOver[index].predictedList?.last.firstBall,
                 listOver[index].predictedList?.last.secondBall,
                 listOver[index].predictedList?.last.thirdBall,
@@ -333,5 +429,78 @@ class HarOverBallSelectionController extends GetxController {
   }
 
 
+  finalAmountToPay(){
+    var amount = 0;
+    overList.forEach((over){
+      over.predictedList?.forEach((predict){
+        if((predict.firstBall != "") &&
+            (predict.secondBall != "") &&
+            (predict.thirdBall != "") &&
+            (predict.fourthBall != "") &&
+            (predict.fifthBall != "")
+            && (predict.sixthBall != ""))
+        {
+          amount = amount + 19;
+        }
+      });
+    });
+    return amount;
+  }
+
+  RxBool isOverCompleted({PredictedList? over}) {
+    // List of all ball values in the over
+    if (over == null) return false.obs;
+    List<String> balls = [];
+    balls.addIf(over.firstBall!="" && over.firstBall!=null, over.firstBall!);
+    balls.addIf(over.secondBall!="" && over.secondBall!=null, over.secondBall!);
+    balls.addIf(over.thirdBall!="" && over.thirdBall!=null, over.thirdBall!);
+    balls.addIf(over.fourthBall!="" && over.fourthBall!=null, over.fourthBall!);
+    balls.addIf(over.fifthBall!="" && over.fifthBall!=null, over.fifthBall!);
+    balls.addIf(over.sixthBall!="" && over.sixthBall!=null, over.sixthBall!);
+
+    over.extraBalls?.forEach((ball){
+      if(ball!=null && ball.isNotEmpty){
+        balls.add(ball);
+      }
+    });
+
+    // Count legal deliveries only (exclude "WD" and "NB")
+    int legalDeliveries = balls.where((ball) =>
+    ball.isNotEmpty &&
+        (
+            !ball.toLowerCase().contains('wd') &&
+                !ball.toLowerCase().contains('nb')
+        )).length;
+
+    return (legalDeliveries==6).obs ;
+  }
+
+  RxInt overBallLength({PredictedList? over}) {
+    // List of all ball values in the over
+    if (over == null) return 0.obs;
+    List<String> balls = [];
+    balls.addIf(over.firstBall!="" && over.firstBall!=null, over.firstBall!);
+    balls.addIf(over.secondBall!="" && over.secondBall!=null, over.secondBall!);
+    balls.addIf(over.thirdBall!="" && over.thirdBall!=null, over.thirdBall!);
+    balls.addIf(over.fourthBall!="" && over.fourthBall!=null, over.fourthBall!);
+    balls.addIf(over.fifthBall!="" && over.fifthBall!=null, over.fifthBall!);
+    balls.addIf(over.sixthBall!="" && over.sixthBall!=null, over.sixthBall!);
+
+    over.extraBalls?.forEach((ball){
+      if(ball!=null && ball.isNotEmpty){
+        balls.add(ball);
+      }
+    });
+
+    // Count legal deliveries only (exclude "WD" and "NB")
+    int legalDeliveries = balls.where((ball) =>
+    ball.isNotEmpty &&
+       (
+           !ball.toLowerCase().contains('wd') &&
+           !ball.toLowerCase().contains('nb')
+       )).length;
+
+    return (legalDeliveries.obs) ;
+  }
 
 }

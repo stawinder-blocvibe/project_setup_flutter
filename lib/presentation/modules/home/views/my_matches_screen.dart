@@ -1,5 +1,6 @@
   import 'package:base_project/app/export.dart';
 import 'package:base_project/presentation/modules/home/models/home_api_response.dart';
+import 'package:base_project/presentation/modules/main_parent/controllers/main_parent_controller.dart';
  import '../controllers/my_matches_controller.dart';
 
 class MyMatchesScreen extends GetView<MyMatchesController> {
@@ -11,7 +12,9 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
       body: Column(
         children: [
           appBarWithWallet(onlyWallet: true,onTapBack: (){
-
+            var controller = Get.find<MainParentController>();
+            controller.updateBottomNavIndex(0);
+            controller.bottomNavIndex.refresh();
           }),
           Expanded(
             child: CustomScrollView(
@@ -26,13 +29,12 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
                         // Header text
                         Padding(
                           padding:  EdgeInsets.only(bottom: margin_10),
-                          child: Text(
+                          child: const Text(
                             "My Match's",
                             style: TextStyle(
                               color: Color(0xFF003921),
                               fontSize: 24,
-                              fontFamily: 'Ancizar Serif',
-                              fontWeight: FontWeight.w800,
+                               fontWeight: FontWeight.w800,
                             ),
                           ),
                         ),
@@ -97,10 +99,13 @@ class MyMatchesScreen extends GetView<MyMatchesController> {
               teamBLogoUrl: match.teamBLogoUrl,
               teamBName: match.teamBName,
               venue: match.venue,
+              isPredictHarInningMatch: match.isPredictHarInningMatch,
+              isPredictHarOverMatch: match.isPredictHarOverMatch,
             );
         return upcomingMatchCell(upcomingMatch: upcomm,onTap: (){
 
-          Get.toNamed(AppRoutes.overBallSelectionResultScreenRoute,arguments: {
+          // Get.toNamed(AppRoutes.overBallSelectionResultScreenRoute,arguments: {
+          Get.toNamed(AppRoutes.myContestResultCardRoute,arguments: {
             "isEdit":true,
             'liveMatch':liveMatch,
             'unComing':upcomm,

@@ -18,6 +18,8 @@ class MyContestResultCardController extends GetxController {
     var args = Get.arguments;
     if(args['liveMatch']!=null){
       liveMatch.value = args['liveMatch'] as LiveMatches;
+
+      debugPrint("Live match data found: ${liveMatch.value?.toJson()}");
     } else {
       debugPrint("No live match data found in arguments");
     }

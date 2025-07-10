@@ -99,7 +99,6 @@ class OverBallSelectionResultController extends GetxController {
     if(args!=null && args['liveMatch']!=null){
       liveMatch.value  = args['liveMatch'];
       liveMatch.refresh();
-
       debugPrint("liveMatches.value===>${liveMatch.value?.toJson()}");
     }
 
@@ -137,9 +136,9 @@ class OverBallSelectionResultController extends GetxController {
   }) {
     debugPrint("setOverBallValue: Over Index: $overIndex, Ball Index: $ballIndex, Value: $value");
 
-    if(overList.value.isEmpty ||overList.value==null){
-      return;
-    }
+    // if(overList.isEmpty ||overList==[]){
+    //   return;
+    // }
     if (ballIndex == 0) {
       overList[overIndex] = overList[overIndex].copyWith(firstBall: value);
 
@@ -165,6 +164,33 @@ class OverBallSelectionResultController extends GetxController {
 
     }
 
+    overList.refresh();
+    debugPrint("first===>${overIndex}");
+
+    final predictedList = overList[overIndex];
+    if (5 == overIndex) {
+      final over = predictedList;
+
+      final first = over.firstBall;
+
+
+      debugPrint("first===>${first}>>${over.secondBall}>>${over.thirdBall}>>${over.fourthBall}>>${over.fifthBall}>>${over.sixthBall} >>>${first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall}");
+      if (first == over.secondBall &&
+          first == over.thirdBall &&
+          first == over.fourthBall &&
+          first == over.fifthBall &&
+          first == over.sixthBall
+      ) {
+        overList[overIndex] = overList[overIndex].copyWith(
+            sixthBall: ''
+        );
+        return;
+      }
+    }
     overList.refresh();
   }
 

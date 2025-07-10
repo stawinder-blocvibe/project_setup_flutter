@@ -4,7 +4,8 @@
 import '../../../app/export.dart';
 
 class GeniusSubscriptionModal extends StatefulWidget {
-  const GeniusSubscriptionModal({Key? key}) : super(key: key);
+  final VoidCallback onTap;
+    GeniusSubscriptionModal({Key? key, required this.onTap}) : super(key: key);
 
   @override
   State<GeniusSubscriptionModal> createState() => _GeniusSubscriptionModalState();
@@ -170,25 +171,46 @@ class _GeniusSubscriptionModalState extends State<GeniusSubscriptionModal> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text(
+              child: dailofField()??const Text(
                 'A- 126, block a, shivalik colony, malviya nagar,\nNew Delhi, Delhi 110017, India ',
                 style: TextStyle(
-                  color: const Color(0xFF003921),
+                  color: Color(0xFF003921),
                   fontSize: 12,
                    fontWeight: FontWeight.w400,
                 ),
               ),
             ),
 
-           appButton(buttonText: "Pay Now",onTap: (){
-             isGenius.value = !isGenius.value;
-             isGenius.refresh();
-             Get.back();
-           }).marginSymmetric(horizontal: margin_20),
+           appButton(buttonText: "Pay Now",onTap: widget.onTap).marginSymmetric(horizontal: margin_20),
 
             const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  dailofField() {
+    return TextField(
+      controller: _addressController,
+      maxLines: 3,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Enter your address',
+        hintStyle: TextStyle(
+          color: Colors.grey.shade600,
+          fontSize: 14,
+        ),
+        disabledBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        contentPadding: EdgeInsets.zero
+      ),
+      style: const TextStyle(
+        color: Color(0xFF003921),
+        fontSize: 14,
       ),
     );
   }

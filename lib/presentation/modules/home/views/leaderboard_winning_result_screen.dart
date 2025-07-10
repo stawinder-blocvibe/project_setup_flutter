@@ -208,11 +208,25 @@ class LeaderboardWinningResultScreen
         beTheFirstText(),
         Divider(color: Colors.grey).marginSymmetric(vertical: margin_10),
 
-        Center(
-          child: AssetImageWidget(
-            "assets/icons/dashboard.gif",
-            imageHeight: height_200,
-            imageWidth: Get.width * 0.7,
+        Obx(
+            ()=>
+          controller.LeaderboardUserList.value.isNotEmpty?
+              Expanded(
+                child: ListView.builder(
+                    itemCount: controller.LeaderboardUserList.value.length,
+                    itemBuilder: (context,index){
+                      var user = controller.LeaderboardUserList.value[index];
+                  return leaderBoardCellWidget(name: user.fullName).marginOnly(bottom: margin_10);
+                }),
+              ):
+          Center(
+            child: AssetImageWidget(
+              // emptyListGifAsset??
+                  dashboardGifAsset??
+              "assets/icons/dashboard.gif",
+              imageHeight: height_200,
+              imageWidth: Get.width * 0.7,
+            ),
           ),
         ),
 
@@ -249,9 +263,11 @@ class LeaderboardWinningResultScreen
     ).marginOnly(left: margin_10);
   }
 
-  Widget leaderBoardCellWidget() {
+  Widget leaderBoardCellWidget({name}) {
     return Row(
+      spacing: margin_5,
       children: [
+        initialsAvatar(fullName:name, )??
         NetworkImageWidget(
           imageUrl: "",
           placeHolder: klRahulProfileAsset,
@@ -265,13 +281,12 @@ class LeaderboardWinningResultScreen
           spacing: 15,
           children: [
             Text(
-              'Anuj singh',
+              '$name',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: const Color(0xFF003921),
+              style: const TextStyle(
+                color: Color(0xFF003921),
                 fontSize: 18,
-                fontFamily: 'Afacad',
-                fontWeight: FontWeight.w400,
+                 fontWeight: FontWeight.w400,
               ),
             ),
             Container(
@@ -584,4 +599,41 @@ class LeaderboardWinningResultScreen
       ),
     );
   }
+
+
+
+  Widget initialsAvatar({
+    required String fullName,
+    double radius = 24,
+    Color backgroundColor = Colors.blue,
+    Color textColor = Colors.white,
+    double fontSize = 16,
+  }) {
+    String getInitials(String name) {
+      final parts = name.trim().split(' ');
+      if (parts.length >= 2) {
+        return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+      } else if (parts.length == 1 && parts[0].isNotEmpty) {
+        return parts[0].substring(0, 1).toUpperCase();
+      } else {
+        return '';
+      }
+    }
+
+    final initials = getInitials(fullName);
+
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: backgroundColor,
+      child: Text(
+        initials,
+        style: TextStyle(
+          color: textColor,
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
 }

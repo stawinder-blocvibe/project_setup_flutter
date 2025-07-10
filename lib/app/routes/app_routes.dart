@@ -176,6 +176,7 @@ abstract class AppRoutes {
   static const howToPlayRoute = '/howToPlayRoute';
   static const onboardingGifScreenRoute = '/onboardingGifScreenRoute';
   static const privacyAndPolicyRoute = '/privacyAndPolicyRoute';
+  static const myMatchKurukContestRoute = '/myMatchKurukContestRoute';
 
 
 

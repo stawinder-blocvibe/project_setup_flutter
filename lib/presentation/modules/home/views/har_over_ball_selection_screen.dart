@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import '../../../../app/export.dart';
+import '../bottom_sheet/ball_selection_bottom_sheet.dart';
 import '../controllers/har_over_ball_selection_controller.dart';
 import '../models/over_new.dart';
 
@@ -18,15 +19,21 @@ class HarOverBallSelectionScreen
         child: SingleChildScrollView(
           child: Column(
             children: [
-              appBarWithWallet(onlyWallet: true),
+              Obx(
+                    ()=> appBarWithWallet(onlyWallet: true,
+                    gradient:
+                    controller.isHarOver.value?
+                    gradientHarOver:gradientKuruk),//controller.isHarOver.value
+              ),
 
               Stack(
                 children: [
+               ImageFiltered(imageFilter: ImageFilter.blur(sigmaX: 4,sigmaY:  4),child:   AssetImageWidget(matchGroundAsset,imageWidth: Get.width,imageFitType: BoxFit.cover,imageHeight: height_180,),)??
                   AssetImageWidget(
                     imageFitType: BoxFit.cover,
-                    stadiumBullBall,
-                    imageHeight: Get.height * 0.8,
-                    imageWidth: double.infinity,
+                    matchGroundAsset??
+                        stadiumBullBall,
+                    // imageHeight: Get.height * 0.8,
                   ),
                   Positioned(
                     bottom: 0,
@@ -43,55 +50,57 @@ class HarOverBallSelectionScreen
                         arguments: {"liveMatch": controller.liveMatch.value},
                       );
                     },
-                    child: ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(1),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Column(
+                    child: Column(
+                      children: [
+                        matchType(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            matchType(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Obx(
-                                  () => scoreSection(
-                                    teamName:
-                                        controller.liveMatch.value?.teamAAbbr,
-                                  ),
-                                ),
-                                NetworkImageWidget(
-                                  imageUrl: "",
-                                  imageHeight: height_40,
-                                  imageWidth: height_40,
-                                  placeHolder: punjabPlaceHolderAsset,
-                                  // radiusAll: 50.r,
-                                ),
-                                vsCircleWidget().marginSymmetric(
-                                  horizontal: margin_15,
-                                ),
-                                NetworkImageWidget(
-                                  imageUrl: "",
-                                  imageHeight: height_40,
-                                  imageWidth: height_40,
-                                  placeHolder: cskPlaceHolderAsset,
-                                  // radiusAll: 50.r,
-                                ),
-                                Obx(
-                                  () => scoreSection(
-                                    teamName:
-                                        controller.liveMatch.value?.teamBAbbr,
-                                  ),
-                                ),
-                              ],
+                            Obx(
+                              () => scoreSection(
+                                teamName:
+                                    controller.liveMatch.value?.teamAAbbr,
+                              ),
+                            ),
+                            NetworkImageWidget(
+                              imageUrl: "",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: punjabPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            vsCircleWidget().marginSymmetric(
+                              horizontal: margin_15,
+                            ),
+                            NetworkImageWidget(
+                              imageUrl: "",
+                              imageHeight: height_40,
+                              imageWidth: height_40,
+                              placeHolder: cskPlaceHolderAsset,
+                              // radiusAll: 50.r,
+                            ),
+                            Obx(
+                              () => scoreSection(
+                                teamName:
+                                    controller.liveMatch.value?.teamBAbbr,
+                              ),
                             ),
                           ],
-                        ).marginOnly(top: margin_40),
-                      ),
-                    ),
+                        ),
+                      ],
+                    ).marginOnly(top: margin_40),
                   ),
                   Obx(
-                    () => playingTextWidget(
-                      teamName: controller.liveMatch.value?.teamAAbbr,
+                    () => GestureDetector(
+                      onTap: (){
+                        Get.toNamed(
+                          AppRoutes.overBallSelectionScreenRoute,
+                          arguments: {"liveMatch": controller.liveMatch.value},
+                        );
+                      },
+                      child: playingTextWidget(
+                        teamName: controller.liveMatch.value?.teamAAbbr,
+                      ),
                     ),
                   ),
                   Positioned(right: 0, child: SizedBox() ?? syncWidget()),
@@ -193,7 +202,7 @@ class HarOverBallSelectionScreen
     );
   }
 
-  playingTextWidget({teamName}) {
+  Widget playingTextWidget({teamName}) {
     return Center(
       child: Text(
         '${teamName ?? "CSK"} Is playing their Innings',
@@ -292,33 +301,29 @@ class HarOverBallSelectionScreen
     );
   }
 
-  Widget bgDefaultBall({data, onTap, isBallSelected}) {
+  Widget bgDefaultBall({data, onTap,isBallSelected,  required int index}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(vertical: margin_3),
-        decoration: isBallSelected
-            ? BoxDecoration(
-                border: Border.all(color: greenButtonColor),
-                borderRadius: BorderRadius.circular(12.r),
-              )
-            : null,
+        decoration: isBallSelected?BoxDecoration(
+          border: Border.all(color: greenButtonColor),
+          borderRadius: BorderRadius.circular(12.r),
+        ):null,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            AssetImageWidget(
-              ballSelectionDefaultAsset,
-              imageWidth: height_35,
-              imageHeight: height_35,
-            ),
+            AssetImageWidget(handleSelectBallBg(index: index)??ballSelectionDefaultAsset, imageWidth: height_35,
+              imageHeight: height_35,),
+
             Text(
-              data ?? "02",
-              style: const TextStyle(
-                color: Color(0xFF004225),
+              "-"??data ?? "02",
+              style:  TextStyle(
+                color: handleTextColor(index:index),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -464,7 +469,7 @@ class HarOverBallSelectionScreen
             children: [
               headingTextWidget(title: ("Select Over")),
               Spacer(),
-
+              inningCellKuruk(teamPlay:controller.liveMatch.value?.teamAAbbr,inning: 1)??
               innigWidget().marginOnly(left: margin_5),
 
             ],
@@ -510,20 +515,37 @@ class HarOverBallSelectionScreen
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             headingTextWidget(title: title).marginOnly(left: margin_20),
-            Spacer(),
+            // Spacer(),
+
+            /*addMoreOver(onTap: (){
+              showBallSelectionBottomSheet(title:"Wide Ball",subTitle: "WD",subTitleOld: " (WD=1)",onInput: (value){
+                debugPrint('Tapped: Wide Ball ==>${value}');
+                controller.handleRightSideButtonTap(data: value );
+              } );
+
+
+            })??*/
+             // handleAddRemoveBallWidget()??
 
 
             GestureDetector(
               onTap: () {
+                controller.selectedPredictIndex.value = 0;
+                controller.selectedPredictIndex.refresh();
                 controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.removeLast();
                 controller.overList.refresh();
+
                 // controller.toggleSelectedBallAddSub();
+
               },
               child: Obx(
                 () =>(
                     controller.isAllOverBallSelected(
     overIndex: controller.selectedOverIndex.value ?? 0,
-    ) && (controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length??0)>1)?
+    ) && (
+                        controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length??0)>1
+                )
+                    ?
                 SizedBox(
                   width: height_30,
                   height: height_30,
@@ -535,7 +557,7 @@ class HarOverBallSelectionScreen
                         controller.selectedBallAddSubState.value
                             ? CupertinoIcons.minus_circle
                             : CupertinoIcons.plus_circle,
-                        color: Colors.white,
+                        color: Colors.green,
                         size: 20,
                       ),
                     ],
@@ -550,9 +572,12 @@ class HarOverBallSelectionScreen
         ),
 
         Obx(
-        ()=> controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.isEmpty==true?Text("data"):ListView.builder(
+        ()=> controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.isEmpty==true?
+        Text("data"):
+        ListView.builder(
             itemCount: controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length,
             shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context,predictedListItemIndex){
                 return SizedBox(
                   height: height_50,
@@ -562,22 +587,27 @@ class HarOverBallSelectionScreen
                     scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.only(left: margin_20, right: margin_20),
-                    itemCount: 6,
+                    itemCount:
+                    // controller.overList[(controller.selectedOverIndex.value ?? 0)].predictedList?[(controller.selectedPredictIndex.value??0)].extraBalls==null ||
+                    //     controller.overList[(controller.selectedOverIndex.value ?? 0)].predictedList?[(controller.selectedPredictIndex.value??0)].extraBalls!.isEmpty==true
+                    //     ?
+                    6,
+                    // : ((controller.overList[(controller.selectedOverIndex.value ?? 0)].predictedList![(controller.selectedPredictIndex.value??0)].extraBalls!.length)+6),
                     itemBuilder: (context, index) {
                       return Obx(
                             () =>
                         controller.isBallHaveValue(
-                          overIndex: controller.selectedOverIndex.value,
-                          ballIndex: index,
-                          predictIndex:predictedListItemIndex
+                            overIndex: controller.selectedOverIndex.value,
+                            ballIndex: index,
+                            predictIndex:predictedListItemIndex
                         )
                             ? selectedBall(
                           onTap: () {
                             // controller.selectedBallIndex.value = index;
                             // controller.selectedPredictIndex.value = predictedListItemIndex;
                             controller.updateBallIndex(
-                              index: index,
-                              ballValue: "${index + 1}",
+                                index: index,
+                                ballValue: "${index + 1}",
                                 predictIndex:predictedListItemIndex
                             );
                           },
@@ -592,11 +622,11 @@ class HarOverBallSelectionScreen
                           data: "${index + 1}",
                           onTap: () {
                             controller.updateBallIndex(
-                              index: index,
-                              ballValue: "${index + 1}",
+                                index: index,
+                                ballValue: "${index + 1}",
                                 predictIndex:predictedListItemIndex
                             );
-                          },
+                          }, index: index,
                         ).marginOnly(bottom: margin_10),
                       );
                     },
@@ -661,138 +691,214 @@ class HarOverBallSelectionScreen
       {'main': '3', 'sub': ''},
       {'main': '4', 'sub': 'FOUR'},
       {'main': '6', 'sub': 'SIX'},
-      {'main': 'WD', 'sub': ''},
+      /*{'main': 'WD', 'sub': ''},
       {'main': 'NB', 'sub': ''},
-      {'main': 'BYE', 'sub': ''},
+      {'main': 'BYE', 'sub': ''},*/
     ];
 
-    final List<String> rightButtons = ['UNDO', '5, 7', 'Out', 'LB'];
+    final List<String> rightButtons = [ '5,7',"Out" ];//7', 'Out', 'LB'
 
-    return Container(
-      height: height_150,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Left side: grid
-          Expanded(
-            flex: 4,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: gridButtons.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.35,
-                mainAxisSpacing: 0,
-                crossAxisSpacing: 0,
+    return Column(
+      children: [
+        Container(
+          height: height_100,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                offset: Offset(0, -2),
               ),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final item = gridButtons[index];
-                return InkWell(
-                  onTap: () async {
-                    // handle grid button tap
-                    debugPrint('Tapped:111 ${item['main']}');
+            ],
+          ),
+          child: Row(
+            children: [
+              // Left side: grid
+              Expanded(
+                flex: 4,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: gridButtons.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.35,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                  ),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final item = gridButtons[index];
+                    return InkWell(
+                      onTap: () async {
 
-                    await controller.setOverBallValue(
-                      overIndex: controller.selectedOverIndex.value ?? 0,
-                      ballIndex: controller.selectedBallIndex.value ?? 0,
-                      predictIndex: controller.selectedPredictIndex.value ?? 0,
-                      value: item['main']!,
+                        debugPrint('Tapped:111 ${item['main']} >>index: $index ==>${controller.selectedPredictIndex.value}');
+
+                        // return;
+
+                        await controller.setOverBallValue(
+                            overIndex: controller.selectedOverIndex.value ?? 0,
+                            ballIndex: controller.selectedBallIndex.value ?? 0,
+                            value: item['main']!,
+                            predictIndex: controller.selectedPredictIndex.value??0);
+
+
+
+                        var isAllBallSelected = controller.isAllOverBallSelected(overIndex: controller.selectedOverIndex.value??0);
+
+                        if(isAllBallSelected) {
+
+                          walletBalance.value>(controller.isHarOver.value?19:controller.pool.value?.joiningPrice)?
+                          handleBottomSheet(needPredictMore: true??(controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length??0)<5)
+                              :
+                          showAddMoneyBottomSheet();
+                        }
+                        controller.jumpNextBall();
+
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                item['main']!,
+                                style: TextStyle(fontSize: 20, color: Colors.grey[700]),
+                              ),
+                              if (item['sub']!.isNotEmpty)
+                                Text(
+                                  item['sub']!,
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[400]),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
-                    // Future.delayed(Duration(seconds: 3),(){
-                    //   handleBottomSheet();
-                    // });
-
-                    var isAllBallSelected =
-                    controller.isAllOverBallSelected(
-                      overIndex: controller.selectedOverIndex.value ?? 0,
-                    );
-                    debugPrint("length===>${controller.overList[controller.selectedPredictIndex.value??0].predictedList!.length}>>${controller.overList[controller.selectedPredictIndex.value!].predictedList?.length}>>${controller.selectedPredictIndex.value}>>${controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length}");
-
-                    if (isAllBallSelected) {
-                      walletBalance.value > 19
-                          ? handleBottomSheet(needPredictMore: ((controller.overList[(controller.selectedOverIndex.value??0)].predictedList?.length??1)<5))
-                          : showAddMoneyBottomSheet();
-                    }
-
-
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            item['main']!,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey[700],
+                ),
+              ),
+              // Right side: vertical list of buttons
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: rightButtons.map((text) {
+                    return Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          debugPrint("Tapped: $text");
+
+                          if(text=="Out"){
+                            showBallSelectionBottomSheet(title:"Wicket",subTitle: "WKT",subTitleOld: "", onInput: (value) {
+                              debugPrint('Tapped: Wicket ==>${value}');
+                              controller.handleRightSideButtonTap(data: value);
+                            });
+                          }else{
+                            controller.handleRightSideButtonTap(data: text );
+                          }
+
+
+
+
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            color: Colors.grey.shade100,
+                          ),
+                          child: Center(
+                            child: Text(
+                              text,
+                              style: TextStyle(color: Colors.grey[700]),
                             ),
                           ),
-                          if (item['sub']!.isNotEmpty)
-                            Text(
-                              item['sub']!,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
-          // Right side: vertical list of buttons
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: rightButtons.map((text) {
-                return Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint("Tapped: $text");
-                      controller.handleRightSideButtonTap(data: text);
+        ),
+        Obx(
+              ()=>(!controller.isHarOver.value)?
+              SizedBox(): SizedBox(
+              height: height_45,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: GestureDetector(
+                      onTap:()async {
 
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        color: Colors.grey.shade100,
-                      ),
-                      child: Center(
+                        showBallSelectionBottomSheet(title:"WD Ball",subTitle: "WD",subTitleOld: " (WD=1)", onInput: (value) {
+
+                          debugPrint('Tapped: WD ==>${value}');
+                          controller.handleRightSideButtonTap(data: value );
+                        });
+                        return;
+                        // await onTapHarOverKeyboard(value: "WD");
+                        },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: Colors.grey.shade100,
+                        ),
                         child: Text(
-                          text,
-                          style: TextStyle(color: Colors.grey[700]),
+                          'WD',
+                          style: TextStyle(
+                            color: const Color(0xFF6F6F6F),
+                            fontSize: 12,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                  Flexible(
+                    child: GestureDetector(
+                      onTap:()async {
+                        showBallSelectionBottomSheet(title:"NO Ball",subTitle: "NB",subTitleOld: " (NB=1)", onInput: (value) {
+                          debugPrint('Tapped: No ball ==>${value}');
+                          controller.handleRightSideButtonTap(data: value );
+                        });
+                        return;
+                        // await onTapHarOverKeyboard(value: "NB");
+                        },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Text(
+                          'NB',
+                          style: TextStyle(
+                            color: const Color(0xFF6F6F6F),
+                            fontSize: 12,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
           ),
-        ],
-      ),
-    );
+        )
+      ],
+
+    ).marginOnly(bottom: margin_30);
   }
 
   Widget confirmationBottomSheet({
@@ -847,6 +953,7 @@ class HarOverBallSelectionScreen
             // SizedBox(height: 8),
 
             // Subtitle
+            if(false)
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -899,7 +1006,7 @@ class HarOverBallSelectionScreen
                   ),
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.finalAmountToPay()}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -938,7 +1045,7 @@ class HarOverBallSelectionScreen
                         ),
                       ),
                       Text(
-                        'Current balance: ₹ 5000',
+                        'Current balance: ₹ ${walletBalance.value}',
                         style: TextStyle(
                           color: Colors.black.withValues(alpha: 128),
                           fontSize: font_10,
@@ -950,7 +1057,7 @@ class HarOverBallSelectionScreen
                   ),
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.finalAmountToPay()}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -978,6 +1085,7 @@ class HarOverBallSelectionScreen
                       ),
                     ),
                     SizedBox(width: 6),
+                    if(false)
                     Icon(
                       Icons.info_outline,
                       size: 18,
@@ -986,7 +1094,7 @@ class HarOverBallSelectionScreen
                   ],
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.finalAmountToPay()}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -996,14 +1104,14 @@ class HarOverBallSelectionScreen
               ],
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Terms text
             Align(
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: () {
-                  showInSnackBar(message: "under-development");
+                  Get.toNamed(AppRoutes.termAndConditionRoute);
                 },
                 child: RichText(
                   text: TextSpan(
@@ -1055,6 +1163,10 @@ class HarOverBallSelectionScreen
               Get.back();
             },
             onJoin: () {
+              var amount = controller.finalAmountToPay();
+              // debugPrint("Final Amount to Pay: $amount");
+              // return;
+
               Get.back();
               controller.hitJoinContest(
                 onSuccess: () {
@@ -1139,7 +1251,7 @@ class HarOverBallSelectionScreen
                 ).marginSymmetric(vertical: margin_12),
                 dateTimeWidget(),
 
-                amountStatus(amount: "19"),
+                amountStatus(amount: '${controller.finalAmountToPay()}'),
 
                 Align(
                   alignment: Alignment.centerLeft,
@@ -1422,6 +1534,51 @@ class HarOverBallSelectionScreen
     );
   }
 
+
+  Widget inningCellKuruk({inning,teamPlay}){
+    return Container(
+
+      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+      decoration: ShapeDecoration(
+        color: inning ==1?const Color(0xFF003921):Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1,
+            color: inning ==1?Colors.grey.withOpacity(0.6): const Color(0xFF003921),
+          ),
+          borderRadius: BorderRadius.circular(60),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 2,
+        children: [
+          Text(
+            'INNING $inning',
+            style: TextStyle(
+              color: inning==1?Colors.white: const Color(0xFF003921),
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+
+            child: Text(
+              '(${teamPlay??"CSK"}) Batting',
+              style: TextStyle(
+                color: inning==1?Colors.white: const Color(0xFF003921),
+                fontSize: 7,
+                fontFamily: 'Maleah',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   Widget innigWidget({title}) {
     return Container(
       padding: const EdgeInsets.all(
@@ -1451,6 +1608,92 @@ class HarOverBallSelectionScreen
         ],
       ),
     );
+  }
+
+  Widget addMoreOver({onTap}){
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          margin: EdgeInsets.only(right: margin_20),
+          padding: const EdgeInsets.all(8).copyWith(left:margin_12,right:margin_15),
+          clipBehavior: Clip.antiAlias,
+          decoration: ShapeDecoration(
+            color: const Color(0xFF003921),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                width: 1,
+                color: Colors.white.withValues(alpha: 77),
+              ),
+              borderRadius: BorderRadius.circular(60),
+            ),
+          ),
+          child:Row(
+              spacing:10,
+              children:[
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Container(
+
+
+                    padding: EdgeInsets.all(3),
+
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(5.r)
+
+                    ),
+                    child: const Icon(CupertinoIcons.add,color: Colors.white,size: 10,),
+                  ),
+                ),
+                Text(
+                  'add more entries'.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ])
+      ),
+    );
+  }
+/*  String finalAmountToPay(){
+    controller.overList[(controller.selectedOverIndex.value??0)];
+  }*/
+
+  handleSelectBallBg({index}) {
+    if(index==0){return ballFirstAsset;}
+    else if(index==1){ return ballSecondAsset;}
+    else if(index==2){ return ballThirdAsset;}
+    else if(index==3){ return ballFourAsset;}
+    else if(index==4){ return ballFifthAsset;}
+    else if(index==5){ return ballSixthAsset;}
+    return ballSixthAsset;
+  }
+  Color handleTextColor({required int index}) {
+    if(index==0){
+      return Colors.black;
+    }else{
+      return Colors.white;
+    }
+  }
+
+  Widget handleAddRemoveBallWidget() {
+    return Obx(()=>
+
+        (controller.isOverHaveBall(overIndex: controller.selectedOverIndex.value??0))?
+
+        addMoreOver(onTap: (){
+          showBallSelectionBottomSheet(title:"Wide Ball",subTitle: "WD",subTitleOld: " (WD=1)",onInput: (value){
+            debugPrint('Tapped: Wide Ball ==>${value}');
+            controller.handleRightSideButtonTap(data: value );
+          } );
+
+
+        })
+            :
+        Text("have ball =>${controller.isOverHaveBall(overIndex: controller.selectedOverIndex.value??0)}"));
   }
 }
 
@@ -1545,7 +1788,9 @@ class PredictionBottomSheetContent extends StatelessWidget {
               ),
               elevation: 2,
             ),
-            child: const Text('Predict More ( Add New Ball Prediction )'),
+            child:  const Text('Predict More ( Add New Ball Prediction )',style: TextStyle(
+              fontSize: 12
+            ),),
           ):
           ElevatedButton(
             onPressed: () {
@@ -1566,13 +1811,18 @@ class PredictionBottomSheetContent extends StatelessWidget {
               ),
               elevation: 2,
             ),
-            child: const Text('Change Predict Balls'),
+            child:  const Text('Change Predict Balls',style:  TextStyle(
+                fontSize: 12
+            ),),
           ),
           const SizedBox(height: 12),
           // Join Contest Button
 
           OutlinedButton(
             onPressed: () {
+
+
+
               HapticFeedback.lightImpact();
               Navigator.pop(context);
               onJoinContest();
@@ -1589,11 +1839,15 @@ class PredictionBottomSheetContent extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            child: const Text('Join Contest'),
+            child: const Text('Join Contest',style:  TextStyle(
+                fontSize: 12
+            ),),
           ),
           const SizedBox(height: 16),
         ],
       ),
     );
   }
+
+
 }

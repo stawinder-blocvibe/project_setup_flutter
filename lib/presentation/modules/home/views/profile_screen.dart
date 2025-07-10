@@ -31,12 +31,25 @@ class ProfileScreen extends StatelessWidget {
                   classNameTitle(
                       title: "My Profile",
                       prefix: GestureDetector(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.myInfoRoute);
+                        onTap: () async {
+                          var result = await Get.toNamed(AppRoutes.myInfoRoute);
+
+                          debugPrint("My Info Screen Opened ===>${result}");
+
+                          if(result!=null && result is Map){
+                            // controller.phone.value = result['phone'] ?? "";
+                            controller.dob.value = result['dob'] ?? "";
+                            controller.name.value = result['name'] ?? "";
+                            controller.avatarUrl.value = result['profileImage'] ?? "";
+                          }
                         },
-                          child: const Hero(
-                              tag: 'profile',
-                              child:  Icon(CupertinoIcons.profile_circled,color: Colors.black,)))),
+                          child:  Obx(
+                              ()=> Hero(
+                                tag: 'profile',
+                                child:
+                                controller.avatarUrl.value.isNotEmpty?NetworkImageWidget(imageUrl: controller.avatarUrl.value, imageHeight: height_20, imageWidth: height_20,imageFitType: BoxFit.cover,radiusAll: 50,):
+                                const Icon(CupertinoIcons.profile_circled,color: Colors.black,)),
+                          ))),
                   appDivider().marginOnly(top: margin_15)
                 ],
               ),
@@ -46,23 +59,21 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     spacing: margin_10,
                     children: [
-                  
-                  
                       customCard(
                         child: Column(
                           spacing: margin_8,
                           children: [
-                            item(
-                              title: "Guest User"
+                            Obx(
+                               ()=> item(
+                                title: controller.name.value.isEmpty==true?"Guest User":controller.name.value?.capitalizeFirst??""
+                              ),
                             ),
                             appDivider(),
-                  
                             Obx(()=> item(
                               asset: mobileAsset,
                                 title: "+91 - ${currentUserDataModel.value.detail?.mobileNumber??"9877995251"}")),
                             appDivider(),
-                  
-                            item(title: "14 - 03 - 2001",asset: calendarIconAsset),
+                            item(title: controller.dob.value.isEmpty?"14 - 03 - 2001":controller.dob.value,asset: calendarIconAsset),
                           ],
                         ),
                       ),
@@ -208,7 +219,12 @@ class ProfileScreen extends StatelessWidget {
                               appDivider(),
                               item(title: "Privacy & Policy",onTap: (){
                                 Get.toNamed(AppRoutes.privacyAndPolicyRoute);
-                              }
+                              }),
+
+                                  appDivider(),
+                            item(title: "Frequently Ask Questions",onTap: (){
+                              Get.toNamed(AppRoutes.privacyAndPolicyRoute);
+                            }
                             ),
                   
                           ],

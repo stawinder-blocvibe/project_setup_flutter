@@ -443,8 +443,12 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
               controller.isHarOver.value?
               Row(
                 spacing: margin_5,
-                children: [inningCellKuruk(teamPlay:controller.liveMatch.value?.teamAAbbr,inning: 1),inningCellKuruk(teamPlay: controller.liveMatch.value?.teamBAbbr,inning: 2)],)
+                children: [inningCellKuruk(teamPlay:controller.liveMatch.value?.teamAAbbr,inning: 1),
+
+                  if(false)
+                  inningCellKuruk(teamPlay: controller.liveMatch.value?.teamBAbbr,inning: 2)],)
               :
+    inningCellKuruk(teamPlay:controller.liveMatch.value?.teamAAbbr,inning: 1)??
               innigWidget().marginOnly(left: margin_5),
 
               if(false)
@@ -499,6 +503,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
           children: [
             headingTextWidget(title: title).marginOnly(left: margin_20),
             // headingTextWidget(title: "Apply").marginOnly(left: margin_20,right: margin_20),
+            if(false)
             addMoreOver(onTap: (){
               showBallSelectionBottomSheet(title:"Wide Ball",subTitle: "WD",subTitleOld: " (WD=1)",onInput: (value){
                 debugPrint('Tapped: Wide Ball ==>${value}');
@@ -602,7 +607,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
       {'main': 'BYE', 'sub': ''},*/
     ];
 
-    final List<String> rightButtons = ['UNDO', '5,7',"Out" ];//7', 'Out', 'LB'
+    final List<String> rightButtons = [ '5,7',"Out" ];//7', 'Out', 'LB'
 
     return Column(
       children: [
@@ -645,12 +650,16 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
 
                           // return;
 
-                          await controller.setOverBallValue(
+                          var value= await controller.setOverBallValue(
                               overIndex: controller.selectedOverIndex.value ?? 0,
                               ballIndex: controller.selectedBallIndex.value ?? 0,
                               value: item['main']!);
 
 
+                          debugPrint("value==>${value}");
+                          if(value ==false ){
+                            return ;
+                          }
 
                           var isAllBallSelected = controller.isAllOverBallSelected(overIndex: controller.selectedOverIndex.value??0);
 
@@ -700,12 +709,14 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                           onTap: () {
                             debugPrint("Tapped: $text");
 
-                            if(text=="Wicket"){
+                            if(text=="Out"){
                               showBallSelectionBottomSheet(title:"Wicket",subTitle: "WKT",subTitleOld: "", onInput: (value) {
                                 debugPrint('Tapped: Wicket ==>${value}');
                                 controller.handleRightSideButtonTap(data: value);
                               });
-                             }
+                             }else{
+                              controller.handleRightSideButtonTap(data: text);
+                            }
 
 
 
@@ -847,6 +858,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
             // SizedBox(height: 8),
 
             // Subtitle
+            if(false)
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -899,7 +911,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   ),
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.isHarOver.value?19:controller.pool.value?.joiningPrice}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -952,7 +964,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   ),
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.isHarOver.value?19:controller.pool.value?.joiningPrice}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -980,6 +992,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                       ),
                     ),
                     SizedBox(width: 6),
+                    if(false)
                     Icon(
                       Icons.info_outline,
                       size: 18,
@@ -988,7 +1001,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
                   ],
                 ),
                 Text(
-                  '₹ 19',
+                  '₹ ${controller.isHarOver.value?19:controller.pool.value?.joiningPrice}',
                   style: TextStyle(
                     color: const Color(0xFF003921),
                     fontSize: font_16,
@@ -1005,7 +1018,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: (){
-                  showInSnackBar(message: "under-development");
+                  Get.toNamed(AppRoutes.termAndConditionRoute);
                 },
                 child: RichText(
                   text: TextSpan(
@@ -1034,8 +1047,8 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
 
             SizedBox(height: 30),
 
-            appButton(buttonText: "Predict more".toUpperCase(),onTap: (){ Get.back();}),
-            SizedBox(height: 10),
+            // appButton(buttonText: "Predict more".toUpperCase(),onTap: (){ Get.back();}),
+            // SizedBox(height: 10),
             appButton(buttonText: "JOIN CONTEST",onTap: onJoin)
           ],
         ),
@@ -1044,6 +1057,38 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
   }
 
   void handleBottomSheet() {
+
+    if(controller.pool.value?.isPoolPaymentCompleted==true){
+      askToPredictMore(
+          onPredictMore: (){
+
+        },
+          onSubmit: (){
+
+            controller.hitJoinContest(
+                onSuccess: (){
+                  // walletBalance.value = walletBalance.value -(controller.isHarOver.value?19:controller.pool.value?.joiningPrice);
+                  // walletBalance.refresh();
+                  controller.pool.value = controller.pool.value?.copyWith(
+                      isPoolPaymentCompleted: true
+                  );
+                  // showDialog(
+                  //   context: Get.context!,
+                  //   barrierDismissible: true,
+                  //   builder: (context) => Dialog(
+                  //     backgroundColor: Colors.transparent,
+                  //     child: transactionSuccessTicketDialog((){
+                  //       Get.back();
+                  //       // Get.offAndToNamed(AppRoutes.mainParentRoute);
+                  //     }),
+                  //   ),
+                  // );
+                }
+            );
+          }
+      );
+      return;
+    }
     var context = Get.context!;
     showModalBottomSheet(
       context: context,
@@ -1057,8 +1102,11 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
             Get.back();
             controller.hitJoinContest(
               onSuccess: (){
-                walletBalance.value = walletBalance.value -19;
+                walletBalance.value = walletBalance.value -(controller.isHarOver.value?19:controller.pool.value?.joiningPrice);
                 walletBalance.refresh();
+                controller.pool.value = controller.pool.value?.copyWith(
+                  isPoolPaymentCompleted: true
+                );
                 showDialog(
                   context: Get.context!,
                   barrierDismissible: true,
@@ -1115,7 +1163,7 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
            AssetImageWidget(dividerDottedAsset).marginSymmetric(vertical: margin_12),
                 dateTimeWidget(),
 
-                amountStatus(amount: "19"),
+                amountStatus(amount: "${controller.isHarOver.value?19:controller.pool.value?.joiningPrice}"),
 
 
                 Align(
@@ -1396,6 +1444,50 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     );
   }
 
+  Widget inningCellKuruk({inning,teamPlay}){
+    return Container(
+
+      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+      decoration: ShapeDecoration(
+        color: inning ==1?const Color(0xFF003921):Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1,
+            color: inning ==1?Colors.grey.withOpacity(0.6): const Color(0xFF003921),
+          ),
+          borderRadius: BorderRadius.circular(60),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 2,
+        children: [
+          Text(
+            'INNING $inning',
+            style: TextStyle(
+              color: inning==1?Colors.white: const Color(0xFF003921),
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+
+            child: Text(
+              '(${teamPlay??"CSK"}) Batting',
+              style: TextStyle(
+                color: inning==1?Colors.white: const Color(0xFF003921),
+                fontSize: 7,
+                fontFamily: 'Maleah',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   Widget innigWidget({title}){
     return Container(
       padding: const EdgeInsets.all(8).copyWith(left:margin_12,right:margin_15),
@@ -1516,49 +1608,74 @@ class OverBallSelectionScreen extends GetView<OverBallSelectionController> {
     }
   }
 
-  Widget inningCellKuruk({inning,teamPlay}){
-    return Container(
 
-      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-      decoration: ShapeDecoration(
-        color: inning ==1?const Color(0xFF003921):Colors.white,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 1,
-            color: inning ==1?Colors.grey.withOpacity(0.6): const Color(0xFF003921),
-          ),
-          borderRadius: BorderRadius.circular(60),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: 2,
-        children: [
-          Text(
-            'INNING $inning',
-            style: TextStyle(
-              color: inning==1?Colors.white: const Color(0xFF003921),
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(
-
-            child: Text(
-              '(${teamPlay??"CSK"}) Batting',
-              style: TextStyle(
-                color: inning==1?Colors.white: const Color(0xFF003921),
-                fontSize: 7,
-                fontFamily: 'Maleah',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 }
+
+
+
+
+
+
+Future<void> askToPredictMore(
+  {
+      required VoidCallback onPredictMore,
+      required VoidCallback onSubmit,
+    }) async {
+  await showModalBottomSheet(
+    context: Get.context!,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 24,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Do you want to predict more overs?",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 24),
+
+            // Buttons
+            Column(
+              spacing: margin_10,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                appButton(buttonText: 'Predict More',onTap: (){
+                  Navigator.pop(context);
+                  onPredictMore();
+                }),
+                appButton(buttonText: 'Submit Over',onTap: (){
+                  Navigator.pop(context);
+                  onSubmit();();
+                })??
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    onSubmit();
+                  },
+                  icon: Icon(Icons.check),
+                  label: Text("Submit Over"),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+

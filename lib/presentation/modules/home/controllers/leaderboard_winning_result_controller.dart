@@ -1,3 +1,4 @@
+import 'package:base_project/presentation/modules/home/models/leaderboard_user.dart';
 import 'package:base_project/presentation/modules/home/models/pool_model.dart';
 import 'package:get/get.dart';
 
@@ -45,11 +46,16 @@ class LeaderboardWinningResultController extends GetxController with GetSingleTi
       liveMatch.value = args['liveMatch'];
       liveMatch.refresh();
       // contestListApiCall(matchId: liveMatch.value?.matchId);
+      debugPrint("match_and_pool_id===>${liveMatch.value?.matchId} ==>${pool.value?.poolId}");
+
     }
 
     if(args!=null && args['pool']!=null){
       pool.value = args['pool'];
       pool.refresh();
+
+      debugPrint("pool_model===>${pool.value?.matchId} ==>${pool.value?.poolId}");
+      getLeaderBoardApiCall();
     }
   }
 
@@ -68,10 +74,46 @@ class LeaderboardWinningResultController extends GetxController with GetSingleTi
     });
   }
 
+  RxList<LeaderboardUser> LeaderboardUserList = RxList();
+  getLeaderBoardApiCall(){
+    repository.getLeaderBoardApi(
+        matchId: liveMatch.value?.matchId??pool.value?.matchId,
+        poolId:pool.value?.poolId
+    ).then((value){
+
+     debugPrint("value===>${value}");
+
+     if (value['isSuccess'] == true &&
+         value['data'] != null &&
+         (value['data'] as List).isNotEmpty) {
+
+       var list = (value['data'] as List)
+           .map((user) => LeaderboardUser.fromJson(user))
+           .toList();
+
+       LeaderboardUserList.value = list;
+       LeaderboardUserList.refresh();
+
+       debugPrint("value__length===>${LeaderboardUserList.value.length}");
+     }
+     return;
+
+      if(value is List<SlotCell>){
+        winingPrizesList.value = value;
+        winingPrizesList.refresh();
+      }else{
+        winingPrizesList.value = [];
+        winingPrizesList.refresh();
+      }
+
+    });
+  }
+
   @override
   void onReady() {
     handleArgument();
     hitWinningResultApiCall();
+
     super.onReady();
   }
 }

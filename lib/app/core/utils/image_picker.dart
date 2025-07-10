@@ -2,6 +2,8 @@
 
 
 
+// import 'package:image_cropper/image_cropper.dart';
+
 import '../../export.dart';
 
 /*=================================================================== Image Pick Using camera ===================================================*/
@@ -13,20 +15,21 @@ Future<PickedFile?> imageFromCamera() async {
   if (pickedFile == null) {
     return showInSnackBar(message: "No Image Selected".tr);
   } else {
-    if (pickedFile.path.endsWith("Png".tr)) {
+    if (pickedFile.path.endsWith(
+        "png".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith("Jpg".tr)) {
+    } else if (pickedFile.path.endsWith("jpg".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith(
-        "Jpeg".tr)) {
+    } else if (pickedFile.path.endsWith("jpeg".tr)) {
       imageAccepted = true;
     } else {
       imageAccepted = false;
     }
+
     if (imageAccepted) {
-      return cropImage(pickedFile.path);
+      return PickedFile(pickedFile.path); //PickedFile(croppedImage.path); //cropImage(pickedFile.path);
     } else {
-      SnackBar(content: Text("Extension not allowed".tr));
+      SnackBar(content: Text("Extention not allowed".tr));
     }
   }
   return null;
@@ -40,11 +43,11 @@ Future<PickedFile?> imageFromGallery({bool isRectangular = false}) async {
   if (pickedFile == null) {
     return showInSnackBar(message: "No Image Selected".tr);
   } else {
-    if (pickedFile.path.endsWith("Png".tr)) {
+    if (pickedFile.path.endsWith("png".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith("Jpg".tr)) {
+    } else if (pickedFile.path.endsWith("jpg".tr)) {
       imageAccepted = true;
-    } else if (pickedFile.path.endsWith("Jpeg".tr)) {
+    } else if (pickedFile.path.endsWith("jpeg".tr)) {
       imageAccepted = true;
     } else {
       imageAccepted = false;
@@ -52,7 +55,7 @@ Future<PickedFile?> imageFromGallery({bool isRectangular = false}) async {
     if (imageAccepted) {
       return cropImage(pickedFile.path, isRectangular: isRectangular);
     } else {
-      SnackBar(content: Text("Extention not allowed".tr));
+      SnackBar(content: Text("Extension not allowed".tr));
     }
   }
   return null;
@@ -80,7 +83,7 @@ Future<PickedFile?> cropImage(filePath, {bool isRectangular = false}) async {
   //   aspectRatioPresets: [CropAspectRatioPreset.original],
   // );
   // if (croppedImage == null) {
-  //   showInSnackBar(message: keyNoImage.tr);
+  //   showInSnackBar(message: "No image".tr);
   // } else {
   //   return PickedFile(croppedImage.path);
   // }

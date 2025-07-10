@@ -3,8 +3,11 @@
 import 'package:base_project/app/export.dart';
 import 'package:base_project/presentation/modules/home/controllers/profile_controller.dart';
 
-class WithdrawCashScreen extends GetView<ProfileController> {
-  const WithdrawCashScreen({super.key});
+import '../controllers/withdraw_controller.dart';
+
+class WithdrawCashScreen extends GetView<WithdrawController> {
+    WithdrawCashScreen({super.key});
+  var controller = Get.put(WithdrawController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +23,21 @@ class WithdrawCashScreen extends GetView<ProfileController> {
               Get.back();
             }),
             yourWinningWidget().paddingAll(margin_10),
+            TextField(
+              controller: controller.amountController,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              decoration: inputDecoration(),
+            ).marginSymmetric(horizontal: margin_100)
+                ??
             Center(
               child: amountBox(),
             ),
             Text(
               'Min. ${rupee}50 ,Max ${rupee}crore per day',
-              style: TextStyle(
-                color: const Color(0xFF003921),
+              style: const TextStyle(
+                color: Color(0xFF003921),
                 fontSize: 12,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w400,
@@ -95,6 +106,18 @@ class WithdrawCashScreen extends GetView<ProfileController> {
             ).marginOnly(left: margin_20),
             appDivider(color: const Color(0xFFDEDEDE),),
 
+
+            Spacer(),
+            appButton(buttonText: "Withdraw Cash",onTap: (){
+              controller.withdrawCash();
+              return;
+              if(walletBalance.value<int.parse(controller.amountController.text.toString())){
+                showInSnackBar(message: "Insufficient Balance");
+              }else{
+                showInSnackBar(message: "Under Development");
+              }
+            }).marginSymmetric(horizontal: margin_10),
+            SizedBox(height: height_20,)
           ],
         ),
       ),
@@ -151,6 +174,7 @@ class WithdrawCashScreen extends GetView<ProfileController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
           Text(
             rupee +'50.00',
             style: TextStyle(
@@ -168,6 +192,27 @@ class WithdrawCashScreen extends GetView<ProfileController> {
             child: Icon(Icons.close,size: 18,),
           ).marginOnly(left: margin_10)
         ],
+      ),
+    );
+  }
+
+  inputDecoration() {
+    return InputDecoration(
+      prefixText: '₹ ',
+      border: OutlineInputBorder(
+          borderSide: BorderSide(color: greyColor,width: 1,)
+      ),
+      errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red,width: 1,)
+      ),
+      disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: greyColor,width: 1,)
+      ),
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: greenButtonColor,width: 1,)
+      ),
+      focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: greenButtonColor,width: 1,)
       ),
     );
   }

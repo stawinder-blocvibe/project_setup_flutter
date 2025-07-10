@@ -5,6 +5,8 @@ import '../../../../app/export.dart';
 
 class MainParentScreen extends GetView<MainParentController> {
   final controller = Get.find<MainParentController>();
+  var selectedTabColor = Colors.tealAccent;
+  var unSelectedTabColor = Colors.white;
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -54,7 +56,7 @@ class MainParentScreen extends GetView<MainParentController> {
                   fontSize: font_12,
 
                   fontWeight: FontWeight.w500,
-                  color: Colors.tealAccent),
+                  color: selectedTabColor),
               unselectedLabelStyle: textStyleBody1().copyWith(
                   fontSize: font_12,
                   fontWeight: FontWeight.w500,
@@ -64,24 +66,24 @@ class MainParentScreen extends GetView<MainParentController> {
                   controller.updateBottomNavIndex(index);
                 }
               },
-              selectedItemColor: Colors.tealAccent,
-              unselectedItemColor: Colors.white,
+              selectedItemColor: selectedTabColor,
+              unselectedItemColor: unSelectedTabColor,
               selectedIconTheme: IconThemeData(color: appColor),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.home,
                         color: controller.bottomNavIndex.value == 0
-                            ? Colors.tealAccent
-                            : Colors.white),
+                            ? selectedTabColor
+                            : unSelectedTabColor),
 
                     label: "Home".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: myMatchAsset,
                         color: controller.bottomNavIndex.value == 1
-                            ? Colors.tealAccent
-                            : Colors.white),
+                            ? selectedTabColor
+                            : unSelectedTabColor),
                     label: "My Match's".tr),
                 BottomNavigationBarItem(
                   icon: SizedBox.shrink(), // Reserved space for Predict
@@ -91,15 +93,15 @@ class MainParentScreen extends GetView<MainParentController> {
                     icon: _bottomIcon(
                         icon: myWinningsAsset,
                         color: controller.bottomNavIndex.value == 3
-                            ? Colors.tealAccent
-                            : Colors.white),
+                            ? selectedTabColor
+                            : unSelectedTabColor),
                     label: "My Winnings".tr),
                 BottomNavigationBarItem(
                     icon: _bottomIcon(
                         icon: CupertinoIcons.profile_circled,
                         color: controller.bottomNavIndex.value == 4
-                            ? Colors.tealAccent
-                            : Colors.white),
+                            ? selectedTabColor
+                            : unSelectedTabColor),
                     label: "Profile".tr),
               ],
             ),

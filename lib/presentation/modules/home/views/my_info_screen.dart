@@ -1,14 +1,9 @@
-import 'package:base_project/app/core/widget/asset_image.dart';
-import 'package:base_project/app/export.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../../../../app/core/values/app_assets.dart';
-import '../../../../app/core/values/app_values.dart';
-import '../controllers/profile_controller.dart';
+ import 'package:base_project/app/export.dart';
+ import '../controllers/my_info_controller.dart';
 
 class MyInfoScreen extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
-  RxString _selectedGender ="".obs;
+  final MyInfoController controller = Get.put(MyInfoController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,85 +27,130 @@ class MyInfoScreen extends StatelessWidget {
             ),
           ),
           padding:  EdgeInsets.all(margin_20),
-          child: SingleChildScrollView(
-            child: Column(
-
-              spacing: margin_10,
-              children: [
-                classNameTitle(title: "My Info",onTapBack: (){
-                  Get.back();
-                }),
-
-                Center(child: Hero(
-                    tag: "profile",
-                    child: Icon(Icons.account_circle,size: height_60,color: const Color(0xFF003921),)),),
-                customCard(
+          child: Column(
+            children: [
+              classNameTitle(title: "My Info",onTapBack: (){
+                Get.back();
+              }),
+              SizedBox(height: height_10,),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
-                    spacing: margin_8,
+                
+                    spacing: margin_10,
                     children: [
-                      myField(hintText: "Enter your name",label: "Name"),
-                      myField(hintText: "Enter phone number",label: "Phone"),
-                      myField(hintText: "Enter Date of birth",label: "DOB"),
-                    ],
-                  )
-                ),
-
-                Obx(
-                  ()=> customCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: margin_8,
-                        children: [
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                              color: const Color(0xFF003921),
-                              fontSize: 10,
-                               fontWeight: FontWeight.w400,
-                            ),
-                          ).marginOnly(left: margin_10),
-
-                          Row(
+                
+                
+                      Center(child: Hero(
+                          tag: "profile",
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
                             children: [
-
-                              buildGenderRadio("Man"),
-                              buildGenderRadio("Female"),
-                              buildGenderRadio("Other"),
+                              Obx(()=> handleProfileImage()),
+                              GestureDetector(
+                                onTap: () async {
+                                  var data = await controller.onTapCamera().then((value){
+                
+                                    if(value != null && value is PickedFile){
+                                      debugPrint("Image path: $value");
+                                      controller.profileImage.value = value.path;
+                                      controller.profileImage.refresh();
+                                    }
+                                    debugPrint("Image path:33 ==>$value");
+                                  });
+                                  debugPrint("Image path:11 ==>${data}");
+                                },
+                                child: Container(
+                                  // margin: EdgeInsets.only(right: (!controller.profileImage.value.contains('http') || controller.profileImage.value.isEmpty )?margin_10:margin_0,bottom: (!controller.profileImage.value.contains('http') || controller.profileImage.value.isEmpty )?margin_10:margin_0,),
+                                  child: const Icon(
+                                    CupertinoIcons.camera_circle,size: 30,color: Colors.green,),
+                                ),
+                              )
+                            ],
+                          ))),
+                      customCard(
+                        child: Column(
+                          spacing: margin_8,
+                          children: [
+                            myField(hintText: "Enter your name",label: "Name",controller: controller.nameController),
+                            myField(hintText: "Enter your email",label: "Email",controller: controller.emailController),
+                            myField(hintText: "Enter phone number",label: "Phone",controller: controller.phoneController,readOnly: true),
+                            myField(hintText: "Enter Date of birth",label: "DOB",controller: controller.dobController,
+                                readOnly: true,
+                                onTap:(){
+                              showDatePicker(context: Get.context!, firstDate: DateTime(1900), lastDate: DateTime.now().subtract(Duration(days: 365*14))).then((value){
+                                if(value != null){
+                                  controller.dobController.text = value.toString().split(" ")[0];
+                                }
+                              });
+                            }),
+                          ],
+                        )
+                      ),
+                      Obx(
+                        ()=> customCard(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: margin_8,
+                              children: [
+                                const Text(
+                                  'Gender',
+                                  style: TextStyle(
+                                    color: Color(0xFF003921),
+                                    fontSize: 10,
+                                     fontWeight: FontWeight.w400,
+                                  ),
+                                ).marginOnly(left: margin_10),
+                
+                                Row(
+                                  children: [
+                
+                                    buildGenderRadio("Man"),
+                                    buildGenderRadio("Female"),
+                                    buildGenderRadio("Other"),
+                                  ],
+                                )
+                
+                              ],
+                            )
+                        ),
+                      ),
+                
+                
+                      customCard(
+                          child: Column(
+                            spacing: margin_8,
+                            children: [
+                              myField(hintText: "Enter Address",label: "Address",controller: controller.addressController),
+                              myField(hintText: "Enter UID",label: "UID",controller: controller.uidController),
+                              myField(hintText: "Enter Pan card",label: "Pan card number",controller: controller.panController),
                             ],
                           )
-
-                        ],
-                      )
+                      ),
+                
+                      appButton(buttonText: "Update Profile",onTap: () {
+                        controller.updateProfile();
+                      }
+                        )
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                    ],
                   ),
                 ),
-
-
-                customCard(
-                    child: Column(
-                      spacing: margin_8,
-                      children: [
-                        myField(hintText: "Enter Address",label: "Address"),
-                        myField(hintText: "Enter UID",label: "UID"),
-                        myField(hintText: "Enter Pan card",label: "Pan card number"),
-                      ],
-                    )
-                ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       )
@@ -159,16 +199,19 @@ class MyInfoScreen extends StatelessWidget {
 
 
 
-  myField({controller,hintText,label}){
+  myField({controller,hintText,label,readOnly = false,onTap}) {
     return TextField(
       controller: controller,
+      readOnly: readOnly,
+      onTap: onTap,
       decoration: InputDecoration(
        labelText: label,
         focusColor: Colors.grey,
         fillColor: Colors.grey,
         hintText: hintText??"Name",
         hintStyle: TextStyle(color: Colors.grey),
-        suffixIcon: Icon(Icons.mode_edit_rounded,color: Colors.grey,),
+
+        suffixIcon: Icon(Icons.mode_edit_rounded,color: readOnly?Colors.transparent:Colors.grey,),
 
 
 
@@ -198,18 +241,41 @@ class MyInfoScreen extends StatelessWidget {
 
   Widget buildGenderRadio(String gender) {
     return Row(
-      children: [
-        Radio<String>(
-          value: gender,
-          groupValue: _selectedGender.value,
-          onChanged: (value) {
-            _selectedGender.value = value!;
-          },
-        ),
-        Text(gender),
+        children: [
+          Radio<String>(
+            value: gender,
+            groupValue: controller.selectedGender.value,
+            onChanged: (value) {
+              controller.selectedGender.value = value!;
+            },
+          ),
+          Text(gender),
 
-      ],
-    );
+        ],
+      );
+  }
+
+  Widget handleProfileImage() {
+    if (controller.profileImage.value.isNotEmpty && controller.profileImage.value.startsWith('http')) {
+      return NetworkImageWidget(
+        imageUrl: controller.profileImage.value,
+        imageWidth: 100,
+        imageHeight: 100,
+        imageFitType: BoxFit.cover,
+        radiusAll: 100.r,
+      );
+    }else if(controller.profileImage.value.isNotEmpty){
+      return ClipRRect(//controller.profileImage.value??""
+        borderRadius: BorderRadius.circular(radius_50),
+        child: Image.file(
+            height: 100,
+            width: 100,
+            fit: BoxFit.cover,
+            File(controller.profileImage.value)),
+      );
+  } else{
+      return Icon(Icons.account_circle,size: height_100);
+    }
   }
 
 

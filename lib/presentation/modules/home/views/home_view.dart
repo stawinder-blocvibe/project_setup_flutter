@@ -23,10 +23,14 @@ class HomeScreen extends GetView<HomeController> {
             appBarWithWallet(onlyWallet: true,isHomeScreen: true,onTapGenius: (){
               debugPrint("onTapGenius===>");
 
-
+              if(isGenius.value) return;
               showDialog(
                 context: context,
-                builder: (context) => const GeniusSubscriptionModal(),
+                builder: (context) =>  GeniusSubscriptionModal(onTap: (){
+                  isGenius.value = !isGenius.value;
+                  isGenius.refresh();
+                  controller.hitUpdateUserApi();
+                },),
               );
             }),
             Expanded(

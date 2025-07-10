@@ -31,6 +31,7 @@ import '../../presentation/modules/home/views/privacy_and_policy.dart';
 import '../../presentation/modules/home/views/rules_and_regulations.dart';
 import '../../presentation/modules/home/views/transaction_history.dart';
 import '../../presentation/modules/home/views/upcoming_matches_screen.dart';
+import '../../presentation/modules/my_matches/presentations/my_match_kuruk_contest.dart';
 import '../../presentation/modules/splash/bindings/on_boarding_binding.dart';
 import '../../presentation/modules/splash/bindings/splash_binding.dart';
 import '../../presentation/modules/splash/views/on_boarding_screen.dart';
@@ -201,6 +202,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.privacyAndPolicyRoute,
       page: () => PrivacyAndPolicy(),
+      bindings: [HomeBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.myMatchKurukContestRoute,
+      page: () => MyMatchKurukContest(),
       bindings: [HomeBinding()],
     ),
 

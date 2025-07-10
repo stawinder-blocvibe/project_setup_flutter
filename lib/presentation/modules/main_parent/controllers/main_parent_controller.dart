@@ -18,7 +18,7 @@ class MainParentController extends GetxController {
     HomeScreen(),
     MyMatchesScreen(),
 
-    Text("Predict"),
+    HomeScreen(),
 
     TransactionHistory()??
     MyWinnings(needBackButton: false,),

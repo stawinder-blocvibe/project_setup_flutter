@@ -212,8 +212,11 @@ const String getUsersMatchPredictionEndPoint = "/auth/get-user-match-predictions
 const String getMatchResultEndPoint = "/auth/get-match-result";
 const String winnerSlotEndPoint = "/auth/winner-slots";
 
+
 //Paid Api
 const String getLiveMatchEndPoint = "/v2/getLiveMatch";
+ String updateProfileEndPoint(userId) => "/auth/update-profile/$userId";
 
-
-
+const String getLeaderBoardEndPoint = "/auth/getleaderboard";
+const String getUserDetailsEndPoint = "/auth/getuser";
+const String predictedPoolEndPoint = "/auth/user-predected-pools";

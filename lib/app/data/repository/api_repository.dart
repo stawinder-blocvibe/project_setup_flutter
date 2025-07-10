@@ -535,4 +535,85 @@ if(data==null || data.isEmpty) return null;
     }
   }
 
+   Future updateUser({required Map<String, dynamic> data, userId}) async {
+    try {
+      final response = await dioClient?.put(
+          updateProfileEndPoint(userId),
+            data: FormData.fromMap(data));
+      return response;
+    } catch (e, st) {
+      debugPrint(e.toString());
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, signUpEndPoint));
+    }
+  }
+
+  Future getLeaderBoardApi({matchId,poolId}) async {
+    try {
+      var data = {
+        "matchId":matchId,
+    "poolId":poolId
+  };
+
+      debugPrint("datadatadata=>isEmptyOrNull===>${(matchId==null || matchId.isEmpty)}");
+      if(matchId==null || matchId.isEmpty) return;
+      debugPrint("datadatadata=>${data}");
+      final response = await dioClient!.get(
+          getLeaderBoardEndPoint,
+          data: data,
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, myPredictedMatchesEndPoint));
+    }
+  }
+  Future getUserDetailsApi({userId}) async {
+    try {
+      var data = {
+        "userId":userId,
+      };
+
+      debugPrint("getUserDetailsApi=>isEmptyOrNull===>${(userId==null || userId.isEmpty)}");
+      if(userId==null || userId.isEmpty) return;
+      debugPrint("getUserDetailsApi=>${data}");
+      final response = await dioClient!.get(
+          getUserDetailsEndPoint,
+          queryParameters: data,
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, myPredictedMatchesEndPoint));
+    }
+  }
+
+  Future getPredictedPoolApi({userId,matchId}) async {
+    //PoolModel
+    try {
+      var data = {
+        "userId":userId,
+        "matchId":matchId,
+      };
+
+      debugPrint("getPredictedPoolApi=>isEmptyOrNull===>${(userId==null || userId.isEmpty)}");
+      if(userId==null || userId.isEmpty) return;
+      debugPrint("getPredictedPoolApi=>${data}");
+      final response = await dioClient!.get(
+          predictedPoolEndPoint,
+          queryParameters: data,
+          skipAuth: false);
+
+      return response;
+      // return ResponseModel.fromJson(response);
+    } catch (e, st) {
+      return Future.error(
+          NetworkExceptions.getDioException(e, st, myPredictedMatchesEndPoint));
+    }
+  }
+
 }

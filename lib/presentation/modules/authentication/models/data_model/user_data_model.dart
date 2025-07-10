@@ -9,6 +9,8 @@ import 'media_file_model.dart';
      this.id,
      this.mobileNumber,
      this.fullName,
+     this.profileURL,
+     this.address,
      this.email,
      this.dob,
      this.isGenius,
@@ -24,6 +26,8 @@ import 'media_file_model.dart';
      id = json['id'];
      mobileNumber = json['mobileNumber'];
      fullName = json['fullName'];
+     profileURL = json['profileURL'];
+     address = json['address'];
      email = json['email'];
      dob = json['dob'];
      isGenius = json['isGenius'];
@@ -38,6 +42,8 @@ import 'media_file_model.dart';
    String? id;
    String? mobileNumber;
    dynamic fullName;
+   dynamic profileURL;
+   dynamic address;
    dynamic email;
    dynamic dob;
    bool? isGenius;
@@ -51,6 +57,8 @@ import 'media_file_model.dart';
    UserDataModel copyWith({  String? id,
      String? mobileNumber,
      dynamic fullName,
+     dynamic profileURL,
+     dynamic address,
      dynamic email,
      dynamic dob,
      bool? isGenius,
@@ -64,6 +72,8 @@ import 'media_file_model.dart';
    }) => UserDataModel(  id: id ?? this.id,
      mobileNumber: mobileNumber ?? this.mobileNumber,
      fullName: fullName ?? this.fullName,
+     profileURL: profileURL ?? this.profileURL,
+     address: address ?? this.address,
      email: email ?? this.email,
      dob: dob ?? this.dob,
      isGenius: isGenius ?? this.isGenius,
@@ -80,6 +90,8 @@ import 'media_file_model.dart';
      map['id'] = id;
      map['mobileNumber'] = mobileNumber;
      map['fullName'] = fullName;
+     map['profileURL'] = profileURL;
+     map['address'] = address;
      map['email'] = email;
      map['dob'] = dob;
      map['isGenius'] = isGenius;

@@ -68,7 +68,9 @@ class DioClient {
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onReceiveProgress,
-      bool? skipAuth}) async {
+      bool? skipAuth,
+       data
+      }) async {
     try {
       if (skipAuth == false) {
         var token = _preferenceManger.getAuthToken();
@@ -77,6 +79,7 @@ class DioClient {
 
           options = Options(
               headers: {"Authorization": "Bearer $token", "lang": localKey});
+
         }
       } else {
         options ??= Options(
@@ -92,6 +95,7 @@ class DioClient {
         options: options,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
+        data: data
       );
       return response.data;
     } on SocketException catch (e) {
@@ -160,7 +164,7 @@ class DioClient {
     }
   }
 
-  static Future<dynamic> put(
+   Future<dynamic> put(
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,

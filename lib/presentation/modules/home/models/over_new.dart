@@ -37,7 +37,9 @@ class PredictedList {
       this.thirdBall, 
       this.fourthBall, 
       this.fifthBall, 
-      this.sixthBall,});
+      this.sixthBall,
+      this.extraBalls,
+  });
 
   PredictedList.fromJson(dynamic json) {
     firstBall = json['firstBall'];
@@ -46,6 +48,7 @@ class PredictedList {
     fourthBall = json['fourthBall'];
     fifthBall = json['fifthBall'];
     sixthBall = json['sixthBall'];
+    extraBalls = json['extraBalls'];
   }
   String? firstBall;
   String? secondBall;
@@ -53,18 +56,21 @@ class PredictedList {
   String? fourthBall;
   String? fifthBall;
   String? sixthBall;
+  List<String?>? extraBalls;
 PredictedList copyWith({  String? firstBall,
   String? secondBall,
   String? thirdBall,
   String? fourthBall,
   String? fifthBall,
   String? sixthBall,
+  List<String?>? extraBalls,
 }) => PredictedList(  firstBall: firstBall ?? this.firstBall,
   secondBall: secondBall ?? this.secondBall,
   thirdBall: thirdBall ?? this.thirdBall,
   fourthBall: fourthBall ?? this.fourthBall,
   fifthBall: fifthBall ?? this.fifthBall,
   sixthBall: sixthBall ?? this.sixthBall,
+  extraBalls: extraBalls ?? this.extraBalls,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -74,6 +80,7 @@ PredictedList copyWith({  String? firstBall,
     map['fourthBall'] = fourthBall;
     map['fifthBall'] = fifthBall;
     map['sixthBall'] = sixthBall;
+    map['extraBalls'] = extraBalls?.map((v) => v).toList();
     return map;
   }
 

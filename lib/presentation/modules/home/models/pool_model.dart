@@ -6,7 +6,9 @@ class PoolModel {
       this.joiningPrice, 
       this.winningPrice, 
       this.type, 
-      this.matchId,});
+      this.matchId,
+      this.isPoolPaymentCompleted,
+  });
 
   PoolModel.fromJson(dynamic json) {
     poolId = json['poolId'];
@@ -21,6 +23,7 @@ class PoolModel {
     winningPrice = json['winning_price'];
     type = json['type'];
     matchId = json['matchId'];
+    isPoolPaymentCompleted = json['isPoolPaymentCompleted'];
   }
   String? poolId;
   int? maxParticipants;
@@ -29,6 +32,7 @@ class PoolModel {
   int? winningPrice;
   String? type;
   String? matchId;
+  bool? isPoolPaymentCompleted;
 PoolModel copyWith({  String? poolId,
   int? maxParticipants,
   List<dynamic>? participantsId,
@@ -36,6 +40,7 @@ PoolModel copyWith({  String? poolId,
   int? winningPrice,
   String? type,
   String? matchId,
+  bool? isPoolPaymentCompleted,
 }) => PoolModel(  poolId: poolId ?? this.poolId,
   maxParticipants: maxParticipants ?? this.maxParticipants,
   participantsId: participantsId ?? this.participantsId,
@@ -43,6 +48,7 @@ PoolModel copyWith({  String? poolId,
   winningPrice: winningPrice ?? this.winningPrice,
   type: type ?? this.type,
   matchId: matchId ?? this.matchId,
+  isPoolPaymentCompleted: isPoolPaymentCompleted ?? this.isPoolPaymentCompleted,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -55,6 +61,7 @@ PoolModel copyWith({  String? poolId,
     map['winning_price'] = winningPrice;
     map['type'] = type;
     map['matchId'] = matchId;
+    map['isPoolPaymentCompleted'] = isPoolPaymentCompleted;
     return map;
   }
 

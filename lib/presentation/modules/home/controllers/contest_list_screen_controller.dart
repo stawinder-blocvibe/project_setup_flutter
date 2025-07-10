@@ -9,12 +9,19 @@ class ContestListScreenController extends GetxController {
 
 
   RxList<PoolModel> poolList = RxList();
+  RxList<PoolModel> poolList2 = RxList();
   contestListApiCall({matchId}){
     repository.poolDetailApi(matchId: matchId).then((value){
-      if(value!=null && value['pools']!=null){
-        var data = value['pools'] as List;
+      if(value!=null && value['data']['inning1']!=null){
+        var data = value['data']['inning1'] as List;
         poolList.value =  data.map((e)=>PoolModel.fromJson(e)).toList();
         poolList.refresh();
+      }
+
+      if(value!=null && value['data']['inning2']!=null){
+        var data = value['data']['inning2'] as List;
+        poolList2.value =  data.map((e)=>PoolModel.fromJson(e)).toList();
+        poolList2.refresh();
       }
     });
   }
@@ -33,6 +40,8 @@ class ContestListScreenController extends GetxController {
   }
 
   Rx<UserDataModel?> user = Rxn();
+
+  RxInt selectedTabIndex = 1.obs;
 
 
   handleUserData() async {
